@@ -6,10 +6,6 @@ use myApp\repositories\FilmsRepository;
 
 require_once './vendor/autoload.php';
 
-require "myApp/repositories/FilmsRepositoryInterface.php";
-require "myApp/repositories/FilmsRepository.php";
-require "myApp/FilmsService.php";
-
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
