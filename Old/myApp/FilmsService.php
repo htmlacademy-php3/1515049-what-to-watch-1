@@ -2,19 +2,26 @@
 
 namespace myApp;
 
-use myApp\repositories\FilmsRepositoryInterface;
+use myApp\repositories\FilmsOmdbRepositoryInterface;
 
 final class FilmsService
 {
-  private FilmsRepositoryInterface $repository;
+  private FilmsOmdbRepositoryInterface $repository;
 
-  public function __construct(FilmsRepositoryInterface $repository)
+  public function __construct(FilmsOmdbRepositoryInterface $repository)
   {
     $this->repository = $repository;
   }
 
   public function getFilm(string $imdbId): array
   {
-    return $this->repository->getFilmById($imdbId);
+    $filmData = $this->repository->getFilmById($imdbId);
+
+    if (!$filmData) {
+      echo $this->repository->getError();
+      return [];
+    }
+
+    return $filmData;
   }
 }

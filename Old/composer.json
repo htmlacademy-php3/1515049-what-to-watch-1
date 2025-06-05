@@ -2,7 +2,7 @@
     "name": "f/1515049-what-to-watch-1",
     "autoload": {
         "psr-4": {
-            "": "src/"
+          "myApp\\": "myApp/"
         }
     },
     "authors": [
