@@ -3,18 +3,31 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
+use App\Http\Responses\SuccessResponse;
 use Illuminate\Http\Request;
 
 class GenreController extends Controller
 {
-    public function index() : JsonResponse
+    /**
+     * Список жанров
+     *
+     * @return SuccessResponse
+     */
+    public function index() : SuccessResponse
     {
-        return response()->json(['message' => 'Список жанров']);
+        return $this->success([]);
     }
 
-    public function update(Request $request, $id) : JsonResponse
+    /**
+     * Обновление жанров
+     *
+     * @param Request $request
+     * @param         $id
+     *
+     * @return SuccessResponse
+     */
+    public function update(Request $request, $id) : SuccessResponse
     {
-        return response()->json(['message' => "Обновление жанра {$id}"]);
+        return $this->success([]);
     }
 }

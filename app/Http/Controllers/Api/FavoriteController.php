@@ -3,24 +3,42 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
+use App\Http\Responses\SuccessResponse;
 use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
 {
-    public function index() : JsonResponse
+    /**
+     * Список фильмов в избранном
+     *
+     * @return SuccessResponse
+     */
+    public function index() : SuccessResponse
     {
-        return response()->json(['message' => 'Список избранного']);
+        return $this->success([]);
     }
 
-    public function store(Request $request) : JsonResponse
+    /**
+     * Добавление фильма в избранное
+     *
+     * @param Request $request
+     *
+     * @return SuccessResponse
+     */
+    public function store(Request $request) : SuccessResponse
     {
-        return response()->json(['message' => "Добавлено в избранное"]);
+        return $this->success([]);
     }
 
-    public function destroy(Request $request) : JsonResponse
+    /**
+     * Удаление из избранного
+     *
+     * @param Request $request
+     *
+     * @return SuccessResponse
+     */
+    public function destroy(Request $request) : SuccessResponse
     {
-        return response()->json(['message' => "Удаление из избранного"]);
-
+        return $this->success([]);
     }
 }

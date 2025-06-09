@@ -3,23 +3,42 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
+use App\Http\Responses\SuccessResponse;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index(Request $request) : JsonResponse
+    /**
+     * Просмотр списка пользователей (???)
+     *
+     * @param Request $request
+     *
+     * @return SuccessResponse
+     */
+    public function index(Request $request) : SuccessResponse
     {
-        return response()->json(['message' => 'Список пользователей']);
+        return $this->success([]);
     }
 
-    public function me() : JsonResponse
+    /**
+     * Просмотр своего профиля
+     *
+     * @return SuccessResponse
+     */
+    public function me() : SuccessResponse
     {
-        return response()->json(['message' => "Профиль пользователя"]);
+        return $this->success([]);
     }
 
-    public function  update(Request $request) : JsonResponse
+    /**
+     * Изменение профиля
+     *
+     * @param Request $request
+     *
+     * @return SuccessResponse
+     */
+    public function  update(Request $request) : SuccessResponse
     {
-        return response()->json(['message' => 'Успешное изменение!!!']);
+        return $this->success([]);
     }
 }

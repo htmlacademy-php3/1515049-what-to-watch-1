@@ -3,28 +3,58 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
+use App\Http\Responses\SuccessResponse;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function index(int $film_id) : JsonResponse
+    /**
+     * Список комментариев к фильму
+     *
+     * @param int $film_id
+     *
+     * @return SuccessResponse
+     */
+    public function index(int $film_id) : SuccessResponse
     {
-        return response()->json(['message' => "Список отзывов к фильму {$film_id}" ]);
+        return $this->success([]);
     }
 
-    public function create(Request $request, int $film_id) : JsonResponse
+    /**
+     * Добавление комментария
+     *
+     * @param Request $request
+     * @param int     $film_id
+     *
+     * @return SuccessResponse
+     */
+    public function create(Request $request, int $film_id) : SuccessResponse
     {
-        return  response()->json(['message' => "Добавление отзыва к фильму {$film_id}"]);
+        return $this->success([]);
     }
 
-    public function update(Request $request, string $comment) : JsonResponse
+    /**
+     * Изменение комментария
+     *
+     * @param Request $request
+     * @param string  $comment
+     *
+     * @return SuccessResponse
+     */
+    public function update(Request $request, string $comment) : SuccessResponse
     {
-        return  response()->json(['message' => "Отзыв {$comment} добавлен"]);
+        return $this->success([]);
     }
 
-    public function delete(string $comment) : JsonResponse
+    /**
+     * Удаление комментария
+     *
+     * @param string $comment
+     *
+     * @return SuccessResponse
+     */
+    public function delete(string $comment) : SuccessResponse
     {
-        return  response()->json(['message' => "Отзыв {$comment} удален"]);
+        return $this->success([]);
     }
 }

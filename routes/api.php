@@ -29,3 +29,4 @@ Route::patch('/comments/{comment}', [CommentController::class,  'update']);
 Route::delete('/comments/{comment}', [CommentController::class,  'delete']);
 Route::get('/promo', [FilmController::class,  'showPromo']);
 Route::post('/promo/{id}', [FilmController::class,  'createPromo']);
+
