@@ -28,7 +28,7 @@ class CommentController extends Controller
      *
      * @return SuccessResponse
      */
-    public function create(Request $request, int $film_id) : SuccessResponse
+    public function store(Request $request, int $film_id) : SuccessResponse
     {
         return $this->success([]);
     }
@@ -53,7 +53,7 @@ class CommentController extends Controller
      *
      * @return SuccessResponse
      */
-    public function delete(string $comment) : SuccessResponse
+    public function destroy(string $comment) : SuccessResponse
     {
         return $this->success([]);
     }

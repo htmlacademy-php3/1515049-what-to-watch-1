@@ -9,18 +9,6 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     /**
-     * Просмотр списка пользователей (???)
-     *
-     * @param Request $request
-     *
-     * @return SuccessResponse
-     */
-    public function index(Request $request) : SuccessResponse
-    {
-        return $this->success([]);
-    }
-
-    /**
      * Просмотр своего профиля
      *
      * @return SuccessResponse
