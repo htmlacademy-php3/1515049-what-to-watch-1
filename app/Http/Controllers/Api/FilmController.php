@@ -3,43 +3,90 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
+use App\Http\Responses\SuccessResponse;
 use Illuminate\Http\Request;
 
 class FilmController extends Controller
 {
-    public function index() : JsonResponse
+    /**
+     * Список фильмов
+     *
+     * @return SuccessResponse
+     */
+    public function index() : SuccessResponse
     {
-        return response()->json(['message' => 'Список фильмов']);
+        return $this->success([]);
     }
 
-    public function show(int $id) : JsonResponse
+    /**
+     * Просмотр страницы фильма
+     *
+     * @param int $id
+     *
+     * @return SuccessResponse
+     */
+    public function show(int $id) : SuccessResponse
     {
-        return response()->json(['message' => "инфо о фильме {$id}"]);
+        return  $this->success([]);
     }
 
-    public function store(Request $request) : JsonResponse
+    /**
+     * Добавление фильма в бд
+     *
+     * @param Request $request
+     *
+     * @return SuccessResponse
+     */
+    public function store(Request $request) : SuccessResponse
     {
-        return response()->json(['message' => 'Добавлен фильм']);
+        return $this->success([], 201);
     }
 
-    public function update(Request $request, int $id) : JsonResponse
+    /**
+     * Обновление данных фильма
+     *
+     * @param Request $request
+     * @param int     $id
+     *
+     * @return SuccessResponse
+     */
+    public function update(Request $request, int $id) : SuccessResponse
     {
-        return response()->json(['message' => 'Обновление инфо о фильме']);
+        return $this->success([]);
     }
 
-    public function similar(int $id) : JsonResponse
+    /**
+     * Список похожих фильмов
+     *
+     * @param int $id
+     *
+     * @return SuccessResponse
+     */
+    public function similar(int $id) : SuccessResponse
     {
-        return response()->json(['message' => 'Список похожих фильмов']);
+        return $this->success([]);
     }
 
-    public function showPromo() : JsonResponse
+    /**
+     * Показ промо
+     *
+     * @return SuccessResponse
+     */
+    public function showPromo() : SuccessResponse
     {
-        return response()->json(['message' => 'просмотр промо']);
+        return $this->success([]);
     }
 
-    public function createPromo(Request $request, $film_id) : JsonResponse
+    /**
+     * Создание промо
+     *
+     * @param Request $request
+     * @param         $film_id
+     *
+     * @return SuccessResponse
+     */
+    public function createPromo(Request $request, $film_id) : SuccessResponse
     {
-        return response()->json(['message' => "создание промо фильма {id}"]);
+        return $this->success([]);
     }
 }

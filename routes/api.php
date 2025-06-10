@@ -24,8 +24,9 @@ Route::post('/films/{id}/favorite', [FavoriteController::class, 'store']);
 Route::delete('/films/{id}/favorite', [FavoriteController::class, 'destroy']);
 Route::get('/films/{id}/similar', [FilmController::class, 'similar']);
 Route::get('/comments/{id}', [CommentController::class,  'index']);
-Route::post('/comments/{id}', [CommentController::class,  'create']);
+Route::post('/comments/{id}', [CommentController::class,  'store']);
 Route::patch('/comments/{comment}', [CommentController::class,  'update']);
-Route::delete('/comments/{comment}', [CommentController::class,  'delete']);
+Route::delete('/comments/{comment}', [CommentController::class,  'destroy']);
 Route::get('/promo', [FilmController::class,  'showPromo']);
 Route::post('/promo/{id}', [FilmController::class,  'createPromo']);
+
