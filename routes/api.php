@@ -10,23 +10,46 @@ use App\Http\Controllers\Api\GenreController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/films', [FilmController::class, 'index']);
-Route::post('/register', [RegisterController::class, 'register']);
-Route::post('/login', [LoginController::class, 'login']);
-Route::post('/logout', [LogoutController::class, 'logout']);
-Route::get('/user', [UserController::class, 'me']);
-Route::patch('/user', [UserController::class, 'update']);
-Route::apiResource('/films', FilmController::class);
-Route::get('/genres', [GenreController::class, 'index']);
-Route::patch('/genres/{genre}', [GenreController::class, 'update']);
-Route::get('/favorite', [FavoriteController::class, 'index']);
-Route::post('/films/{id}/favorite', [FavoriteController::class, 'store']);
-Route::delete('/films/{id}/favorite', [FavoriteController::class, 'destroy']);
-Route::get('/films/{id}/similar', [FilmController::class, 'similar']);
-Route::get('/comments/{id}', [CommentController::class,  'index']);
-Route::post('/comments/{id}', [CommentController::class,  'store']);
-Route::patch('/comments/{comment}', [CommentController::class,  'update']);
-Route::delete('/comments/{comment}', [CommentController::class,  'destroy']);
-Route::get('/promo', [FilmController::class,  'showPromo']);
-Route::post('/promo/{id}', [FilmController::class,  'createPromo']);
+// Фильмы
+Route::prefix('films')->group(function () {
+    Route::apiResource('/', FilmController::class)->parameters(['' => 'film']);
+    Route::post('{id}/favorite', [FavoriteController::class, 'store']);
+    Route::delete('{id}/favorite', [FavoriteController::class, 'destroy']);
+    Route::get('{id}/similar', [FilmController::class, 'similar']);
+});
 
+// Избранное
+Route::get('/favorite', [FavoriteController::class, 'index']);
+
+// аутентификация
+Route::group([], function () {
+    Route::post('/register', [RegisterController::class, 'register']);
+    Route::post('/login', [LoginController::class, 'login']);
+    Route::post('/logout', [LogoutController::class, 'logout']);
+});
+
+// Пользователи
+Route::prefix('/user')->group(function () {
+    Route::get('/', [UserController::class, 'me']);
+    Route::patch('/', [UserController::class, 'update']);
+});
+
+// Жанры
+Route::prefix('/genres')->group(function () {
+    Route::get('/', [GenreController::class, 'index']);
+    Route::patch('/{genre}', [GenreController::class, 'update']);
+});
+
+// Комментарии
+Route::prefix('/comments')->group(function () {
+    Route::get('/{id}', [CommentController::class, 'index']);
+    Route::post('/{id}', [CommentController::class, 'store']);
+    Route::patch('/{comment}', [CommentController::class, 'update']);
+    Route::delete('/{comment}', [CommentController::class, 'destroy']);
+});
+
+// Промо
+Route::prefix('/promo')->group(function () {
+    Route::get('/', [FilmController::class, 'showPromo']);
+    Route::post('/{id}', [FilmController::class, 'createPromo']);
+});
