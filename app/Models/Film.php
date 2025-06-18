@@ -1,12 +1,18 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * Class Film
  * 
- *
  * @property int $id
  * @property string $title
  * @property string|null $year
@@ -14,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $director
  * @property string|null $actors
  * @property string|null $duration
- * @property string|null $imdb_rating
+ * @property float|null $imdb_rating
  * @property int|null $imdb_votes
  * @property string|null $imdb_id
  * @property string|null $poster_url
@@ -23,32 +29,54 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $cover_url
  * @property string|null $video_url
  * @property string|null $video_preview_url
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film whereActors($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film whereBackgroundColor($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film whereCoverUrl($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film whereDirector($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film whereDuration($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film whereImdbId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film whereImdbRating($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film whereImdbVotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film wherePosterUrl($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film wherePreviewUrl($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film whereVideoPreviewUrl($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film whereVideoUrl($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Film whereYear($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * 
+ * @property Collection|Comment[] $comments
+ * @property Collection|FavoriteFilm[] $favorite_films
+ * @property Collection|Genre[] $genres
+ *
+ * @package App\Models
  */
 class Film extends Model
 {
-    //
+	protected $table = 'films';
+
+	protected $casts = [
+		'imdb_rating' => 'float',
+		'imdb_votes' => 'int'
+	];
+
+	protected $fillable = [
+		'title',
+		'year',
+		'description',
+		'director',
+		'actors',
+		'duration',
+		'imdb_rating',
+		'imdb_votes',
+		'imdb_id',
+		'poster_url',
+		'preview_url',
+		'background_color',
+		'cover_url',
+		'video_url',
+		'video_preview_url'
+	];
+
+	public function comments()
+	{
+		return $this->hasMany(Comment::class);
+	}
+
+	public function favorite_films()
+	{
+		return $this->hasMany(FavoriteFilm::class);
+	}
+
+	public function genres()
+	{
+		return $this->belongsToMany(Genre::class, 'genre_films');
+	}
 }
