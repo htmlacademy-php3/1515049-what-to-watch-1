@@ -12,7 +12,11 @@ use Illuminate\Support\Facades\Route;
 
 // Фильмы
 Route::prefix('films')->group(function () {
-    Route::apiResource('/', FilmController::class)->parameters(['' => 'film']);
+    Route::get('/', [FilmController::class, 'index']);
+    Route::get('/{id}', [FilmController::class, 'show']);
+    Route::post('/', [FilmController::class, 'store']);
+    Route::patch('/', [FilmController::class, 'update']);
+    Route::post('{id}/favorite', [FilmController::class, 'show']);
     Route::post('{id}/favorite', [FavoriteController::class, 'store']);
     Route::delete('{id}/favorite', [FavoriteController::class, 'destroy']);
     Route::get('{id}/similar', [FilmController::class, 'similar']);
