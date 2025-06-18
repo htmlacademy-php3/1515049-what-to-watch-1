@@ -6,18 +6,24 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class GenreFilm
- * 
- * @property int $film_id
- * @property int $genre_id
- * 
- * @property Film $film
- * @property Genre $genre
  *
  * @package App\Models
+ * @property int $film_id
+ * @property int $genre_id
+ * @property-read \App\Models\Film $film
+ * @property-read \App\Models\Genre $genre
+ * @method static Builder<static>|GenreFilm newModelQuery()
+ * @method static Builder<static>|GenreFilm newQuery()
+ * @method static Builder<static>|GenreFilm query()
+ * @method static Builder<static>|GenreFilm whereFilmId($value)
+ * @method static Builder<static>|GenreFilm whereGenreId($value)
+ * @mixin \Eloquent
  */
 class GenreFilm extends Model
 {
@@ -30,13 +36,13 @@ class GenreFilm extends Model
 		'genre_id' => 'int'
 	];
 
-	public function film()
-	{
+	public function film() : BelongsTo
+    {
 		return $this->belongsTo(Film::class);
 	}
 
-	public function genre()
-	{
+	public function genre() : BelongsTo
+    {
 		return $this->belongsTo(Genre::class);
 	}
 }

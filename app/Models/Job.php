@@ -6,11 +6,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Job
- * 
+ *
+ * @package App\Models
  * @property int $id
  * @property string $queue
  * @property string $payload
@@ -18,8 +20,17 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $reserved_at
  * @property int $available_at
  * @property int $created_at
- *
- * @package App\Models
+ * @method static Builder<static>|Job newModelQuery()
+ * @method static Builder<static>|Job newQuery()
+ * @method static Builder<static>|Job query()
+ * @method static Builder<static>|Job whereAttempts($value)
+ * @method static Builder<static>|Job whereAvailableAt($value)
+ * @method static Builder<static>|Job whereCreatedAt($value)
+ * @method static Builder<static>|Job whereId($value)
+ * @method static Builder<static>|Job wherePayload($value)
+ * @method static Builder<static>|Job whereQueue($value)
+ * @method static Builder<static>|Job whereReservedAt($value)
+ * @mixin \Eloquent
  */
 class Job extends Model
 {

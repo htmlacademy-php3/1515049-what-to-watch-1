@@ -7,27 +7,43 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class User
- * 
+ *
+ * @package App\Models
  * @property int $id
  * @property string $role
  * @property string|null $avatar
  * @property string $name
  * @property string $email
- * @property Carbon|null $email_verified_at
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * 
- * @property Collection|Comment[] $comments
- * @property Collection|FavoriteFilm[] $favorite_films
- *
- * @package App\Models
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read Collection<int, \App\Models\Comment> $comments
+ * @property-read int|null $comments_count
+ * @property-read Collection<int, \App\Models\FavoriteFilm> $favorite_films
+ * @property-read int|null $favorite_films_count
+ * @method static Builder<static>|User newModelQuery()
+ * @method static Builder<static>|User newQuery()
+ * @method static Builder<static>|User query()
+ * @method static Builder<static>|User whereAvatar($value)
+ * @method static Builder<static>|User whereCreatedAt($value)
+ * @method static Builder<static>|User whereEmail($value)
+ * @method static Builder<static>|User whereEmailVerifiedAt($value)
+ * @method static Builder<static>|User whereId($value)
+ * @method static Builder<static>|User whereName($value)
+ * @method static Builder<static>|User wherePassword($value)
+ * @method static Builder<static>|User whereRememberToken($value)
+ * @method static Builder<static>|User whereRole($value)
+ * @method static Builder<static>|User whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class User extends Model
 {
@@ -52,13 +68,13 @@ class User extends Model
 		'remember_token'
 	];
 
-	public function comments()
-	{
+	public function comments() : HasMany
+    {
 		return $this->hasMany(Comment::class);
 	}
 
-	public function favorite_films()
-	{
+	public function favorite_films() : HasMany
+    {
 		return $this->hasMany(FavoriteFilm::class);
 	}
 }
