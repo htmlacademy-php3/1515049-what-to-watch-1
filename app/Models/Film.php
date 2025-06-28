@@ -17,30 +17,30 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * Class Film
  *
  * @package App\Models
- * @property int $id
- * @property string $title
- * @property string|null $year
- * @property string|null $description
- * @property string|null $director
- * @property string|null $actors
- * @property string|null $duration
- * @property float|null $imdb_rating
- * @property int|null $imdb_votes
- * @property string|null $imdb_id
- * @property string|null $poster_url
- * @property string|null $preview_url
- * @property string|null $background_color
- * @property string|null $cover_url
- * @property string|null $video_url
- * @property string|null $video_preview_url
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read Collection<int, \App\Models\Comment> $comments
- * @property-read int|null $comments_count
+ * @property int                                            $id
+ * @property string                                         $title
+ * @property string|null                                    $year
+ * @property string|null                                    $description
+ * @property string|null                                    $director
+ * @property string|null                                    $actors
+ * @property string|null                                    $duration
+ * @property float|null                                     $imdb_rating
+ * @property int|null                                       $imdb_votes
+ * @property string|null                                    $imdb_id
+ * @property string|null                                    $poster_url
+ * @property string|null                                    $preview_url
+ * @property string|null                                    $background_color
+ * @property string|null                                    $cover_url
+ * @property string|null                                    $video_url
+ * @property string|null                                    $video_preview_url
+ * @property \Illuminate\Support\Carbon|null                $created_at
+ * @property \Illuminate\Support\Carbon|null                $updated_at
+ * @property-read Collection<int, \App\Models\Comment>      $comments
+ * @property-read int|null                                  $comments_count
  * @property-read Collection<int, \App\Models\FavoriteFilm> $favorite_films
- * @property-read int|null $favorite_films_count
- * @property-read Collection<int, \App\Models\Genre> $genres
- * @property-read int|null $genres_count
+ * @property-read int|null                                  $favorite_films_count
+ * @property-read Collection<int, \App\Models\Genre>        $genres
+ * @property-read int|null                                  $genres_count
  * @method static Builder<static>|Film newModelQuery()
  * @method static Builder<static>|Film newQuery()
  * @method static Builder<static>|Film query()
@@ -66,43 +66,53 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Film extends Model
 {
-	protected $table = 'films';
+    protected $table = 'films';
 
-	protected $casts = [
-		'imdb_rating' => 'float',
-		'imdb_votes' => 'int'
-	];
+    protected $casts = [
+        'imdb_rating' => 'float',
+        'imdb_votes' => 'int'
+    ];
 
-	protected $fillable = [
-		'title',
-		'year',
-		'description',
-		'director',
-		'actors',
-		'duration',
-		'imdb_rating',
-		'imdb_votes',
-		'imdb_id',
-		'poster_url',
-		'preview_url',
-		'background_color',
-		'cover_url',
-		'video_url',
-		'video_preview_url'
-	];
+    protected $fillable = [
+        'title',
+        'year',
+        'description',
+        'director',
+        'actors',
+        'duration',
+        'imdb_rating',
+        'imdb_votes',
+        'imdb_id',
+        'poster_url',
+        'preview_url',
+        'background_color',
+        'cover_url',
+        'video_url',
+        'video_preview_url'
+    ];
 
-	public function comments() : HasMany
+    public function comments() : HasMany
     {
-		return $this->hasMany(Comment::class);
-	}
+        return $this->hasMany(Comment::class);
+    }
 
-	public function favorite_films() : HasMany
+    public function favorite_films() : HasMany
     {
-		return $this->hasMany(FavoriteFilm::class);
-	}
+        return $this->hasMany(FavoriteFilm::class);
+    }
 
-	public function genres() : BelongsToMany
+    public function genres() : BelongsToMany
     {
-		return $this->belongsToMany(Genre::class, 'genre_films');
-	}
+        return $this->belongsToMany(Genre::class, 'genre_films');
+    }
+
+    public function actors() : BelongsToMany
+    {
+        return $this->belongsToMany(Actor::class, 'actor_film');
+    }
+
+    public function directors() : BelongsToMany
+    {
+        return $this->belongsToMany(Director::class, 'director_film');
+    }
 }

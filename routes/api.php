@@ -16,7 +16,7 @@ Route::prefix('films')->group(function () {
     Route::get('/{id}', [FilmController::class, 'show']);
     Route::post('/', [FilmController::class, 'store']);
     Route::patch('/', [FilmController::class, 'update']);
-    Route::post('{id}/favorite', [FilmController::class, 'show']);
+    Route::get('{id}/favorite', [FavoriteController::class, 'show']);
     Route::post('{id}/favorite', [FavoriteController::class, 'store']);
     Route::delete('{id}/favorite', [FavoriteController::class, 'destroy']);
     Route::get('{id}/similar', [FilmController::class, 'similar']);

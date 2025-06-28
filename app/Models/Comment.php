@@ -65,7 +65,7 @@ class Comment extends Model
         'film_id'
     ];
 
-    public function comment()
+    public function comment() : BelongsTo
     {
         return $this->belongsTo(Comment::class);
     }

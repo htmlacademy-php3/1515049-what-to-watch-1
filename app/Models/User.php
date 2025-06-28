@@ -6,7 +6,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -16,20 +15,20 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * Class User
  *
  * @package App\Models
- * @property int $id
- * @property string $role
- * @property string|null $avatar
- * @property string $name
- * @property string $email
- * @property \Illuminate\Support\Carbon|null $email_verified_at
- * @property string $password
- * @property string|null $remember_token
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read Collection<int, \App\Models\Comment> $comments
- * @property-read int|null $comments_count
+ * @property int                                            $id
+ * @property string                                         $role
+ * @property string|null                                    $avatar
+ * @property string                                         $name
+ * @property string                                         $email
+ * @property \Illuminate\Support\Carbon|null                $email_verified_at
+ * @property string                                         $password
+ * @property string|null                                    $remember_token
+ * @property \Illuminate\Support\Carbon|null                $created_at
+ * @property \Illuminate\Support\Carbon|null                $updated_at
+ * @property-read Collection<int, \App\Models\Comment>      $comments
+ * @property-read int|null                                  $comments_count
  * @property-read Collection<int, \App\Models\FavoriteFilm> $favorite_films
- * @property-read int|null $favorite_films_count
+ * @property-read int|null                                  $favorite_films_count
  * @method static Builder<static>|User newModelQuery()
  * @method static Builder<static>|User newQuery()
  * @method static Builder<static>|User query()
@@ -47,34 +46,37 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class User extends Model
 {
-	protected $table = 'users';
+    const int ROLE_USER = 1;
+    const int ROLE_MODERATOR = 2;
 
-	protected $casts = [
-		'email_verified_at' => 'datetime'
-	];
+    protected $table = 'users';
 
-	protected $hidden = [
-		'password',
-		'remember_token'
-	];
+    protected $casts = [
+        'email_verified_at' => 'datetime'
+    ];
 
-	protected $fillable = [
-		'role',
-		'avatar',
-		'name',
-		'email',
-		'email_verified_at',
-		'password',
-		'remember_token'
-	];
+    protected $hidden = [
+        'password',
+        'remember_token'
+    ];
 
-	public function comments() : HasMany
+    protected $fillable = [
+        'role',
+        'avatar',
+        'name',
+        'email',
+        'email_verified_at',
+        'password',
+        'remember_token'
+    ];
+
+    public function comments() : HasMany
     {
-		return $this->hasMany(Comment::class);
-	}
+        return $this->hasMany(Comment::class);
+    }
 
-	public function favorite_films() : HasMany
+    public function favorite_films() : HasMany
     {
-		return $this->hasMany(FavoriteFilm::class);
-	}
+        return $this->hasMany(FavoriteFilm::class);
+    }
 }

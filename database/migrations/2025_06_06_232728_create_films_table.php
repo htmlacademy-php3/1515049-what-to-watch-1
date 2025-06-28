@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('year')->nullable();
             $table->string('description')->nullable();
             $table->string('director')->nullable();
-            $table->text('actors')->nullable();
             $table->string('duration')->nullable();
             $table->decimal('imdb_rating', 3, 1)->nullable();
             $table->integer('imdb_votes')->nullable();
