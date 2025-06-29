@@ -1,17 +1,15 @@
 <?php
 
-/**
- * Created by Reliese Model.
- */
-
 namespace App\Models;
 
-use Carbon\Carbon;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * Class Film
@@ -25,22 +23,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null                                    $actors
  * @property string|null                                    $duration
  * @property float|null                                     $imdb_rating
- * @property int|null                                       $imdb_votes
- * @property string|null                                    $imdb_id
- * @property string|null                                    $poster_url
- * @property string|null                                    $preview_url
- * @property string|null                                    $background_color
- * @property string|null                                    $cover_url
- * @property string|null                                    $video_url
- * @property string|null                                    $video_preview_url
- * @property \Illuminate\Support\Carbon|null                $created_at
- * @property \Illuminate\Support\Carbon|null                $updated_at
- * @property-read Collection<int, \App\Models\Comment>      $comments
- * @property-read int|null                                  $comments_count
- * @property-read Collection<int, \App\Models\FavoriteFilm> $favorite_films
- * @property-read int|null                                  $favorite_films_count
- * @property-read Collection<int, \App\Models\Genre>        $genres
- * @property-read int|null                                  $genres_count
+ * @property int|null                                $imdb_votes
+ * @property string|null                             $imdb_id
+ * @property string|null                             $poster_url
+ * @property string|null                             $preview_url
+ * @property string|null                        $background_color
+ * @property string|null                        $cover_url
+ * @property string|null                        $video_url
+ * @property string|null                        $video_preview_url
+ * @property Carbon|null    $created_at
+ * @property Carbon|null    $updated_at
+ * @property-read Collection<int, Comment>      $comments
+ * @property-read int|null                      $comments_count
+ * @property-read Collection<int, FavoriteFilm> $favorite_films
+ * @property-read int|null                      $favorite_films_count
+ * @property-read Collection<int, Genre>        $genres
+ * @property-read int|null                      $genres_count
  * @method static Builder<static>|Film newModelQuery()
  * @method static Builder<static>|Film newQuery()
  * @method static Builder<static>|Film query()
@@ -62,10 +60,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder<static>|Film whereVideoPreviewUrl($value)
  * @method static Builder<static>|Film whereVideoUrl($value)
  * @method static Builder<static>|Film whereYear($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class Film extends Model
 {
+    use HasFactory;
+
     protected $table = 'films';
 
     protected $casts = [
@@ -78,7 +78,6 @@ class Film extends Model
         'year',
         'description',
         'director',
-        'actors',
         'duration',
         'imdb_rating',
         'imdb_votes',
@@ -96,14 +95,20 @@ class Film extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function favorite_films() : HasMany
+    public function favoriteFilms() : HasMany
     {
         return $this->hasMany(FavoriteFilm::class);
     }
 
+    public function usersWhoFavorited(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'favorite_films', 'film_id', 'user_id')
+            ->withTimestamps();
+    }
+
     public function genres() : BelongsToMany
     {
-        return $this->belongsToMany(Genre::class, 'genre_films');
+        return $this->belongsToMany(Genre::class, 'genre_film');
     }
 
     public function actors() : BelongsToMany

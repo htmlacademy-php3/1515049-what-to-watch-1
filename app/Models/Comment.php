@@ -1,17 +1,14 @@
 <?php
 
-/**
- * Created by Reliese Model.
- */
-
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * Class Comment
@@ -24,8 +21,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int|null                        $comment_id
  * @property int                             $user_id
  * @property int                             $film_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read Comment|null               $comment
  * @property-read Collection<int, Comment>   $comments
  * @property-read int|null                   $comments_count
@@ -47,6 +44,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Comment extends Model
 {
+    use HasFactory;
+
     protected $table = 'comments';
 
     protected $casts = [
@@ -65,11 +64,13 @@ class Comment extends Model
         'film_id'
     ];
 
+    // Родительский комментарий
     public function comment() : BelongsTo
     {
         return $this->belongsTo(Comment::class);
     }
 
+    // Ответы (или дочерние комментарии)
     public function film() : BelongsTo
     {
         return $this->belongsTo(Film::class);
