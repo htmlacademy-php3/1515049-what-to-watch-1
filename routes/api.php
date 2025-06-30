@@ -29,11 +29,13 @@ Route::get('/favorite', [FavoriteController::class, 'index']);
 Route::group([], function () {
     Route::post('/register', [RegisterController::class, 'register']);
     Route::post('/login', [LoginController::class, 'login']);
-    Route::post('/logout', [LogoutController::class, 'logout']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/logout', [LogoutController::class, 'logout']);
+    });
 });
 
 // Пользователи
-Route::prefix('/user')->group(function () {
+Route::prefix('/user')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [UserController::class, 'me']);
     Route::patch('/', [UserController::class, 'update']);
 });
