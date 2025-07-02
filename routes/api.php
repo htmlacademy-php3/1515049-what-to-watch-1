@@ -26,13 +26,14 @@ Route::prefix('films')->group(function () {
 Route::get('/favorite', [FavoriteController::class, 'index']);
 
 // аутентификация
-Route::group([], function () {
-    Route::post('/register', [RegisterController::class, 'register']);
-    Route::post('/login', [LoginController::class, 'login']);
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::post('/logout', [LogoutController::class, 'logout']);
-    });
+Route::post('/register', [RegisterController::class, 'register']);
+Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [LogoutController::class, 'logout']);
 });
+Route::match(['options', 'post'], '/logout', function() {
+    return response()->json(['message' => 'Unauthenticated'], 401);
+})->withoutMiddleware(['auth:sanctum']);
 
 // Пользователи
 Route::prefix('/user')->middleware('auth:sanctum')->group(function () {

@@ -3,15 +3,18 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Responses\ErrorResponse;
 use App\Http\Responses\SuccessResponse;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Log;
 
 class LogoutController extends Controller
 {
-    public function logout(Request $request) : SuccessResponse
+    public function logout(Request $request) : ErrorResponse|SuccessResponse
     {
         Auth::user()->tokens()->delete();
-        return $this->success([null, 204]);
+
+        return new SuccessResponse(null, 204);
     }
 }

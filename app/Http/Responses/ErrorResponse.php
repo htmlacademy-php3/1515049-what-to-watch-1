@@ -4,7 +4,7 @@ namespace App\Http\Responses;
 
 use Symfony\Component\HttpFoundation\Response;
 
-final class ErrorResponse extends BaseResponse
+class ErrorResponse extends BaseResponse
 {
     public int $statusCode = Response::HTTP_BAD_REQUEST;
 
@@ -15,7 +15,7 @@ final class ErrorResponse extends BaseResponse
      */
     public function __construct($data, protected ?string $message = null, int $statusCode = Response::HTTP_BAD_REQUEST)
     {
-        parent::__construct([], $statusCode);
+        parent::__construct($data, $statusCode);
     }
 
     /**
