@@ -14,16 +14,21 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('films')->group(function () {
     Route::get('/', [FilmController::class, 'index']);
     Route::get('/{id}', [FilmController::class, 'show']);
-    Route::post('/', [FilmController::class, 'store']);
-    Route::patch('/', [FilmController::class, 'update']);
-    Route::get('{id}/favorite', [FavoriteController::class, 'show']);
-    Route::post('{id}/favorite', [FavoriteController::class, 'store']);
-    Route::delete('{id}/favorite', [FavoriteController::class, 'destroy']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/', [FilmController::class, 'store']);
+        Route::patch('/{film}', [FilmController::class, 'update']);
+        Route::get('{id}/favorite', [FavoriteController::class, 'show']);
+        Route::post('{id}/favorite', [FavoriteController::class, 'store']);
+        Route::delete('{id}/favorite', [FavoriteController::class, 'destroy']);
+    });
+
     Route::get('{id}/similar', [FilmController::class, 'similar']);
 });
 
 // Избранное
-Route::get('/favorite', [FavoriteController::class, 'index']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/favorite', [FavoriteController::class, 'index']);
+});
 
 // аутентификация
 Route::post('/register', [RegisterController::class, 'register']);
@@ -44,19 +49,23 @@ Route::prefix('/user')->middleware('auth:sanctum')->group(function () {
 // Жанры
 Route::prefix('/genres')->group(function () {
     Route::get('/', [GenreController::class, 'index']);
-    Route::patch('/{genre}', [GenreController::class, 'update']);
+    Route::patch('/{genre}', [GenreController::class, 'update'])->middleware(['auth:sanctum', 'isModerator']);
 });
 
 // Комментарии
 Route::prefix('/comments')->group(function () {
-    Route::get('/{id}', [CommentController::class, 'index']);
-    Route::post('/{id}', [CommentController::class, 'store']);
-    Route::patch('/{comment}', [CommentController::class, 'update']);
-    Route::delete('/{comment}', [CommentController::class, 'destroy']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/{id}', [CommentController::class, 'index']);
+        Route::post('/{id}', [CommentController::class, 'store']);
+        Route::patch('/{comment}', [CommentController::class, 'update']);
+        Route::delete('/{comment}', [CommentController::class, 'destroy']);
+    });
 });
 
 // Промо
 Route::prefix('/promo')->group(function () {
-    Route::get('/', [FilmController::class, 'showPromo']);
-    Route::post('/{id}', [FilmController::class, 'createPromo']);
+    Route::middleware(['auth:sanctum', 'isModerator'])->group(function () {
+        Route::get('/', [FilmController::class, 'showPromo']);
+        Route::post('/{id}', [FilmController::class, 'createPromo']);
+    });
 });
