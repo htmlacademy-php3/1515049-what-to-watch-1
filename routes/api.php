@@ -15,8 +15,8 @@ Route::prefix('films')->group(function () {
     Route::get('/', [FilmController::class, 'index']);
     Route::get('/{id}', [FilmController::class, 'show']);
     Route::middleware('auth:sanctum')->group(function () {
-        Route::post('/', [FilmController::class, 'store']);
-        Route::patch('/{film}', [FilmController::class, 'update']);
+        Route::post('/', [FilmController::class, 'store'])->middleware('isModerator');
+        Route::patch('/{id}', [FilmController::class, 'update'])->middleware('isModerator');
         Route::get('{id}/favorite', [FavoriteController::class, 'show']);
         Route::post('{id}/favorite', [FavoriteController::class, 'store']);
         Route::delete('{id}/favorite', [FavoriteController::class, 'destroy']);
@@ -36,7 +36,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [LogoutController::class, 'logout']);
 });
-Route::match(['options', 'post'], '/logout', function() {
+Route::match(['options', 'post'], '/logout', function () {
     return response()->json(['message' => 'Unauthenticated'], 401);
 })->withoutMiddleware(['auth:sanctum']);
 
@@ -64,8 +64,6 @@ Route::prefix('/comments')->group(function () {
 
 // Промо
 Route::prefix('/promo')->group(function () {
-    Route::middleware(['auth:sanctum', 'isModerator'])->group(function () {
-        Route::get('/', [FilmController::class, 'showPromo']);
-        Route::post('/{id}', [FilmController::class, 'createPromo']);
-    });
+    Route::get('/', [FilmController::class, 'showPromo']);
+    Route::post('/{id}', [FilmController::class, 'createPromo'])->middleware(['auth:sanctum', 'isModerator']);
 });

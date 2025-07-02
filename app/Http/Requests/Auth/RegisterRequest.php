@@ -30,6 +30,7 @@ final class RegisterRequest extends FormRequest
                 'string',
                 'min:8'
             ],
+            'file' => 'nullable|file|image|max:10240',
         ];
     }
 

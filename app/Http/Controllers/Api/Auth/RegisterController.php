@@ -13,7 +13,7 @@ class RegisterController extends Controller
     public function register(RegisterRequest $request) : SuccessResponse
     {
         $params =
-            $request->validated();
+            $request->safe()->except('file');
         $user =
             User::create([
                 'name' => $params['name'],
