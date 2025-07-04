@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 {
     use RefreshDatabase;
     /**
-     * A basic unit test example.
+     * Проверяет, что у комментария есть специальное свойство для возврата имени автора
      */
     public function testAuthorName() : void
     {

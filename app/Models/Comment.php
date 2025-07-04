@@ -106,6 +106,11 @@ class Comment extends Model
         return $this->hasMany(Comment::class);
     }
 
+    /**
+     * Получить имя автора комментария
+     *
+     * @return string
+     */
     public function getAuthorName() : string
     {
         return $this->user ? $this->user->name : self::DEFAULT_AUTHOR_NAME;
