@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('rate')->nullable();
 
             $table->foreignId('comment_id')->nullable()->constrained('comments')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('film_id')->constrained('films')->onDelete('cascade');
 
             $table->timestamps();

@@ -20,7 +20,7 @@ class FilmFactory extends Factory
         return [
             'title' => $this->faker->sentence(3),
             'year' => $this->faker->year,
-            'description' => $this->faker->paragraph,
+            'description' => $this->faker->sentence(2, true),
             'duration' => $this->faker->numberBetween(80, 180),
             'imdb_rating' => $this->faker->randomFloat(1, 4, 10),
             'imdb_votes' => $this->faker->numberBetween(1000, 10000),

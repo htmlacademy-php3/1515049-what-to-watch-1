@@ -14,20 +14,20 @@ use Illuminate\Support\Carbon;
  * Class Comment
  *
  * @package App\Models
- * @property int                             $id
- * @property string                          $content
- * @property string                          $author
- * @property int|null                        $rate
- * @property int|null                        $comment_id
- * @property int                             $user_id
- * @property int                             $film_id
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property-read Comment|null               $comment
- * @property-read Collection<int, Comment>   $comments
- * @property-read int|null                   $comments_count
- * @property-read Film                       $film
- * @property-read User                       $user
+ * @property int                           $id
+ * @property string                        $content
+ * @property string                        $author
+ * @property int|null                      $rate
+ * @property int|null                      $comment_id
+ * @property int                           $user_id
+ * @property int                           $film_id
+ * @property Carbon|null                   $created_at
+ * @property Carbon|null                   $updated_at
+ * @property-read Comment|null             $comment
+ * @property-read Collection<int, Comment> $comments
+ * @property-read int|null                 $comments_count
+ * @property-read Film                     $film
+ * @property-read User                     $user
  * @method static Builder<static>|Comment newModelQuery()
  * @method static Builder<static>|Comment newQuery()
  * @method static Builder<static>|Comment query()
@@ -45,6 +45,8 @@ use Illuminate\Support\Carbon;
 class Comment extends Model
 {
     use HasFactory;
+
+    public const string DEFAULT_AUTHOR_NAME = "Гость";
 
     protected $table = 'comments';
 
@@ -64,25 +66,48 @@ class Comment extends Model
         'film_id'
     ];
 
-    // Родительский комментарий
+    /**
+     * Родительский комментарий
+     *
+     * @return BelongsTo
+     */
     public function comment() : BelongsTo
     {
         return $this->belongsTo(Comment::class);
     }
 
-    // Ответы (или дочерние комментарии)
+    /**
+     * Связь с фильмом, к которому относится комментарий.
+     *
+     * @return BelongsTo
+     */
     public function film() : BelongsTo
     {
         return $this->belongsTo(Film::class);
     }
 
+    /**
+     * Связь с пользователем, который оставил комментарий.
+     *
+     * @return BelongsTo
+     */
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Связь с ответами на комментарий (дочерние комментарии).
+     *
+     * @return HasMany
+     */
     public function comments() : HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function getAuthorName() : string
+    {
+        return $this->user ? $this->user->name : self::DEFAULT_AUTHOR_NAME;
     }
 }
