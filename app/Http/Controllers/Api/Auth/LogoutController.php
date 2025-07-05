@@ -7,13 +7,18 @@ use App\Http\Responses\ErrorResponse;
 use App\Http\Responses\SuccessResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Log;
 
 class LogoutController extends Controller
 {
-    public function logout(Request $request) : ErrorResponse|SuccessResponse
+    public function logout(Request $request): ErrorResponse|SuccessResponse
     {
-        Auth::user()->tokens()->delete();
+        $user = Auth::user();
+
+        if (!$user) {
+            return new ErrorResponse(null, 'Unauthenticated', 401);
+        }
+
+        $user->tokens()->delete();
 
         return new SuccessResponse(null, 204);
     }
