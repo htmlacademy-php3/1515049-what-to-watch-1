@@ -15,7 +15,7 @@ use Illuminate\Support\Carbon;
  *
  * @package App\Models
  * @property int                           $id
- * @property string                        $content
+ * @property string                        $text
  * @property string                        $author
  * @property int|null                      $rate
  * @property int|null                      $comment_id
@@ -58,7 +58,7 @@ class Comment extends Model
     ];
 
     protected $fillable = [
-        'content',
+        'text',
         'author',
         'rate',
         'comment_id',
@@ -71,7 +71,7 @@ class Comment extends Model
      *
      * @return BelongsTo
      */
-    public function comment() : BelongsTo
+    public function comment(): BelongsTo
     {
         return $this->belongsTo(Comment::class);
     }
@@ -81,7 +81,7 @@ class Comment extends Model
      *
      * @return BelongsTo
      */
-    public function film() : BelongsTo
+    public function film(): BelongsTo
     {
         return $this->belongsTo(Film::class);
     }
@@ -91,7 +91,7 @@ class Comment extends Model
      *
      * @return BelongsTo
      */
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -101,7 +101,7 @@ class Comment extends Model
      *
      * @return HasMany
      */
-    public function comments() : HasMany
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
@@ -111,7 +111,7 @@ class Comment extends Model
      *
      * @return string
      */
-    public function getAuthorName() : string
+    public function getAuthorName(): string
     {
         return $this->user ? $this->user->name : self::DEFAULT_AUTHOR_NAME;
     }

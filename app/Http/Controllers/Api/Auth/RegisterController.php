@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
-    public function register(RegisterRequest $request) : SuccessResponse
+    public function register(RegisterRequest $request): SuccessResponse
     {
         $params =
             $request->safe()->except('file');

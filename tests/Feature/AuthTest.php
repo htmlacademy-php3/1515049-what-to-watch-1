@@ -8,12 +8,19 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
+/**
+ * Тесты функциональности аутентификации:
+ * - регистрация пользователя;
+ * - вход по правильным и неправильным данным;
+ * - выход из системы.
+ */
 class AuthTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * A basic feature test example.
+     * Тест успешной регистрации пользователя.
+     * Ожидается статус 201 и наличие пользователя в БД.
      */
     public function testUserCanRegisterSuccessfully(): void
     {
@@ -30,6 +37,10 @@ class AuthTest extends TestCase
         $this->assertDatabaseHas('users', ['email' => 'test@example.ru']);
     }
 
+    /**
+     * Тест успешного входа с корректными данными.
+     * Ожидается статус 200 и наличие токена в ответе.
+     */
     public function testUserCanLoginWithCorrectCredentials(): void
     {
         User::factory()->create([
@@ -51,6 +62,10 @@ class AuthTest extends TestCase
         ]);
     }
 
+    /**
+     * Тест неудачного входа с неверным паролем.
+     * Ожидается статус 401 Unauthorized.
+     */
     public function testUserCannotLoginWithWrongPassword(): void
     {
         User::factory()->create([
@@ -67,6 +82,10 @@ class AuthTest extends TestCase
         $response->assertStatus(401);
     }
 
+    /**
+     * Тест выхода из системы аутентифицированного пользователя.
+     * Ожидается статус 204 No Content.
+     */
     public function testAuthenticatedUserCanLogout(): void
     {
         $user = User::factory()->create();

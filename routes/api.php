@@ -46,21 +46,29 @@ Route::prefix('/user')->middleware('auth:sanctum')->group(function () {
 // Жанры
 Route::prefix('/genres')->group(function () {
     Route::get('/', [GenreController::class, 'index'])->name('genres.index');
-    Route::patch('/{genre}', [GenreController::class, 'update'])->middleware(['auth:sanctum', 'isModerator'])->name('genres.update');
+    Route::patch('/{genre}', [GenreController::class, 'update'])->middleware(['auth:sanctum', 'isModerator'])->name(
+        'genres.update'
+    );
 });
 
 // Комментарии
 Route::prefix('/comments')->group(function () {
+    Route::get('/{id}', [CommentController::class, 'index'])->name('comments.index');
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/{id}', [CommentController::class, 'index'])->name('comments.index');
         Route::post('/{id}', [CommentController::class, 'store'])->name('comments.store');
-        Route::patch('/{comment}', [CommentController::class, 'update'])->name('comments.update');
-        Route::delete('/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+        Route::patch('/{comment}', [CommentController::class, 'update'])->middleware(
+            'can:update-comment,comment'
+        )->name('comments.update');
+        Route::delete('/{comment}', [CommentController::class, 'destroy'])->middleware(
+            'can:delete-comment,comment'
+        )->name('comments.destroy');
     });
 });
 
 // Промо
 Route::prefix('/promo')->group(function () {
     Route::get('/', [FilmController::class, 'showPromo'])->name('promo.show');
-    Route::post('/{id}', [FilmController::class, 'createPromo'])->middleware(['auth:sanctum', 'isModerator'])->name('promo.create');
+    Route::post('/{id}', [FilmController::class, 'createPromo'])->middleware(['auth:sanctum', 'isModerator'])->name(
+        'promo.create'
+    );
 });

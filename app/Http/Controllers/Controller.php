@@ -10,7 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
     /**
      * Возвращает успешный JSON-ответ с заданными данными и HTTP-статусом.
@@ -20,7 +22,7 @@ abstract class Controller
      *
      * @return SuccessResponse Объект успешного ответа
      */
-    protected function success(mixed $data, ?int $statusCode = Response::HTTP_OK) : SuccessResponse
+    protected function success(mixed $data, ?int $statusCode = Response::HTTP_OK): SuccessResponse
     {
         return new SuccessResponse($data, $statusCode);
     }

@@ -96,7 +96,7 @@ class Film extends Model
      *
      * @return HasMany
      */
-    public function comments() : HasMany
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
@@ -106,7 +106,7 @@ class Film extends Model
      *
      * @return HasMany
      */
-    public function favoriteFilms() : HasMany
+    public function favoriteFilms(): HasMany
     {
         return $this->hasMany(FavoriteFilm::class);
     }
@@ -116,7 +116,7 @@ class Film extends Model
      *
      * @return BelongsToMany
      */
-    public function usersWhoFavorited() : BelongsToMany
+    public function usersWhoFavorited(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'favorite_films', 'film_id', 'user_id')->withTimestamps();
     }
@@ -126,7 +126,7 @@ class Film extends Model
      *
      * @return BelongsToMany
      */
-    public function genres() : BelongsToMany
+    public function genres(): BelongsToMany
     {
         return $this->belongsToMany(Genre::class, 'genre_film');
     }
@@ -136,7 +136,7 @@ class Film extends Model
      *
      * @return BelongsToMany
      */
-    public function actors() : BelongsToMany
+    public function actors(): BelongsToMany
     {
         return $this->belongsToMany(Actor::class, 'actor_film');
     }
@@ -146,7 +146,7 @@ class Film extends Model
      *
      * @return BelongsToMany
      */
-    public function directors() : BelongsToMany
+    public function directors(): BelongsToMany
     {
         return $this->belongsToMany(Director::class, 'director_film');
     }
@@ -156,7 +156,7 @@ class Film extends Model
      *
      * @return float|null
      */
-    public function getRatingAttribute() : ?float
+    public function getRatingAttribute(): ?float
     {
         $avg =
             $this->comments()->avg('rate');
