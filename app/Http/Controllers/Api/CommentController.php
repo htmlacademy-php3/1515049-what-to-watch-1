@@ -89,7 +89,12 @@ class CommentController extends Controller
     public function destroy(Comment $comment): SuccessResponse
     {
         Gate::authorize('delete-comment', $comment);
-        $comment -> delete();
-        return $this->success([]);
+
+        if (!auth()->user()->isModerator() && $comment->replies()->exists()) {
+            throw new AuthorizationException('Нельзя удалить комментарий с ответами');
+        }
+
+        $comment -> deleteWithReplies();
+        return $this->success([], 204);
     }
 }

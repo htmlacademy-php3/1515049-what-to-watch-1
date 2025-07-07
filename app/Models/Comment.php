@@ -71,9 +71,9 @@ class Comment extends Model
      *
      * @return BelongsTo
      */
-    public function comment(): BelongsTo
+    public function parentComment(): BelongsTo
     {
-        return $this->belongsTo(Comment::class);
+        return $this->belongsTo(Comment::class, 'comment_id');
     }
 
     /**
@@ -97,13 +97,11 @@ class Comment extends Model
     }
 
     /**
-     * Связь с ответами на комментарий (дочерние комментарии).
-     *
-     * @return HasMany
+     * Ответы на этот комментарий (дочерние)
      */
-    public function comments(): HasMany
+    public function replies(): HasMany
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class, 'comment_id');
     }
 
     /**
@@ -114,5 +112,17 @@ class Comment extends Model
     public function getAuthorName(): string
     {
         return $this->user ? $this->user->name : self::DEFAULT_AUTHOR_NAME;
+    }
+
+    /**
+     * Удаление комментария с ответами
+     *
+     * @return bool|null
+     */
+    public function deleteWithReplies(): ?bool
+    {
+        $this->replies->each->deleteWithReplies();
+
+        return $this->delete();
     }
 }

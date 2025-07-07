@@ -104,5 +104,17 @@ class CommentsTest extends TestCase
      * Тест удаления своего комментария
      *
      */
+    public function testUserCanDeleteCommentsForFilm(): void
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
 
+        $comment = Comment::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->deleteJson(route('comments.destroy', ['comment' => $comment->id]));
+
+        $response->assertStatus(204);
+    }
 }
