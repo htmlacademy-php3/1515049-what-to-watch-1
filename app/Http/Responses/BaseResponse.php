@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use JsonSerializable;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseResponse implements Responsable
@@ -37,7 +38,15 @@ abstract class BaseResponse implements Responsable
             return $this->data->toArray();
         }
 
-        return $this->data;
+        if ($this->data instanceof JsonSerializable) {
+            return $this->data->jsonSerialize();
+        }
+
+        if (is_array($this->data)) {
+            return $this->data;
+        }
+
+        return (array) $this->data;
     }
 
     /**

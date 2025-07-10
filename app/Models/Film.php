@@ -16,21 +16,20 @@ use Illuminate\Support\Carbon;
  *
  * @package App\Models
  * @property int                                $id
- * @property string                             $title
- * @property string|null                        $year
+ * @property string                             $name
+ * @property string|null                        $released
  * @property string|null                        $description
  * @property string|null                        $director
- * @property string|null                        $actors
- * @property string|null                        $duration
- * @property float|null                         $imdb_rating
+ * @property string|null                        $run_time
+ * @property float|null                         $rating
  * @property int|null                           $imdb_votes
  * @property string|null                        $imdb_id
- * @property string|null                        $poster_url
- * @property string|null                        $preview_url
+ * @property string|null                        $poster_image
+ * @property string|null                        $preview_image
+ * @property string|null                        $background_image
  * @property string|null                        $background_color
- * @property string|null                        $cover_url
- * @property string|null                        $video_url
- * @property string|null                        $video_preview_url
+ * @property string|null                        $video_link
+ * @property string|null                        $preview_video_link
  * @property Carbon|null                        $created_at
  * @property Carbon|null                        $updated_at
  * @property-read Collection<int, Comment>      $comments
@@ -39,56 +38,48 @@ use Illuminate\Support\Carbon;
  * @property-read int|null                      $favorite_films_count
  * @property-read Collection<int, Genre>        $genres
  * @property-read int|null                      $genres_count
- * @property-read float|null                    $rating Средняя оценка фильма по комментариям
- * @method static Builder<static>|Film newModelQuery()
- * @method static Builder<static>|Film newQuery()
- * @method static Builder<static>|Film query()
- * @method static Builder<static>|Film whereActors($value)
- * @method static Builder<static>|Film whereBackgroundColor($value)
- * @method static Builder<static>|Film whereCoverUrl($value)
- * @method static Builder<static>|Film whereCreatedAt($value)
- * @method static Builder<static>|Film whereDescription($value)
- * @method static Builder<static>|Film whereDirector($value)
- * @method static Builder<static>|Film whereDuration($value)
- * @method static Builder<static>|Film whereId($value)
- * @method static Builder<static>|Film whereImdbId($value)
- * @method static Builder<static>|Film whereImdbRating($value)
- * @method static Builder<static>|Film whereImdbVotes($value)
- * @method static Builder<static>|Film wherePosterUrl($value)
- * @method static Builder<static>|Film wherePreviewUrl($value)
- * @method static Builder<static>|Film whereTitle($value)
- * @method static Builder<static>|Film whereUpdatedAt($value)
- * @method static Builder<static>|Film whereVideoPreviewUrl($value)
- * @method static Builder<static>|Film whereVideoUrl($value)
- * @method static Builder<static>|Film whereYear($value)
+ * @property-read float|null                    $calculated_rating Средняя оценка по комментариям (accessor)
+ * @method static Builder|Film whereName($value)
+ * @method static Builder|Film whereReleased($value)
+ * @method static Builder|Film whereRunTime($value)
+ * @method static Builder|Film wherePosterImage($value)
+ * @method static Builder|Film wherePreviewImage($value)
+ * @method static Builder|Film whereBackgroundImage($value)
+ * @method static Builder|Film whereVideoLink($value)
+ * @method static Builder|Film wherePreviewVideoLink($value)
  * @mixin Eloquent
  */
 class Film extends Model
 {
     use HasFactory;
 
+    public const string STATUS_PENDING = 'pending';
+    public const string STATUS_MODERATE = 'moderate';
+    public const string STATUS_READY = 'ready';
+
     protected $table = 'films';
 
-    protected $casts = [
-        'imdb_rating' => 'float',
-        'imdb_votes' => 'int'
-    ];
-
     protected $fillable = [
-        'title',
-        'year',
+        'name',
+        'status',
+        'released',
         'description',
         'director',
-        'duration',
-        'imdb_rating',
+        'run_time',
+        'rating',
         'imdb_votes',
         'imdb_id',
-        'poster_url',
-        'preview_url',
+        'poster_image',
+        'preview_image',
+        'background_image',
         'background_color',
-        'cover_url',
-        'video_url',
-        'video_preview_url'
+        'video_link',
+        'preview_video_link',
+    ];
+
+    protected $casts = [
+        'rating' => 'float',
+        'imdb_votes' => 'integer',
     ];
 
     /**

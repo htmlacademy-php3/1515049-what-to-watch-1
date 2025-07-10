@@ -3,19 +3,34 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\FilmListResource;
+use App\Http\Resources\FilmResource;
 use App\Http\Responses\SuccessResponse;
+use App\Services\FilmService;
 use Illuminate\Http\Request;
 
 class FilmController extends Controller
 {
+    public function __construct(private readonly FilmService $filmService)
+    {
+    }
+
     /**
      * Список фильмов
      *
+     * @param Request $request
+     *
      * @return SuccessResponse
      */
-    public function index(): SuccessResponse
+    public function index(Request $request): SuccessResponse
     {
-        return $this->success([]);
+        $films =
+            $this->filmService->getFilmList($request->all());
+
+        $resourceItems = FilmListResource::collection($films->items())->resolve();
+        $films->setCollection(collect($resourceItems));
+
+        return $this->success($films);
     }
 
     /**
@@ -27,7 +42,10 @@ class FilmController extends Controller
      */
     public function show(int $id): SuccessResponse
     {
-        return  $this->success([]);
+        $film =
+            $this->filmService->getFilmDetails($id);
+
+        return $this->success(new FilmResource($film));
     }
 
     /**

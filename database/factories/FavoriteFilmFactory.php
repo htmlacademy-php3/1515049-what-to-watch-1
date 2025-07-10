@@ -2,12 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\FavoriteFilm;
 use App\Models\Film;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\FavoriteFilm>
+ * @extends Factory<FavoriteFilm>
  */
 class FavoriteFilmFactory extends Factory
 {

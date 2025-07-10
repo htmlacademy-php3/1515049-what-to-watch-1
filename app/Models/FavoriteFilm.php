@@ -6,11 +6,12 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * Class FavoriteFilm
@@ -19,8 +20,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int                             $id
  * @property int                             $user_id
  * @property int                             $film_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read Film                       $film
  * @property-read User                       $user
  * @method static Builder<static>|FavoriteFilm newModelQuery()
@@ -31,7 +32,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder<static>|FavoriteFilm whereId($value)
  * @method static Builder<static>|FavoriteFilm whereUpdatedAt($value)
  * @method static Builder<static>|FavoriteFilm whereUserId($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class FavoriteFilm extends Model
 {
@@ -49,12 +50,12 @@ class FavoriteFilm extends Model
         'film_id'
     ];
 
-    public function film() : BelongsTo
+    public function film(): BelongsTo
     {
         return $this->belongsTo(Film::class);
     }
 
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

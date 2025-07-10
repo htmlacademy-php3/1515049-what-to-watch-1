@@ -13,8 +13,12 @@ class ErrorResponse extends BaseResponse
      * @param string|null $message
      * @param int         $statusCode
      */
-    public function __construct($data, protected ?string $message = null, int $statusCode = Response::HTTP_BAD_REQUEST)
-    {
+    public function __construct(
+        $data,
+        protected ?string $message = null,
+        int $statusCode = Response::HTTP_BAD_REQUEST,
+        protected bool $showErrors = true
+    ) {
         parent::__construct($data, $statusCode);
     }
 
@@ -25,9 +29,12 @@ class ErrorResponse extends BaseResponse
      */
     protected function makeResponseData(): array
     {
-        return [
-            'message' => $this->message,
-            'errors' => $this->prepareData(),
-        ];
+        $base = ['message' => $this->message];
+
+        if ($this->showErrors) {
+            $base['errors'] = $this->prepareData();
+        }
+
+        return $base;
     }
 }

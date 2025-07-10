@@ -17,7 +17,6 @@ Route::prefix('films')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [FilmController::class, 'store'])->middleware('isModerator')->name('films.store');
         Route::patch('/{id}', [FilmController::class, 'update'])->middleware('isModerator')->name('films.update');
-        Route::get('{id}/favorite', [FavoriteController::class, 'show'])->name('films.favorite.show');
         Route::post('{id}/favorite', [FavoriteController::class, 'store'])->name('films.favorite.store');
         Route::delete('{id}/favorite', [FavoriteController::class, 'destroy'])->name('films.favorite.destroy');
     });

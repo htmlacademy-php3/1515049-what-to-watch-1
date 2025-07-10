@@ -16,7 +16,7 @@ class FilmModelTest extends TestCase
      * возвращает правильный рейтинг, который основывается на оценках
      * этого фильма, оставленных пользователями
      */
-    public function test_example() : void
+    public function testCorrectRatingCalculation(): void
     {
         $film = Film::factory()->create();
 
