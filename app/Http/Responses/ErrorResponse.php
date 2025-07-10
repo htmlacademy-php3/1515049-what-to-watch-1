@@ -2,24 +2,31 @@
 
 namespace App\Http\Responses;
 
+use AllowDynamicProperties;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Validation\Validator;
+use stdClass;
 use Symfony\Component\HttpFoundation\Response;
 
-class ErrorResponse extends BaseResponse
+#[AllowDynamicProperties] class ErrorResponse extends BaseResponse
 {
     public int $statusCode = Response::HTTP_BAD_REQUEST;
 
     /**
-     * @param             $data
-     * @param string|null $message
-     * @param int         $statusCode
+     * @param string                    $message
+     * @param array|Arrayable|Validator $errors
+     * @param int                       $statusCode
+     * @param bool                      $showErrors
      */
     public function __construct(
-        $data,
-        protected ?string $message = null,
+        string $message,
+        protected array|Arrayable|Validator $errors = [],
         int $statusCode = Response::HTTP_BAD_REQUEST,
         protected bool $showErrors = true
     ) {
-        parent::__construct($data, $statusCode);
+        parent::__construct([], $statusCode);
+        $this->message = $message;
+        $this->statusCode = $statusCode;
     }
 
     /**
@@ -29,12 +36,9 @@ class ErrorResponse extends BaseResponse
      */
     protected function makeResponseData(): array
     {
-        $base = ['message' => $this->message];
-
-        if ($this->showErrors) {
-            $base['errors'] = $this->prepareData();
-        }
-
-        return $base;
+        return [
+            'message' => $this->message,
+            'errors' => $this->errors ?: new stdClass(),
+        ];
     }
 }

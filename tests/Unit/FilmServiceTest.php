@@ -43,7 +43,7 @@ use Tests\TestCase;
 
         $result = $this->filmService->getFilmList();
 
-        $this->assertEquals(8, $result->items());
+        $this->assertCount(8, $result->items());
         $this->assertEquals(50, $result->total());
     }
 

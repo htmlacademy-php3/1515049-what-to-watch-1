@@ -42,11 +42,7 @@ abstract class BaseResponse implements Responsable
             return $this->data->jsonSerialize();
         }
 
-        if (is_array($this->data)) {
-            return $this->data;
-        }
-
-        return (array) $this->data;
+        return $this->data;
     }
 
     /**

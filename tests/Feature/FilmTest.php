@@ -5,14 +5,28 @@ namespace Tests\Feature;
 use App\Http\Resources\FilmResource;
 use App\Models\Film;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
+/**
+ * Тестирование функционала, связанного с фильмами.
+ *
+ * @package Tests\Feature
+ * @group   film-feature-tests
+ */
 class FilmTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
-     * A basic feature test example.
+     * Тестирование получения списка фильмов с пагинацией.
+     *
+     *  Проверяет:
+     *  - Успешный статус ответа (200 OK)
+     *  - Корректную структуру JSON-ответа
+     *  - Количество элементов на странице (по умолчанию 8)
+     *  - Наличие данных о пагинации
+     *
+     * @return void
      */
     public function testReturnsPaginatedFilmList(): void
     {
@@ -33,6 +47,16 @@ class FilmTest extends TestCase
         ->assertJsonCount(8, 'data');
     }
 
+    /**
+     * Тестирование получения детальной информации о фильме.
+     *
+     *  Проверяет:
+     *  - Успешный статус ответа (200 OK)
+     *  - Корректность возвращаемых данных
+     *  - Корректную структуру JSON-ответа
+     *
+     * @return void
+     */
     public function testReturnsFilmDetails(): void
     {
         $film = Film::factory()->create();
@@ -45,6 +69,16 @@ class FilmTest extends TestCase
             ]);
     }
 
+    /**
+     * Тестирование обработки случая, когда фильм не найден.
+     *
+     *  Проверяет:
+     *  - Статус ответа 404 Not Found
+     *  - Наличие корректного сообщения об ошибке
+     *  - Формат JSON-ответа
+     *
+     * @return void
+     */
     public function testReturns404WhenFilmNotFound(): void
     {
         $response = $this->getJson(route('films.show', ['id' => 999]));

@@ -35,7 +35,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (ModelNotFoundException $e) {
             return new ErrorResponse(
-                data: [],
                 message: 'Запрашиваемая сущность не найдена.',
                 statusCode: Response::HTTP_NOT_FOUND
             );
@@ -43,7 +42,6 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (NotFoundHttpException $e) {
             return new ErrorResponse(
-                data: [],
                 message: 'Запрашиваемая страница не существует.',
                 statusCode: Response::HTTP_NOT_FOUND,
                 showErrors: false
