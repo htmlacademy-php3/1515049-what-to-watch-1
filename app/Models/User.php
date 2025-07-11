@@ -47,9 +47,11 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
-    const int ROLE_USER = 1;
-    const int ROLE_MODERATOR = 2;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
+    public const int ROLE_USER = 1;
+    public const int ROLE_MODERATOR = 2;
 
     protected $table = 'users';
 
@@ -72,18 +74,18 @@ class User extends Authenticatable
         'remember_token'
     ];
 
-    public function comments() : HasMany
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
-    public function favoriteFilms() : BelongsToMany
+    public function favoriteFilms(): BelongsToMany
     {
         return $this->belongsToMany(Film::class, 'favorite_films', 'user_id', 'film_id')
             ->withTimestamps();
     }
 
-    public function isModerator() : bool
+    public function isModerator(): bool
     {
         return $this->role === self::ROLE_MODERATOR;
     }

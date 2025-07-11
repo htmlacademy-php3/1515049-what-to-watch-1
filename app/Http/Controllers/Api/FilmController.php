@@ -13,7 +13,7 @@ class FilmController extends Controller
      *
      * @return SuccessResponse
      */
-    public function index() : SuccessResponse
+    public function index(): SuccessResponse
     {
         return $this->success([]);
     }
@@ -25,7 +25,7 @@ class FilmController extends Controller
      *
      * @return SuccessResponse
      */
-    public function show(int $id) : SuccessResponse
+    public function show(int $id): SuccessResponse
     {
         return  $this->success([]);
     }
@@ -37,7 +37,7 @@ class FilmController extends Controller
      *
      * @return SuccessResponse
      */
-    public function store(Request $request) : SuccessResponse
+    public function store(Request $request): SuccessResponse
     {
         return $this->success([], 201);
     }
@@ -50,7 +50,7 @@ class FilmController extends Controller
      *
      * @return SuccessResponse
      */
-    public function update(Request $request, int $id) : SuccessResponse
+    public function update(Request $request, int $id): SuccessResponse
     {
         return $this->success([]);
     }
@@ -62,7 +62,7 @@ class FilmController extends Controller
      *
      * @return SuccessResponse
      */
-    public function similar(int $id) : SuccessResponse
+    public function similar(int $id): SuccessResponse
     {
         return $this->success([]);
     }
@@ -72,7 +72,7 @@ class FilmController extends Controller
      *
      * @return SuccessResponse
      */
-    public function showPromo() : SuccessResponse
+    public function showPromo(): SuccessResponse
     {
         return $this->success([]);
     }
@@ -85,7 +85,7 @@ class FilmController extends Controller
      *
      * @return SuccessResponse
      */
-    public function createPromo(Request $request, $film_id) : SuccessResponse
+    public function createPromo(Request $request, $film_id): SuccessResponse
     {
         return $this->success([]);
     }
