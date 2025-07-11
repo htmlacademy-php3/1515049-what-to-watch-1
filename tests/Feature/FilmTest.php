@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Http\Resources\FilmResource;
 use App\Models\Film;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -85,4 +86,190 @@ class FilmTest extends TestCase
             'message' => 'Запрашиваемая страница не существует.',
         ]);
     }
+
+    /**
+     * Тест успешного добавления фильма модератором.
+     *
+     * @return void
+     */
+    public function testStoreFilm(): void
+    {
+        $moderator = User::factory()->create([
+            'role' => User::ROLE_MODERATOR,
+        ]);
+
+        $response = $this->actingAs($moderator)->postJson(route('films.store'), [
+            'title' => 'Test Film',
+            'description' => 'Test description',
+        ]);
+
+        $response->assertCreated()
+            ->assertJsonStructure(['data']);
+    }
+
+    /**
+     * Тест успешного обновления фильма модератором.
+     *
+     * @return void
+     */
+    public function testUpdateFilm(): void
+    {
+        $moderator = User::factory()->create([
+            'role' => User::ROLE_MODERATOR,
+        ]);
+        $film = Film::factory()->create();
+
+        $response = $this->actingAs($moderator)->patchJson(route('films.update', $film->id), [
+            'title' => 'Updated Title',
+        ]);
+
+        $response->assertOk()
+            ->assertJsonStructure(['data']);
+    }
+
+    /**
+     * Тест получения списка похожих фильмов.
+     *
+     * @return void
+     */
+    public function testSimilarFilms(): void
+    {
+        $film = Film::factory()->create();
+
+        $response = $this->getJson(route('films.similar', $film->id));
+
+        $response->assertOk()
+            ->assertJsonStructure(['data']);
+    }
+
+    /**
+     * Тест получения текущего промо-фильма.
+     *
+     * @return void
+     */
+    public function testShowPromo(): void
+    {
+        $response = $this->getJson(route('promo.show'));
+
+        $response->assertOk()
+            ->assertJsonStructure(['data']);
+    }
+
+    /**
+     * Тест создания промо-фильма модератором.
+     *
+     * @return void
+     */
+    public function testCreatePromo(): void
+    {
+        $moderator = User::factory()->create([
+            'role' => User::ROLE_MODERATOR,
+        ]);
+        $film = Film::factory()->create();
+
+        $response = $this->actingAs($moderator)->postJson(route('promo.create', $film->id));
+
+        $response->assertOk()
+            ->assertJsonStructure(['data']);
+    }
+
+    /**
+     * Тест ошибки 401 при попытке добавить фильм неавторизованным пользователем.
+     */
+    public function testStoreFilmUnauthenticated(): void
+    {
+        $response = $this->postJson(route('films.store'), [
+            'title' => 'Unauthorized Film',
+        ]);
+
+        $response->assertUnauthorized()
+            ->assertJson([
+                'message' => 'Запрос требует аутентификации.',
+            ]);
+    }
+
+    /**
+     * Тест ошибки 403 при попытке добавить фильм обычным пользователем.
+     */
+    public function testStoreFilmAsUser(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->postJson(route('films.store'), [
+            'title' => 'Not Allowed',
+        ]);
+
+        $response->assertForbidden();
+    }
+
+    /**
+     * Тест ошибки 401 при попытке обновить фильм без авторизации.
+     */
+    public function testUpdateFilmUnauthenticated(): void
+    {
+        $film = Film::factory()->create();
+
+        $response = $this->patchJson(route('films.update', $film->id), [
+            'title' => 'No Access',
+        ]);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
+     * Тест ошибки 403 при попытке обновить фильм обычным пользователем.
+     */
+    public function testUpdateFilmAsUser(): void
+    {
+        $user = User::factory()->create();
+        $film = Film::factory()->create();
+
+        $response = $this->actingAs($user)->patchJson(route('films.update', $film->id), [
+            'title' => 'Forbidden',
+        ]);
+
+        $response->assertForbidden();
+    }
+
+    /**
+     * Тест ошибки 403 при попытке создать промо-фильм обычным пользователем.
+     */
+    public function testCreatePromoAsUser(): void
+    {
+        $user = User::factory()->create();
+        $film = Film::factory()->create();
+
+        $response = $this->actingAs($user)->postJson(route('promo.create', $film->id));
+
+        $response->assertForbidden();
+    }
+
+    /**
+     * Тест ошибки 401 при попытке создать промо-фильм без авторизации.
+     */
+    public function testCreatePromoUnauthenticated(): void
+    {
+        $film = Film::factory()->create();
+
+        $response = $this->postJson(route('promo.create', $film->id));
+
+        $response->assertUnauthorized();
+    }
+
+    /**
+     * Тест создания промо для несуществующего фильма.
+     */
+    //    public function testCreatePromoNotFound(): void
+    //    {
+    //        $moderator = User::factory()->create([
+    //            'role' => User::ROLE_MODERATOR,
+    //        ]);
+    //
+    //        $response = $this->actingAs($moderator)->postJson(route('promo.create', 9999));
+    //
+    //        $response->assertNotFound()
+    //            ->assertJson([
+    //                'message' => 'Запрашиваемая страница не существует.',
+    //            ]);
+    //    } TODO дописать тест когда будет готов контроллер
 }
