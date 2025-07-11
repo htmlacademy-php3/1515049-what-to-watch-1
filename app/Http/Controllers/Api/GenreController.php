@@ -13,7 +13,7 @@ class GenreController extends Controller
      *
      * @return SuccessResponse
      */
-    public function index() : SuccessResponse
+    public function index(): SuccessResponse
     {
         return $this->success([]);
     }
@@ -26,7 +26,7 @@ class GenreController extends Controller
      *
      * @return SuccessResponse
      */
-    public function update(Request $request, $id) : SuccessResponse
+    public function update(Request $request, $id): SuccessResponse
     {
         return $this->success([]);
     }

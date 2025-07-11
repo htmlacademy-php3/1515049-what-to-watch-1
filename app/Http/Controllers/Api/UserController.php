@@ -13,7 +13,7 @@ class UserController extends Controller
      *
      * @return SuccessResponse
      */
-    public function me() : SuccessResponse
+    public function me(): SuccessResponse
     {
         return $this->success([]);
     }
@@ -25,7 +25,7 @@ class UserController extends Controller
      *
      * @return SuccessResponse
      */
-    public function  update(Request $request) : SuccessResponse
+    public function update(Request $request): SuccessResponse
     {
         return $this->success([]);
     }
