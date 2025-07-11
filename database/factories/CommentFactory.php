@@ -24,6 +24,7 @@ class CommentFactory extends Factory
             'user_id' => User::factory(),
             'film_id' => Film::factory(),
             'rate' => $this->faker->numberBetween(1, 10),
+            'comment_id' => null,
         ];
     }
 }
