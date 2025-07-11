@@ -9,9 +9,6 @@ use Tests\TestCase;
 
 /**
  * Тестирование функционала, связанного с фильмами.
- *
- * @package Tests\Feature
- * @group   film-feature-tests
  */
 class FilmTest extends TestCase
 {
