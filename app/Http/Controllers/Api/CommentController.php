@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Responses\SuccessResponse;
+use App\Models\Comment;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
@@ -37,12 +40,14 @@ class CommentController extends Controller
      * Изменение комментария
      *
      * @param Request $request
-     * @param string  $comment
+     * @param Comment $comment
      *
      * @return SuccessResponse
+     * @throws AuthorizationException
      */
-    public function update(Request $request, string $comment) : SuccessResponse
+    public function update(Request $request, Comment $comment) : SuccessResponse
     {
+        Gate::authorize('update-comment', $comment);
         return $this->success([]);
     }
 
@@ -52,9 +57,11 @@ class CommentController extends Controller
      * @param string $comment
      *
      * @return SuccessResponse
+     * @throws AuthorizationException
      */
     public function destroy(string $comment) : SuccessResponse
     {
+        Gate::authorize('delete-comment', $comment);
         return $this->success([]);
     }
 }

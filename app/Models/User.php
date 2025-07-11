@@ -82,4 +82,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Film::class, 'favorite_films', 'user_id', 'film_id')
             ->withTimestamps();
     }
+
+    public function isModerator() : bool
+    {
+        return $this->role === self::ROLE_MODERATOR;
+    }
 }
