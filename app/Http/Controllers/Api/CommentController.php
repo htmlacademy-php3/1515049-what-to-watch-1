@@ -91,7 +91,7 @@ class CommentController extends Controller
             throw new AuthorizationException('Нельзя удалить комментарий с ответами');
         }
 
-        $comment->commentService->deleteComment($comment);
+        $this->commentService->deleteComment($comment);
 
         return $this->success([], 204);
     }
