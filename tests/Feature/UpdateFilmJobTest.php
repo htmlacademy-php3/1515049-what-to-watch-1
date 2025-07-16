@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Jobs\UpdateFilm;
 use App\Models\Film;
 use App\Repositories\FilmsOmdbRepositoryInterface;
+use App\Services\OmdbFilmsService;
 use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -13,24 +14,24 @@ use Mockery\MockInterface;
 use Tests\TestCase;
 
 /**
- * Тестирование задачи обновления информации о фильме через очередь.
+ * Тестирование очередной задачи по обновлению данных фильма.
  *
- * Проверяет, что:
- * - Задача корректно ставится в очередь.
- * - Репозиторий возвращает данные о фильме.
- * - Зависимость FilmsOmdbRepositoryInterface заменяется на мок.
+ * Проверяет:
+ * - что задача ставится в очередь через dispatch();
+ * - что задача исполняется вручную через handle();
+ * - что данные фильма сохраняются в базе;
+ * - что зависимости подменяются через мок-интерфейс.
  */
 class UpdateFilmJobTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * Проверяет, что задача обновления фильма ставится в очередь и использует
-     * мок-репозиторий для получения данных о фильме.
-     *
-     * @throws Exception
+     * Проверяет, что задача обновления фильма исполняется вручную и сохраняет
+     * данные в БД с использованием замоканного репозитория.
      *
      * @return void
+     * @throws \Exception
      */
     public function testUpdateFilmJobDispatchesAndSavesFilmData(): void
     {
@@ -59,8 +60,40 @@ class UpdateFilmJobTest extends TestCase
             });
         });
 
+        $service = app(OmdbFilmsService::class);
+
+        $job = new UpdateFilm('tt0111161', $film);
+        $job->handle($service);
+
+        $this->assertDatabaseHas('films', [
+            'imdb_id' => 'tt0111161',
+            'name' => 'The Shawshank Redemption',
+            'description' => 'A banker convicted of uxoricide...',
+            'run_time' => 142,
+            'released' => 1994,
+            'rating' => '9.3',
+            'poster_image' => 'https://example.com/poster.jpg',
+            'imdb_votes' => 3059994,
+        ]);
+    }
+
+    /**
+     * Проверяет, что задача ставится в очередь с корректными аргументами.
+     *
+     * @return void
+     */
+    public function testUpdateFilmJobIsQueued(): void
+    {
+        Queue::fake();
+
+        $film = Film::factory()->create([
+            'imdb_id' => 'tt0111161',
+        ]);
+
         UpdateFilm::dispatch('tt0111161', $film);
 
-        Queue::assertPushed(UpdateFilm::class);
+        Queue::assertPushed(UpdateFilm::class, function (UpdateFilm $job) use ($film) {
+            return $job->film->is($film);
+        });
     }
 }
