@@ -25,12 +25,9 @@ class FilmController extends Controller
     public function index(Request $request): SuccessResponse
     {
         $films =
-            $this->filmService->getFilmList($request->all());
+            $this->filmService->getFilmList($request->all(), auth()->id());
 
-        $resourceItems = FilmListResource::collection($films->items())->resolve();
-        $films->setCollection(collect($resourceItems));
-
-        return $this->success($films);
+        return $this->success(FilmListResource::collection($films));
     }
 
     /**
@@ -44,6 +41,8 @@ class FilmController extends Controller
     {
         $film =
             $this->filmService->getFilmDetails($id);
+        $film->is_favorite =
+            auth()->check() && $this->filmService->isFavorite($id, auth()->id());
 
         return $this->success(new FilmResource($film));
     }
@@ -54,10 +53,13 @@ class FilmController extends Controller
      * @param Request $request
      *
      * @return SuccessResponse
+     * @throws \Throwable
      */
     public function store(Request $request): SuccessResponse
     {
-        return $this->success([], 201);
+        $film = $this->filmService->createFilm($request->all());
+
+        return $this->success(new FilmResource($film));
     }
 
     /**
@@ -67,10 +69,12 @@ class FilmController extends Controller
      * @param int     $id
      *
      * @return SuccessResponse
+     * @throws \Throwable
      */
     public function update(Request $request, int $id): SuccessResponse
     {
-        return $this->success([]);
+        $film = $this->filmService->updateFilm($id, $request->all());
+        return $this->success(new FilmResource($film));
     }
 
     /**

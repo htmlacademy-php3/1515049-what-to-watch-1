@@ -2,8 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\FavoriteFilm;
 use App\Models\Film;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 /**
  * Сервис для работы с фильмами.
@@ -13,6 +16,17 @@ use Illuminate\Contracts\Pagination\Paginator;
  */
 class FilmService
 {
+    /**
+     * Проверяет, есть ли фильм в избранном у пользователя
+     */
+    public function isFavorite(int $filmId, int $userId): bool
+    {
+        return FavoriteFilm::where([
+            'film_id' => $filmId,
+            'user_id' => $userId
+        ])->exists();
+    }
+
     /**
      *  Возвращает список фильмов с поддержкой фильтрации и пагинации.
      *
@@ -28,9 +42,9 @@ class FilmService
      *
      * @return Paginator Список фильмов с пагинацией
      */
-    public function getFilmList(array $filters = [], int $perPage = 8): Paginator
+    public function getFilmList(array $filters = [], ?int $userId = null, int $perPage = 8): Paginator
     {
-        return Film::query()->with(
+        $films = Film::query()->with(
             ['genres', 'actors', 'directors']
         )->when(
             isset($filters['genre']),
@@ -42,17 +56,92 @@ class FilmService
             isset($filters['status']),
             fn ($query) => $query->where('status', $filters['status'])
         )->orderBy($filters['order_by'] ?? 'released', $filters['order_to'] ?? 'desc')->paginate($perPage);
+
+        if ($userId) {
+            $films->getCollection()->transform(function ($film) use ($userId) {
+                $film->is_favorite = $this->isFavorite($film->id, $userId);
+                return $film;
+            });
+        }
+
+        return $films;
     }
 
     /**
-     *  Возвращает подробную информацию о фильме по его ID.
+     *  Возвращает подробную информацию о фильме по его ID с отметкой об избранном.
      *
      * @param int $id ID фильма
      *
      * @return Film Модель фильма со связями
      */
-    public function getFilmDetails(int $id): Film
+    public function getFilmDetails(int $id, ?int $userId = null): Film
     {
-        return Film::with(['genres', 'actors', 'directors'])->findOrFail($id);
+        return Film::with([
+            'genres',
+            'actors',
+            'directors',
+            'favorites' => fn ($q) => $userId ? $q->where('user_id', $userId) : $q
+        ])->findOrFail($id);
+    }
+
+    /**
+     * Создает новый фильм
+     *
+     * @throws Throwable
+     */
+    public function createFilm(array $data): Film
+    {
+        return DB::transaction(function () use ($data) {
+            $film =
+                Film::create($data);
+
+            if (isset($data['genre_id'])) {
+                $film->genres()->sync($data['genre_id']);
+            }
+
+            if (isset($data['actor_id'])) {
+                $film->actors()->sync($data['actor_id']);
+            }
+
+            return $film->load('genres', 'actors', 'directors');
+        });
+    }
+
+    /**
+     * Обновляет данные фильма
+     *
+     * @throws Throwable
+     */
+    public function updateFilm(int $id, array $data): Film
+    {
+        return DB::transaction(function () use ($id, $data) {
+            $film =
+                Film::findOrFail($id);
+
+            $film->update([
+                'name' => $data['name'] ?? $film->name,
+                'description' => $data['description'] ?? $film->description,
+                'rating' => $data['rating'] ?? $film->rating,
+                'released' => $data['released'] ?? $film->released,
+                'run_time' => $data['run_time'] ?? $film->run_time,
+                'background_color' => $data['background_color'] ?? $film->background_color,
+                'poster_image' => $data['poster_image'] ?? $film->poster_image,
+                'preview_image' => $data['preview_image'] ?? $film->preview_image,
+                'background_image' => $data['background_image'] ?? $film->background_image,
+                'video_link' => $data['video_link'] ?? $film->video_link,
+                'preview_video_link' => $data['preview_video_link'] ?? $film->preview_video_link,
+                'imdb_votes' => $data['imdb_votes'] ?? $film->imdb_votes,
+            ]);
+
+            if (isset($data['genre_id'])) {
+                $film->genres()->sync($data['genre_id']);
+            }
+
+            if (isset($data['actor_id'])) {
+                $film->actors()->sync($data['actor_id']);
+            }
+
+            return $film->load('genres', 'actors', 'directors');
+        });
     }
 }

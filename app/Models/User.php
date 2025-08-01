@@ -56,7 +56,8 @@ class User extends Authenticatable
     protected $table = 'users';
 
     protected $casts = [
-        'email_verified_at' => 'datetime'
+        'email_verified_at' => 'datetime',
+        'role' => 'integer',
     ];
 
     protected $hidden = [

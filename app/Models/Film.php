@@ -56,6 +56,10 @@ class Film extends Model
     public const string STATUS_PENDING = 'pending';
     public const string STATUS_MODERATE = 'moderate';
     public const string STATUS_READY = 'ready';
+    /**
+     * @var bool|mixed
+     */
+    public bool $is_favorite = false;
 
     protected $table = 'films';
 
@@ -153,5 +157,18 @@ class Film extends Model
             $this->comments()->avg('rate');
 
         return $avg !== null ? round($avg, 1) : null;
+    }
+
+    /**
+     * Отношение с пользователями, добавившими фильм в избранное
+     */
+    public function favorites(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'favorite_films',
+            'film_id',
+            'user_id'
+        )->withTimestamps();
     }
 }
