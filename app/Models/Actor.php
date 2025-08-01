@@ -10,7 +10,7 @@ class Actor extends Model
 {
     use HasFactory;
 
-    protected  $fillable = ['name'];
+    protected $fillable = ['name'];
 
     public function films(): BelongsToMany
     {

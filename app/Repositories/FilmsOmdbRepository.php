@@ -8,7 +8,7 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Throwable;
 
-final readonly class FilmsOmdbRepository implements FilmsOmdbRepositoryInterface
+class FilmsOmdbRepository implements FilmsOmdbRepositoryInterface
 {
     private string $error;
 
