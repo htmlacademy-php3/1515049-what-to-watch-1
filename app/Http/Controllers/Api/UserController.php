@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Http\Responses\SuccessResponse;
+use Auth;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -15,7 +17,8 @@ class UserController extends Controller
      */
     public function me(): SuccessResponse
     {
-        return $this->success([]);
+        $user = Auth::user();
+        return $this->success(new UserResource($user));
     }
 
     /**

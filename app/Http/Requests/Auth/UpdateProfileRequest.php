@@ -1,40 +1,43 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
-final class RegisterRequest extends FormRequest
+final class UpdateProfileRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return Auth::check();
     }
 
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
+            'name' => 'sometimes|string|max:255',
             'email' => [
-                'required',
+                'sometimes',
                 'string',
                 'email',
                 'max:255',
-                Rule::unique(User::class),
+                Rule::unique(User::class)->ignore(Auth::id())
             ],
             'password' => [
-                'required',
+                'sometimes',
                 'string',
                 Password::min(8)
-                    ->mixedCase()
+                ->mixedCase()
                 ->numbers()
                 ->symbols(),
                 'confirmed'
             ],
-            'avatar' => 'nullable|file|image|max:10240',
+            'avatar' => 'sometimes|image|mimes:jpeg,png,jpg|max:10240',
         ];
     }
 }

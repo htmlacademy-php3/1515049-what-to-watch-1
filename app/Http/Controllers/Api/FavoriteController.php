@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\FilmListResource;
 use App\Http\Resources\FilmResource;
+use App\Http\Responses\ErrorResponse;
 use App\Http\Responses\SuccessResponse;
 use App\Models\FavoriteFilm;
+use App\Models\Film;
 use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
@@ -36,39 +39,55 @@ class FavoriteController extends Controller
             return new filmResource($film);
         });
 
-        return $this->success([
-            'data' => $formatted,
-            'meta' => [
-                'current_page' => $favorites->currentPage(),
-                'per_page' => $favorites->perPage(),
-                'total' => $favorites->total(),
-                'last_page' => $favorites->lastPage(),
-            ],
-            'links' => $favorites->linkCollection()->toArray(),
-        ]);
+        return $this->success(FilmListResource::collection($formatted));
     }
 
     /**
      * Добавление фильма в избранное
      *
-     * @param Request $request
+     * @param $filmId
      *
-     * @return SuccessResponse
+     * @return SuccessResponse|ErrorResponse
      */
-    public function store(Request $request): SuccessResponse
+    public function store($filmId): SuccessResponse|ErrorResponse
     {
-        return $this->success([]);
+        $usrId = auth()->id();
+
+        if (!Film::where('id', $filmId)->exists()) {
+            return $this->error('Фильм не найден', [], 404);
+        }
+
+        if (FavoriteFilm::where('user_id', $usrId)->where('film_id', $filmId)->exists()) {
+            return $this->success(['message' => "Фильм уже в избранном"], 200);
+        }
+
+        FavoriteFilm::create([
+            'user_id' => $usrId,
+            'film_id' => $filmId,
+        ]);
+
+        return $this->success(['message' => "Фильм успешно добавлен в избранное!"], 201);
     }
 
     /**
      * Удаление из избранного
      *
-     * @param Request $request
+     * @param $filmId
      *
-     * @return SuccessResponse
+     * @return SuccessResponse|ErrorResponse
      */
-    public function destroy(Request $request): SuccessResponse
+    public function destroy($filmId): SuccessResponse|ErrorResponse
     {
-        return $this->success([]);
+        $userId = auth()->id();
+
+        $deleted = FavoriteFilm::where('user_id', $userId)
+            ->where('film_id', $filmId)
+            ->delete();
+
+        if ($deleted) {
+            return $this->success(['message' => "Фильм удален из избранного"], 200);
+        }
+
+        return $this->error('Фильм не найден в избранном', [], 404);
     }
 }
