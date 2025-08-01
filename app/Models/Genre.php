@@ -33,14 +33,14 @@ class Genre extends Model
 {
     use HasFactory;
 
-	protected $table = 'genres';
+    protected $table = 'genres';
 
-	protected $fillable = [
-		'name'
-	];
+    protected $fillable = [
+        'name'
+    ];
 
-	public function films() : BelongsToMany
+    public function films(): BelongsToMany
     {
-		return $this->belongsToMany(Film::class, 'genre_film');
-	}
+        return $this->belongsToMany(Film::class, 'genre_film');
+    }
 }
