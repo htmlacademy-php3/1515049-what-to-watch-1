@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\FilmsRepositoryException;
-use App\Repositories\FilmsOmdbRepositoryInterface;
+use App\Interfaces\FilmsOmdbRepositoryInterface;
 
 /**
  * Сервис для получения данных о фильме по IMDB ID с использованием внешнего репозитория OMDb API.
@@ -33,7 +33,7 @@ class OmdbFilmsService
         $filmData = $this->repository->getFilmById($imdbId);
 
         if (!$filmData) {
-            throw new FilmsRepositoryException($this->repository->getError() ?? "Отсутствуют данные для обновления");
+            throw new FilmsRepositoryException($this->repository ?? "Отсутствуют данные для обновления");
         }
 
         return $filmData;

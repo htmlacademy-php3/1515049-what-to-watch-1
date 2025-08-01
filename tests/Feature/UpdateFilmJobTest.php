@@ -2,11 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Interfaces\FilmsOmdbRepositoryInterface;
 use App\Jobs\UpdateFilm;
 use App\Models\Film;
-use App\Repositories\FilmsOmdbRepositoryInterface;
 use App\Services\OmdbFilmsService;
-use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Mockery;
