@@ -79,11 +79,13 @@ class Film extends Model
         'background_color',
         'video_link',
         'preview_video_link',
+        'is_promo',
     ];
 
     protected $casts = [
         'rating' => 'float',
         'imdb_votes' => 'integer',
+        'is_promo' => 'boolean',
     ];
 
     /**

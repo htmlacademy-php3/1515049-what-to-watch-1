@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\FavoriteFilm;
 use App\Models\Film;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -143,5 +144,49 @@ class FilmService
 
             return $film->load('genres', 'actors', 'directors');
         });
+    }
+
+    /**
+     * Получает похожие фильмы по жанру выбранного фильма
+     */
+    public function getSimilarFilms(int $id): Collection
+    {
+        $film = Film::findOrFail($id);
+
+        return Film::with(['genres'])
+            ->whereHas('genres', function ($query) use ($film) {
+                $query->whereIn('genres.id', $film->genres->pluck('id'));
+            })
+        ->where('id', '!=', $film->id)
+    ->orderBy('released', 'desc')
+    ->limit(4)
+    ->get();
+    }
+
+    /**
+     * Получает текущий промо фильм
+     *
+     * @return Film
+     */
+    public function getPromoFilm(): Film
+    {
+        return Film::where('is_promo', true)
+        ->with(['genres', 'actors', 'directors'])
+            ->firstOrFail();
+    }
+
+    /**
+     * Устанавливает фильм как промо и снимает флаг с предыдущего
+     *
+     * @throws Throwable
+     */
+    public function setPromoFilm(int $filmId): Film
+    {
+        DB::transaction(function () use ($filmId) {
+            Film::where('is_promo', true)->update(['is_promo' => false]);
+            Film::where('id', $filmId)->update(['is_promo' => true]);
+        });
+
+        return $this->getFilmDetails($filmId);
     }
 }

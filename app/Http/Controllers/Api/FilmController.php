@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\FilmListResource;
 use App\Http\Resources\FilmResource;
 use App\Http\Responses\SuccessResponse;
+use App\Models\Film;
 use App\Services\FilmService;
 use Illuminate\Http\Request;
+use Throwable;
 
 class FilmController extends Controller
 {
@@ -41,10 +43,23 @@ class FilmController extends Controller
     {
         $film =
             $this->filmService->getFilmDetails($id);
-        $film->is_favorite =
-            auth()->check() && $this->filmService->isFavorite($id, auth()->id());
+        $this->setFavoriteFlag($film);
 
         return $this->success(new FilmResource($film));
+    }
+
+    /**
+     * Устанавливает флаг "избранного" для переданного фильма,
+     * если пользователь авторизован и добавил фильм в избранное.
+     *
+     * @param Film $film
+     *
+     * @return void
+     */
+    protected function setFavoriteFlag(Film $film): void
+    {
+        $film->is_favorite = auth()->check()
+            && $this->filmService->isFavorite($film->id, auth()->id());
     }
 
     /**
@@ -53,7 +68,7 @@ class FilmController extends Controller
      * @param Request $request
      *
      * @return SuccessResponse
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function store(Request $request): SuccessResponse
     {
@@ -69,7 +84,7 @@ class FilmController extends Controller
      * @param int     $id
      *
      * @return SuccessResponse
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function update(Request $request, int $id): SuccessResponse
     {
@@ -86,7 +101,8 @@ class FilmController extends Controller
      */
     public function similar(int $id): SuccessResponse
     {
-        return $this->success([]);
+        $films = $this->filmService->getSimilarFilms($id, auth()->id());
+        return $this->success(FilmListResource::collection($films));
     }
 
     /**
@@ -96,19 +112,25 @@ class FilmController extends Controller
      */
     public function showPromo(): SuccessResponse
     {
-        return $this->success([]);
+        $film = $this->filmService->getPromoFilm();
+        $this->setFavoriteFlag($film);
+
+        return $this->success(new FilmResource($film));
     }
 
     /**
      * Создание промо
      *
      * @param Request $request
-     * @param         $film_id
+     * @param         $filmId
      *
      * @return SuccessResponse
+     * @throws Throwable
      */
-    public function createPromo(Request $request, $film_id): SuccessResponse
+    public function createPromo(Request $request, $filmId): SuccessResponse
     {
-        return $this->success([]);
+        $film = $this->filmService->setPromoFilm($filmId);
+
+        return $this->success(new FilmResource($film));
     }
 }

@@ -24,13 +24,6 @@ Route::prefix('films')->group(function () {
     Route::get('{id}/similar', [FilmController::class, 'similar'])->name('films.similar');
 });
 
-Route::middleware('auth:sanctum')->get('/me', function () {
-    return response()->json([
-        'user' => auth()->user(),
-        'role' => auth()->user()?->role,
-    ]);
-});
-
 // Избранное
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/favorite', [FavoriteController::class, 'index'])->name('films.favorite.index');
