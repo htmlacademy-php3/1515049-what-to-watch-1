@@ -13,7 +13,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class UpdateFilm implements ShouldQueue
+class UpdateFilmJob implements ShouldQueue
 {
     use Queueable;
     use interactsWithQueue;

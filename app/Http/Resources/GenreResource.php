@@ -2,30 +2,27 @@
 
 namespace App\Http\Resources;
 
-use App\Models\User;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin User
+ * @mixin Genre
  *
- * Ресурс пользователя для API-ответов.
+ * Ресурс жанров для API-ответов.
  */
-final class UserResource extends JsonResource
+class GenreResource extends JsonResource
 {
     /**
      * Преобразует ресурс в массив для JSON-ответа.
      *
-     * @param Request $request
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email,
-            'avatar' => $this->avatar,
-            'role' => $this->role,
         ];
     }
 }

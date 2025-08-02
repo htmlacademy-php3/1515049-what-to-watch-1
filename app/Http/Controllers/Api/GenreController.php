@@ -3,11 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\GenreResource;
 use App\Http\Responses\SuccessResponse;
+use App\Models\Genre;
+use App\Services\GenreService;
 use Illuminate\Http\Request;
 
 class GenreController extends Controller
 {
+    public function __construct(protected GenreService $genreService)
+    {
+    }
+
     /**
      * Список жанров
      *
@@ -15,7 +22,9 @@ class GenreController extends Controller
      */
     public function index(): SuccessResponse
     {
-        return $this->success([]);
+        $genres = $this->genreService->getAllGenres();
+
+        return $this->success(GenreResource::collection($genres));
     }
 
     /**
@@ -28,6 +37,8 @@ class GenreController extends Controller
      */
     public function update(Request $request, $id): SuccessResponse
     {
-        return $this->success([]);
+        $genre = $this->genreService->updateGenre($id, $request->only('name'));
+
+        return $this->success(new GenreResource($genre));
     }
 }
