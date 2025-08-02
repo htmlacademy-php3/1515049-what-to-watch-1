@@ -29,7 +29,6 @@ class AuthService
         $token = $user->createToken('auth_token');
 
         return [
-            'user' => $user,
             'token' => $token->plainTextToken,
         ];
     }
@@ -46,7 +45,14 @@ class AuthService
             throw new UnauthorizedHttpException('', 'Неверный email или пароль.');
         }
 
-        return Auth::user()->createToken('auth_token')->plainTextToken;
+        /** @var User $user */
+        $user = auth()->user();
+
+        if (!$user) {
+            throw new UnauthorizedHttpException('', 'Пользователь не найден.');
+        }
+
+        return $user->createToken('auth_token')->plainTextToken;
     }
 
     /**

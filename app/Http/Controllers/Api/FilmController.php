@@ -9,6 +9,7 @@ use App\Http\Responses\SuccessResponse;
 use App\Models\Film;
 use App\Services\FilmService;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class FilmController extends Controller
@@ -74,7 +75,7 @@ class FilmController extends Controller
     {
         $film = $this->filmService->createFilm($request->all());
 
-        return $this->success(new FilmResource($film));
+        return $this->success(new FilmResource($film), Response::HTTP_CREATED);
     }
 
     /**

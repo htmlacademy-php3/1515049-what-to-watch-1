@@ -34,15 +34,19 @@ class FilmTest extends TestCase
 
         $response->assertOk()
             ->assertJsonStructure([
-                'data',
-                'current_page',
-                'first_page_url',
-                'next_page_url',
-                'prev_page_url',
-                'per_page',
-                'total'
+                'data' => [
+                    '*' => [
+                        'id',
+                        'name',
+                        'poster_image',
+                        'preview_image',
+                        'preview_video_link',
+                        'genre',
+                        'released'
+                    ]
+                ]
             ])
-        ->assertJsonCount(8, 'data');
+            ->assertJsonCount(8, 'data');
     }
 
     /**
@@ -99,7 +103,7 @@ class FilmTest extends TestCase
         ]);
 
         $response = $this->actingAs($moderator)->postJson(route('films.store'), [
-            'title' => 'Test Film',
+            'name' => 'Test Film',
             'description' => 'Test description',
         ]);
 
@@ -120,7 +124,7 @@ class FilmTest extends TestCase
         $film = Film::factory()->create();
 
         $response = $this->actingAs($moderator)->patchJson(route('films.update', $film->id), [
-            'title' => 'Updated Title',
+            'name' => 'Updated Title',
         ]);
 
         $response->assertOk()
@@ -149,6 +153,7 @@ class FilmTest extends TestCase
      */
     public function testShowPromo(): void
     {
+        $promoFilm = Film::factory()->create(['is_promo' => true]);
         $response = $this->getJson(route('promo.show'));
 
         $response->assertOk()
@@ -179,7 +184,7 @@ class FilmTest extends TestCase
     public function testStoreFilmUnauthenticated(): void
     {
         $response = $this->postJson(route('films.store'), [
-            'title' => 'Unauthorized Film',
+            'name' => 'Unauthorized Film',
         ]);
 
         $response->assertUnauthorized()
@@ -196,7 +201,7 @@ class FilmTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->postJson(route('films.store'), [
-            'title' => 'Not Allowed',
+            'name' => 'Not Allowed',
         ]);
 
         $response->assertForbidden();
@@ -210,7 +215,7 @@ class FilmTest extends TestCase
         $film = Film::factory()->create();
 
         $response = $this->patchJson(route('films.update', $film->id), [
-            'title' => 'No Access',
+            'name' => 'No Access',
         ]);
 
         $response->assertUnauthorized();
@@ -225,7 +230,7 @@ class FilmTest extends TestCase
         $film = Film::factory()->create();
 
         $response = $this->actingAs($user)->patchJson(route('films.update', $film->id), [
-            'title' => 'Forbidden',
+            'name' => 'Forbidden',
         ]);
 
         $response->assertForbidden();

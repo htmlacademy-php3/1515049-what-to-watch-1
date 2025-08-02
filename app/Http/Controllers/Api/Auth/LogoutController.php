@@ -23,7 +23,7 @@ class LogoutController extends Controller
      */
     public function logout(Request $request): ErrorResponse|Response
     {
-        $user = Auth::user();
+        $user = $request->user();
 
         if (!$user) {
             return new ErrorResponse(

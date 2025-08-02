@@ -2,13 +2,12 @@
 
 namespace App\Http\Responses;
 
-use AllowDynamicProperties;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Validation\Validator;
 use stdClass;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AllowDynamicProperties] class ErrorResponse extends BaseResponse
+class ErrorResponse extends BaseResponse
 {
     public int $statusCode = Response::HTTP_BAD_REQUEST;
 

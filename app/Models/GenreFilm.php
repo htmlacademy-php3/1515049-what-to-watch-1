@@ -27,22 +27,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class GenreFilm extends Model
 {
-	protected $table = 'genre_films';
-	public $incrementing = false;
-	public $timestamps = false;
+    protected $table = 'genre_films';
+    public $incrementing = false;
+    public $timestamps = false;
 
-	protected $casts = [
-		'film_id' => 'int',
-		'genre_id' => 'int'
-	];
+    protected $casts = [
+        'film_id' => 'int',
+        'genre_id' => 'int'
+    ];
 
-	public function film() : BelongsTo
+    public function film(): BelongsTo
     {
-		return $this->belongsTo(Film::class);
-	}
+        return $this->belongsTo(Film::class);
+    }
 
-	public function genre() : BelongsTo
+    public function genre(): BelongsTo
     {
-		return $this->belongsTo(Genre::class);
-	}
+        return $this->belongsTo(Genre::class);
+    }
 }
