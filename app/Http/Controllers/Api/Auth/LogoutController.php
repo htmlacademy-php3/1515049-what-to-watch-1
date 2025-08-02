@@ -4,14 +4,13 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ErrorResponse;
-use App\Services\AuthService;
-use Illuminate\Support\Facades\Auth;
+use App\Services\Auth\LogoutService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class LogoutController extends Controller
 {
-    public function __construct(protected AuthService $authService)
+    public function __construct(protected LogoutService $logoutService)
     {
     }
 
@@ -32,7 +31,7 @@ class LogoutController extends Controller
             );
         }
 
-        $this->authService->logoutUser($user);
+        $this->logoutService->logoutUser($user);
 
         return response()->noContent();
     }
