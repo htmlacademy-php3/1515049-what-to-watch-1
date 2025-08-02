@@ -1,6 +1,6 @@
 <?php
 
-use App\Repositories\FilmsOmdbRepository;
+use App\Repositories\Films\FilmsOmdbRepository;
 use App\Services\OmdbFilmsService;
 use GuzzleHttp\Client;
 

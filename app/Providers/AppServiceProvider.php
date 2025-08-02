@@ -2,14 +2,16 @@
 
 namespace App\Providers;
 
-use App\Repositories\FilmsOmdbRepository;
-use App\Repositories\FilmsOmdbRepositoryInterface;
+use App\Interfaces\FilmsOmdbRepositoryInterface;
+use App\Interfaces\UserRepositoryInterface;
+use App\Repositories\Films\FilmsOmdbRepository;
+use App\Repositories\Users\UserRepository;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Http\Adapter\Guzzle7\Client as GuzzleAdapter;
-use Psr\Http\Client\ClientInterface;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Psr\Http\Client\ClientInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,6 +32,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ClientInterface::class, function () {
             return new GuzzleAdapter(new Client());
         });
+
+        $this->app->bind(
+            UserRepositoryInterface::class,
+            UserRepository::class
+        );
     }
 
     /**

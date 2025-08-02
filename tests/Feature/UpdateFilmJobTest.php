@@ -2,11 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Jobs\UpdateFilm;
+use App\Interfaces\FilmsOmdbRepositoryInterface;
+use App\Jobs\UpdateFilmJob;
 use App\Models\Film;
-use App\Repositories\FilmsOmdbRepositoryInterface;
 use App\Services\OmdbFilmsService;
-use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Mockery;
@@ -62,7 +61,7 @@ class UpdateFilmJobTest extends TestCase
 
         $service = app(OmdbFilmsService::class);
 
-        $job = new UpdateFilm('tt0111161', $film);
+        $job = new UpdateFilmJob('tt0111161', $film);
         $job->handle($service);
 
         $this->assertDatabaseHas('films', [
@@ -90,9 +89,9 @@ class UpdateFilmJobTest extends TestCase
             'imdb_id' => 'tt0111161',
         ]);
 
-        UpdateFilm::dispatch('tt0111161', $film);
+        UpdateFilmJob::dispatch('tt0111161', $film);
 
-        Queue::assertPushed(UpdateFilm::class, function (UpdateFilm $job) use ($film) {
+        Queue::assertPushed(UpdateFilmJob::class, function (UpdateFilmJob $job) use ($film) {
             return $job->film->is($film);
         });
     }

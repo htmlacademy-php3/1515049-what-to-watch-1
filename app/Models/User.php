@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Eloquent;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -16,8 +17,8 @@ use Laravel\Sanctum\HasApiTokens;
  * Class User
  *
  * @package App\Models
- * @property int                                            $id
- * @property string                                         $role
+ * @property int                                $id
+ * @property int                                $role
  * @property string|null                        $avatar
  * @property string                             $name
  * @property string                             $email
@@ -43,7 +44,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static Builder<static>|User whereRememberToken($value)
  * @method static Builder<static>|User whereRole($value)
  * @method static Builder<static>|User whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class User extends Authenticatable
 {
@@ -56,7 +57,8 @@ class User extends Authenticatable
     protected $table = 'users';
 
     protected $casts = [
-        'email_verified_at' => 'datetime'
+        'email_verified_at' => 'datetime',
+        'role' => 'integer',
     ];
 
     protected $hidden = [
@@ -81,12 +83,17 @@ class User extends Authenticatable
 
     public function favoriteFilms(): BelongsToMany
     {
-        return $this->belongsToMany(Film::class, 'favorite_films', 'user_id', 'film_id')
+        return $this->belongsToMany(Film::class, 'favorite_films')
             ->withTimestamps();
     }
 
     public function isModerator(): bool
     {
         return $this->role === self::ROLE_MODERATOR;
+    }
+
+    public function getAvatarUrlAttribute(): ?string
+    {
+        return $this->avatar ? asset("storage/{$this->avatar}") : null;
     }
 }

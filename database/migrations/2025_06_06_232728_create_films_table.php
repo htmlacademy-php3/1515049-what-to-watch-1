@@ -27,7 +27,13 @@ return new class extends Migration
             $table->string('background_color')->nullable();
             $table->string('video_link')->nullable();
             $table->string('preview_video_link')->nullable();
+            $table->boolean('is_promo')->default(false)
+                ->comment('Флаг промо-фильма');
             $table->timestamps();
+        });
+
+        Schema::table('films', function (Blueprint $table) {
+            $table->index('is_promo');
         });
     }
 

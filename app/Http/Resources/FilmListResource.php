@@ -1,14 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Resources;
 
+use App\Models\Film;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
 
+/**
+ * Ресурс для краткого представления фильма в списке.
+ *
+ * @property int                             $id
+ * @property string                          $name
+ * @property string|null                     $poster_image
+ * @property string|null                     $preview_image
+ * @property string|null                     $preview_video_link
+ * @property Collection  $genres
+ * @property int|null                        $released
+ *
+ * @mixin Film
+ */
 final class FilmListResource extends JsonResource
 {
-    public function toArray($request): array
+    /**
+     * Преобразует ресурс в массив.
+     *
+     * @param Request $request
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,

@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Responses\SuccessResponse;
-use App\Models\User;
 use App\Services\AuthService;
-use Illuminate\Support\Facades\Hash;
 
 /**
  * Контроллер регистрации пользователя
