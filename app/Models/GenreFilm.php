@@ -27,7 +27,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class GenreFilm extends Model
 {
-    protected $table = 'genre_films';
+    protected $fillable = ['film_id', 'genre_id'];
+
+    protected $table = 'genre_film';
     public $incrementing = false;
     public $timestamps = false;
 

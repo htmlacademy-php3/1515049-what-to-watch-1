@@ -98,19 +98,19 @@ class GenreTest extends TestCase
      *
      * @return void
      */
-    //    public function testUpdateGenreNotFound(): void
-    //    {
-    //        $moderator = User::factory()->create([
-    //            'role' => User::ROLE_MODERATOR
-    //        ]);
-    //
-    //        $response = $this->actingAs($moderator)->patchJson(route('genres.update', 999), [
-    //            'name' => 'Comedy',
-    //        ]);
-    //
-    //        $response->assertNotFound()
-    //            ->assertJson([
-    //                'message' => 'Запрашиваемая страница не существует.',
-    //            ]);
-    //    } TODO дописать когда будет готов контроллер
+    public function testUpdateGenreNotFound(): void
+    {
+        $moderator = User::factory()->create([
+            'role' => User::ROLE_MODERATOR
+        ]);
+
+        $response = $this->actingAs($moderator)->patchJson(route('genres.update', 999), [
+            'name' => 'Comedy',
+        ]);
+
+        $response->assertNotFound()
+            ->assertJson([
+                'message' => 'Запрашиваемая страница не существует.',
+            ]);
+    }
 }

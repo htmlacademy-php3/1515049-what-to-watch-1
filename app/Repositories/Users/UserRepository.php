@@ -12,6 +12,17 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 final class UserRepository implements UserRepositoryInterface
 {
     /**
+     * Найти пользователя по email
+     *
+     * @param string $email
+     * @return User|null
+     */
+    public function findByEmail(string $email): ?User
+    {
+        return User::where('email', $email)->first();
+    }
+
+    /**
      * Обновляет данные пользователя по ID.
      *
      * @param  int   $userId   Идентификатор пользователя.

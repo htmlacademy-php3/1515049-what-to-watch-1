@@ -5,6 +5,9 @@ namespace App\Services\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Сервис регистрации пользователя
+ */
 class RegisterService
 {
     /**

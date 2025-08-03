@@ -6,6 +6,7 @@ use App\Interfaces\FilmsOmdbRepositoryInterface;
 use App\Jobs\UpdateFilmJob;
 use App\Models\Film;
 use App\Services\OmdbFilmsService;
+use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Mockery;
@@ -30,7 +31,7 @@ class UpdateFilmJobTest extends TestCase
      * данные в БД с использованием замоканного репозитория.
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testUpdateFilmJobDispatchesAndSavesFilmData(): void
     {

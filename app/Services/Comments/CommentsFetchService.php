@@ -6,6 +6,9 @@ use App\Models\Comment;
 use App\Repositories\Comments\CommentsFetchRepository;
 use Illuminate\Support\Collection;
 
+/**
+ * Сервис получения всех комментариев к фильму
+ */
 class CommentsFetchService
 {
     public function __construct(protected CommentsFetchRepository $commentsFetchRepository)

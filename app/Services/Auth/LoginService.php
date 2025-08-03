@@ -3,11 +3,20 @@
 namespace App\Services\Auth;
 
 use App\Models\User;
+use App\Repositories\Users\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
+/**
+ * Сервис входа пользователя в систему
+ */
 class LoginService
 {
+    public function __construct(protected UserRepository $userRepository)
+    {
+
+    }
+
     /**
      * Аутентифицирует пользователя и возвращает токен.
      *
@@ -20,8 +29,7 @@ class LoginService
             throw new UnauthorizedHttpException('', 'Неверный email или пароль.');
         }
 
-        /** @var User $user */
-        $user = auth()->user();
+        $user = $this->userRepository->findByEmail($credentials['email']);
 
         if (!$user) {
             throw new UnauthorizedHttpException('', 'Пользователь не найден.');

@@ -8,6 +8,9 @@ use App\Services\Auth\LogoutService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Контроллер выхода пользователя из системы
+ */
 class LogoutController extends Controller
 {
     public function __construct(protected LogoutService $logoutService)

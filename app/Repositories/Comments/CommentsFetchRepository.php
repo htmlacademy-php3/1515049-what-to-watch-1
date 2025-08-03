@@ -5,8 +5,17 @@ namespace App\Repositories\Comments;
 use App\Models\Comment;
 use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * Репозиторий для получения комментариев к фильмам.
+ */
 final class CommentsFetchRepository
 {
+    /**
+     * Получает список комментариев к фильму с загруженными пользователями.
+     *
+     * @param int $filmId ID фильма
+     * @return Collection<Comment> Коллекция комментариев с отношением user
+     */
     public function getComments(int $filmId): Collection
     {
         return Comment::with('user')

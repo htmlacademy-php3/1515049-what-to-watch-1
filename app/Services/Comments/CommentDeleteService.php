@@ -4,6 +4,9 @@ namespace App\Services\Comments;
 
 use App\Models\Comment;
 
+/**
+ * Сервис удаления комментария к фильму
+ */
 class CommentDeleteService
 {
     /**

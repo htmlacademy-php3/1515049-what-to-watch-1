@@ -5,6 +5,9 @@ namespace App\Services\Comments;
 use App\Models\Comment;
 use App\Repositories\Comments\UpdateCommentRepository;
 
+/**
+ * Сервис редактирования комментария к фильму
+ */
 class CommentUpdateService
 {
     public function __construct(protected UpdateCommentRepository $updateCommentRepository)

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 /**
- * Контроллер входа
+ * Контроллер входа пользователя в систему
  */
 class LoginController extends Controller
 {

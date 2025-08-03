@@ -4,6 +4,9 @@ namespace App\Services\Auth;
 
 use App\Models\User;
 
+/**
+ * Сервис выхода пользователя из системы
+ */
 class LogoutService
 {
     /**

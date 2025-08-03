@@ -1,6 +1,6 @@
 <?php
 
-namespace Comments;
+namespace Tests\Feature\Comments;
 
 use App\Models\Comment;
 use App\Models\User;
