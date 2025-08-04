@@ -3,7 +3,6 @@
 namespace App\Http\Responses;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 final class SuccessResponse extends BaseResponse
@@ -11,7 +10,9 @@ final class SuccessResponse extends BaseResponse
     /**
      * Формирование содержимого ответа
      *
-     * @return array|null
+     * @return ((mixed)[]|int|null|string)[]
+     *
+     * @psalm-return array{data: array<TValue|mixed>, current_page?: int, first_page_url?: string, next_page_url?: null|string, prev_page_url?: null|string, per_page?: int, total?: int}
      */
     protected function makeResponseData(): ?array
     {
@@ -19,9 +20,9 @@ final class SuccessResponse extends BaseResponse
             $items =
                 $this->data->items();
 
-            if ($items instanceof JsonResource || $items instanceof ResourceCollection) {
+            if ($items instanceof JsonResource) {
                 $items =
-                    $items->resolve(); // извлечь массив из ресурса
+                    $items->resolve();
             }
 
             return [
@@ -35,7 +36,7 @@ final class SuccessResponse extends BaseResponse
             ];
         }
 
-        if ($this->data instanceof JsonResource || $this->data instanceof ResourceCollection) {
+        if ($this->data instanceof JsonResource) {
             return [
                 'data' => $this->data->resolve(),
             ];

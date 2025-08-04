@@ -4,14 +4,16 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ErrorResponse;
-use App\Services\AuthService;
-use Illuminate\Support\Facades\Auth;
+use App\Services\Auth\LogoutService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Контроллер выхода пользователя из системы
+ */
 class LogoutController extends Controller
 {
-    public function __construct(protected AuthService $authService)
+    public function __construct(protected LogoutService $logoutService)
     {
     }
 
@@ -19,11 +21,12 @@ class LogoutController extends Controller
      * Выход из системы (удаление всех токенов пользователя)
      *
      * @param Request $request
-     * @return Response|ErrorResponse
+     *
+     * @return ErrorResponse|\Illuminate\Http\Response
      */
-    public function logout(Request $request): ErrorResponse|Response
+    public function logout(Request $request): \Illuminate\Http\Response|ErrorResponse|Response
     {
-        $user = Auth::user();
+        $user = $request->user();
 
         if (!$user) {
             return new ErrorResponse(
@@ -32,7 +35,7 @@ class LogoutController extends Controller
             );
         }
 
-        $this->authService->logoutUser($user);
+        $this->logoutService->logoutUser($user);
 
         return response()->noContent();
     }

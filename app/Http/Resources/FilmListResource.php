@@ -27,7 +27,9 @@ final class FilmListResource extends JsonResource
      *
      * @param Request $request
      *
-     * @return array<string, mixed>
+     * @return (int|mixed|null|string)[]
+     *
+     * @psalm-return array{id: int, name: string, poster_image: null|string, preview_image: null|string, preview_video_link: null|string, genre: mixed|null, released: int}
      */
     public function toArray(Request $request): array
     {

@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Responses\SuccessResponse;
-use App\Services\AuthService;
+use App\Services\Auth\RegisterService;
 
 /**
  * Контроллер регистрации пользователя
  */
 class RegisterController extends Controller
 {
-    public function __construct(protected AuthService $authService)
+    public function __construct(protected RegisterService $registerService)
     {
 
     }
@@ -26,9 +26,9 @@ class RegisterController extends Controller
      */
     public function register(RegisterRequest $request): SuccessResponse
     {
-        $params = $request->safe()->except('file');
+        $params = $request->validated();
 
-        $result = $this->authService->registerUser($params);
+        $result = $this->registerService->registerUser($params);
 
         return $this->success($result, 201);
     }

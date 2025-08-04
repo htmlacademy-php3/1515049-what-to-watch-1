@@ -22,7 +22,7 @@ class UserController extends Controller
      */
     public function me(): SuccessResponse
     {
-        $user = Auth::user();
+        $user = auth()->user();
         return $this->success(new UserResource($user));
     }
 

@@ -26,16 +26,34 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CacheLock extends Model
 {
-    protected $table = 'cache_locks';
-    protected $primaryKey = 'key';
-    public $incrementing = false;
-    public $timestamps = false;
+    protected string $table = 'cache_locks';
+    protected string $primaryKey = 'key';
 
-    protected $casts = [
+    /**
+     * @var false
+     */
+    public bool $incrementing = false;
+
+    /**
+     * @var false
+     */
+    public bool $timestamps = false;
+
+    /**
+     * @var string[]
+     *
+     * @psalm-var array{expiration: 'int'}
+     */
+    protected array $casts = [
         'expiration' => 'int'
     ];
 
-    protected $fillable = [
+    /**
+     * @var string[]
+     *
+     * @psalm-var list{'owner', 'expiration'}
+     */
+    protected array $fillable = [
         'owner',
         'expiration'
     ];

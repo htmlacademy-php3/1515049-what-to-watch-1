@@ -16,7 +16,9 @@ class GenreResource extends JsonResource
     /**
      * Преобразует ресурс в массив для JSON-ответа.
      *
-     * @return array<string, mixed>
+     * @return (int|string)[]
+     *
+     * @psalm-return array{id: int, name: string}
      */
     public function toArray(Request $request): array
     {

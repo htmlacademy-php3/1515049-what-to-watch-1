@@ -2,22 +2,30 @@
 
 namespace Tests\Unit;
 
-use AllowDynamicProperties;
 use App\Models\Comment;
 use App\Models\User;
 use Faker\Factory;
+use Faker\Generator;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-#[AllowDynamicProperties] class CommentModelTest extends TestCase
+class CommentModelTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected Generator $faker;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->faker = Factory::create('ru_RU');
+    }
+
     /**
      * Проверяет, что у комментария есть специальное свойство для возврата имени автора
      */
-    public function testAuthorName() : void
+    public function testAuthorName(): void
     {
-        $this->faker = Factory::create('ru_RU');
         $user =
             User::factory()->create(['name' => 'Тестовый пользователь']);
         $userComment =

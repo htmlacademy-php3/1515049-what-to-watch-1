@@ -38,25 +38,25 @@ class FavoriteFilm extends Model
 {
     use HasFactory;
 
-    protected $table = 'favorite_films';
+    protected string $table = 'favorite_films';
 
-    protected $casts = [
+    /**
+     * @var string[]
+     *
+     * @psalm-var array{user_id: 'int', film_id: 'int'}
+     */
+    protected array $casts = [
         'user_id' => 'int',
         'film_id' => 'int'
     ];
 
-    protected $fillable = [
+    /**
+     * @var string[]
+     *
+     * @psalm-var list{'user_id', 'film_id'}
+     */
+    protected array $fillable = [
         'user_id',
         'film_id'
     ];
-
-    public function film(): BelongsTo
-    {
-        return $this->belongsTo(Film::class);
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
 }

@@ -48,16 +48,26 @@ class Comment extends Model
 
     public const string DEFAULT_AUTHOR_NAME = "Гость";
 
-    protected $table = 'comments';
+    protected string $table = 'comments';
 
-    protected $casts = [
+    /**
+     * @var string[]
+     *
+     * @psalm-var array{rate: 'int', comment_id: 'int', user_id: 'int', film_id: 'int'}
+     */
+    protected array $casts = [
         'rate' => 'int',
         'comment_id' => 'int',
         'user_id' => 'int',
         'film_id' => 'int'
     ];
 
-    protected $fillable = [
+    /**
+     * @var string[]
+     *
+     * @psalm-var list{'text', 'author', 'rate', 'comment_id', 'user_id', 'film_id'}
+     */
+    protected array $fillable = [
         'text',
         'author',
         'rate',
@@ -67,51 +77,13 @@ class Comment extends Model
     ];
 
     /**
-     * Родительский комментарий
-     *
-     * @return BelongsTo
-     */
-    public function parentComment(): BelongsTo
-    {
-        return $this->belongsTo(Comment::class, 'comment_id');
-    }
-
-    /**
-     * Связь с фильмом, к которому относится комментарий.
-     *
-     * @return BelongsTo
-     */
-    public function film(): BelongsTo
-    {
-        return $this->belongsTo(Film::class);
-    }
-
-    /**
-     * Связь с пользователем, который оставил комментарий.
-     *
-     * @return BelongsTo
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
      * Ответы на этот комментарий (дочерние)
+     *
+     * @psalm-return HasMany<self>
      */
     public function replies(): HasMany
     {
         return $this->hasMany(Comment::class, 'comment_id');
-    }
-
-    /**
-     * Получить имя автора комментария
-     *
-     * @return string
-     */
-    public function getAuthorName(): string
-    {
-        return $this->user ? $this->user->name : self::DEFAULT_AUTHOR_NAME;
     }
 
     /**

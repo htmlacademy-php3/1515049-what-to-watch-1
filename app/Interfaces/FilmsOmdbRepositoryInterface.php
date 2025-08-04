@@ -14,11 +14,4 @@ interface FilmsOmdbRepositoryInterface
      * @return array|null Ассоциативный массив данных о фильме или null при ошибке
      */
     public function getFilmById(string $imdbId): ?array;
-
-    /**
-     * Возвращает сообщение об ошибке, если оно имеется.
-     *
-     * @return string|null Текст ошибки или null, если ошибки нет
-     */
-    public function getError(): ?string;
 }

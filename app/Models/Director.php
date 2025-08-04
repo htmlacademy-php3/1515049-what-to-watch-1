@@ -36,10 +36,10 @@ class Director extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
-
-    public function films(): BelongsToMany
-    {
-        return $this->belongsToMany(Film::class, 'director_film');
-    }
+    /**
+     * @var string[]
+     *
+     * @psalm-var list{'name'}
+     */
+    protected array $fillable = ['name'];
 }

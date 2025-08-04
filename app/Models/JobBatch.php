@@ -40,11 +40,24 @@ use Illuminate\Database\Eloquent\Model;
  */
 class JobBatch extends Model
 {
-	protected $table = 'job_batches';
-	public $incrementing = false;
-	public $timestamps = false;
+	protected string $table = 'job_batches';
 
-	protected $casts = [
+	/**
+	 * @var false
+	 */
+	public bool $incrementing = false;
+
+	/**
+	 * @var false
+	 */
+	public bool $timestamps = false;
+
+	/**
+	 * @var string[]
+	 *
+	 * @psalm-var array{total_jobs: 'int', pending_jobs: 'int', failed_jobs: 'int', cancelled_at: 'int', finished_at: 'int'}
+	 */
+	protected array $casts = [
 		'total_jobs' => 'int',
 		'pending_jobs' => 'int',
 		'failed_jobs' => 'int',
@@ -52,7 +65,12 @@ class JobBatch extends Model
 		'finished_at' => 'int'
 	];
 
-	protected $fillable = [
+	/**
+	 * @var string[]
+	 *
+	 * @psalm-var list{'name', 'total_jobs', 'pending_jobs', 'failed_jobs', 'failed_job_ids', 'options', 'cancelled_at', 'finished_at'}
+	 */
+	protected array $fillable = [
 		'name',
 		'total_jobs',
 		'pending_jobs',

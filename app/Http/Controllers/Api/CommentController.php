@@ -7,7 +7,10 @@ use App\Http\Requests\Comments\StoreCommentRequest;
 use App\Http\Requests\Comments\UpdateCommentRequest;
 use App\Http\Responses\SuccessResponse;
 use App\Models\Comment;
-use App\Services\CommentService;
+use App\Services\Comments\CommentCreateService;
+use App\Services\Comments\CommentDeleteService;
+use App\Services\Comments\CommentsFetchService;
+use App\Services\Comments\CommentUpdateService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 
@@ -16,8 +19,12 @@ use Illuminate\Support\Facades\Gate;
  */
 class CommentController extends Controller
 {
-    public function __construct(protected CommentService $commentService)
-    {
+    public function __construct(
+        protected CommentsFetchService $commentsFetchService,
+        protected CommentCreateService $commentCreateService,
+        protected CommentUpdateService $commentUpdateService,
+        protected CommentDeleteService $commentDeleteService,
+    ) {
     }
 
     /**
@@ -29,7 +36,7 @@ class CommentController extends Controller
      */
     public function index(int $film_id): SuccessResponse
     {
-        $comments = $this->commentService->getFilmComments($film_id);
+        $comments = $this->commentsFetchService->getFilmComments($film_id);
 
         return $this->success($comments, 201);
     }
@@ -44,7 +51,7 @@ class CommentController extends Controller
      */
     public function store(StoreCommentRequest $request, $filmId): SuccessResponse
     {
-        $comment = $this->commentService->createComment([
+        $comment = $this->commentCreateService->createComment([
             'user_id' => auth()->id(),
             'film_id' => $filmId,
             'text' => $request->text,
@@ -67,7 +74,7 @@ class CommentController extends Controller
     {
         Gate::authorize('update-comment', $comment);
 
-        $updatedComment = $this->commentService->updateComment($comment, $request->validated());
+        $updatedComment = $this->commentUpdateService->updateComment($comment, $request->validated());
 
         return $this->success([
             'text' => $updatedComment->text,
@@ -91,7 +98,7 @@ class CommentController extends Controller
             throw new AuthorizationException('Нельзя удалить комментарий с ответами');
         }
 
-        $this->commentService->deleteComment($comment);
+        $this->commentDeleteService->deleteComment($comment);
 
         return $this->success([], 204);
     }

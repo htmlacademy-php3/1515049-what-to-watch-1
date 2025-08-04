@@ -12,7 +12,9 @@ class DirectorFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * @return string[]
+     *
+     * @psalm-return array{name: string}
      */
     public function definition(): array
     {
