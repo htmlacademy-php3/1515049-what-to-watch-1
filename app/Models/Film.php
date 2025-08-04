@@ -61,9 +61,14 @@ class Film extends Model
      */
     public bool $is_favorite = false;
 
-    protected $table = 'films';
+    protected string $table = 'films';
 
-    protected $fillable = [
+    /**
+     * @var string[]
+     *
+     * @psalm-var list{'name', 'status', 'released', 'description', 'director', 'run_time', 'rating', 'imdb_votes', 'imdb_id', 'poster_image', 'preview_image', 'background_image', 'background_color', 'video_link', 'preview_video_link', 'is_promo'}
+     */
+    protected array $fillable = [
         'name',
         'status',
         'released',
@@ -82,7 +87,12 @@ class Film extends Model
         'is_promo',
     ];
 
-    protected $casts = [
+    /**
+     * @var string[]
+     *
+     * @psalm-var array{rating: 'float', imdb_votes: 'integer', is_promo: 'boolean'}
+     */
+    protected array $casts = [
         'rating' => 'float',
         'imdb_votes' => 'integer',
         'is_promo' => 'boolean',
@@ -92,6 +102,8 @@ class Film extends Model
      * Получить все комментарии, связанные с фильмом.
      *
      * @return HasMany
+     *
+     * @psalm-return HasMany<Comment>
      */
     public function comments(): HasMany
     {
@@ -99,29 +111,11 @@ class Film extends Model
     }
 
     /**
-     * Получить все записи об избранных фильмах, в которых указан этот фильм.
-     *
-     * @return HasMany
-     */
-    public function favoriteFilms(): HasMany
-    {
-        return $this->hasMany(FavoriteFilm::class);
-    }
-
-    /**
-     * Получить всех пользователей, добавивших фильм в избранное.
-     *
-     * @return BelongsToMany
-     */
-    public function usersWhoFavorited(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'favorite_films', 'film_id', 'user_id')->withTimestamps();
-    }
-
-    /**
      * Получить жанры, к которым относится фильм.
      *
      * @return BelongsToMany
+     *
+     * @psalm-return BelongsToMany<Genre>
      */
     public function genres(): BelongsToMany
     {
@@ -132,6 +126,8 @@ class Film extends Model
      * Получить актёров, участвующих в фильме.
      *
      * @return BelongsToMany
+     *
+     * @psalm-return BelongsToMany<Actor>
      */
     public function actors(): BelongsToMany
     {
@@ -142,35 +138,11 @@ class Film extends Model
      * Получить режиссёров, снявших фильм.
      *
      * @return BelongsToMany
+     *
+     * @psalm-return BelongsToMany<Director>
      */
     public function directors(): BelongsToMany
     {
         return $this->belongsToMany(Director::class, 'director_film');
-    }
-
-    /**
-     * Получить среднюю оценку фильма на основе пользовательских комментариев.
-     *
-     * @return float|null
-     */
-    public function getRatingAttribute(): ?float
-    {
-        $avg =
-            $this->comments()->avg('rate');
-
-        return $avg !== null ? round($avg, 1) : null;
-    }
-
-    /**
-     * Отношение с пользователями, добавившими фильм в избранное
-     */
-    public function favorites(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            User::class,
-            'favorite_films',
-            'film_id',
-            'user_id'
-        )->withTimestamps();
     }
 }

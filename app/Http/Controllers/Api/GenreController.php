@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\GenreResource;
 use App\Http\Responses\SuccessResponse;
-use App\Models\Genre;
 use App\Services\GenreService;
 use Illuminate\Http\Request;
 

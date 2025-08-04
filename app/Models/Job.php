@@ -34,16 +34,30 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Job extends Model
 {
-	protected $table = 'jobs';
-	public $timestamps = false;
+	protected string $table = 'jobs';
 
-	protected $casts = [
+	/**
+	 * @var false
+	 */
+	public bool $timestamps = false;
+
+	/**
+	 * @var string[]
+	 *
+	 * @psalm-var array{attempts: 'int', reserved_at: 'int', available_at: 'int'}
+	 */
+	protected array $casts = [
 		'attempts' => 'int',
 		'reserved_at' => 'int',
 		'available_at' => 'int'
 	];
 
-	protected $fillable = [
+	/**
+	 * @var string[]
+	 *
+	 * @psalm-var list{'queue', 'payload', 'attempts', 'reserved_at', 'available_at'}
+	 */
+	protected array $fillable = [
 		'queue',
 		'payload',
 		'attempts',

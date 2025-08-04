@@ -7,14 +7,28 @@ use App\Http\Resources\FilmListResource;
 use App\Http\Resources\FilmResource;
 use App\Http\Responses\SuccessResponse;
 use App\Models\Film;
-use App\Services\FilmService;
+use App\Services\Films\FavoriteFilmCheckService;
+use App\Services\Films\FilmCreateService;
+use App\Services\Films\FilmDetailsService;
+use App\Services\Films\FilmListService;
+use App\Services\Films\FilmUpdateService;
+use App\Services\Films\PromoFilmService;
+use App\Services\Films\SimilarFilmService;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class FilmController extends Controller
 {
-    public function __construct(private readonly FilmService $filmService)
-    {
+    public function __construct(
+        protected FavoriteFilmCheckService $favoriteFilmCheckService,
+        protected FilmListService $filmListService,
+        protected FilmDetailsService $filmDetailsService,
+        protected FilmCreateService $filmCreateService,
+        protected FilmUpdateService $filmUpdateService,
+        protected SimilarFilmService $similarFilmService,
+        protected PromoFilmService $promoFilmService,
+    ) {
     }
 
     /**
@@ -27,7 +41,7 @@ class FilmController extends Controller
     public function index(Request $request): SuccessResponse
     {
         $films =
-            $this->filmService->getFilmList($request->all(), auth()->id());
+            $this->filmListService->getFilmList($request->all(), auth()->id());
 
         return $this->success(FilmListResource::collection($films));
     }
@@ -42,7 +56,7 @@ class FilmController extends Controller
     public function show(int $id): SuccessResponse
     {
         $film =
-            $this->filmService->getFilmDetails($id);
+            $this->filmDetailsService->getFilmDetails($id);
         $this->setFavoriteFlag($film);
 
         return $this->success(new FilmResource($film));
@@ -59,7 +73,7 @@ class FilmController extends Controller
     protected function setFavoriteFlag(Film $film): void
     {
         $film->is_favorite = auth()->check()
-            && $this->filmService->isFavorite($film->id, auth()->id());
+            && $this->favoriteFilmCheckService->isFavorite($film->id, auth()->id());
     }
 
     /**
@@ -72,9 +86,9 @@ class FilmController extends Controller
      */
     public function store(Request $request): SuccessResponse
     {
-        $film = $this->filmService->createFilm($request->all());
+        $film = $this->filmCreateService->createFilm($request->all());
 
-        return $this->success(new FilmResource($film));
+        return $this->success(new FilmResource($film), Response::HTTP_CREATED);
     }
 
     /**
@@ -88,7 +102,7 @@ class FilmController extends Controller
      */
     public function update(Request $request, int $id): SuccessResponse
     {
-        $film = $this->filmService->updateFilm($id, $request->all());
+        $film = $this->filmUpdateService->updateFilm($id, $request->all());
         return $this->success(new FilmResource($film));
     }
 
@@ -101,7 +115,7 @@ class FilmController extends Controller
      */
     public function similar(int $id): SuccessResponse
     {
-        $films = $this->filmService->getSimilarFilms($id, auth()->id());
+        $films = $this->similarFilmService->getSimilarFilms($id);
         return $this->success(FilmListResource::collection($films));
     }
 
@@ -112,7 +126,7 @@ class FilmController extends Controller
      */
     public function showPromo(): SuccessResponse
     {
-        $film = $this->filmService->getPromoFilm();
+        $film = $this->promoFilmService->getPromoFilm();
         $this->setFavoriteFlag($film);
 
         return $this->success(new FilmResource($film));
@@ -129,7 +143,7 @@ class FilmController extends Controller
      */
     public function createPromo(Request $request, $filmId): SuccessResponse
     {
-        $film = $this->filmService->setPromoFilm($filmId);
+        $film = $this->promoFilmService->setPromoFilm($filmId);
 
         return $this->success(new FilmResource($film));
     }

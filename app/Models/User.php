@@ -54,19 +54,34 @@ class User extends Authenticatable
     public const int ROLE_USER = 1;
     public const int ROLE_MODERATOR = 2;
 
-    protected $table = 'users';
+    protected string $table = 'users';
 
-    protected $casts = [
+    /**
+     * @var string[]
+     *
+     * @psalm-var array{email_verified_at: 'datetime', role: 'integer'}
+     */
+    protected array $casts = [
         'email_verified_at' => 'datetime',
         'role' => 'integer',
     ];
 
-    protected $hidden = [
+    /**
+     * @var string[]
+     *
+     * @psalm-var list{'password', 'remember_token'}
+     */
+    protected array $hidden = [
         'password',
         'remember_token'
     ];
 
-    protected $fillable = [
+    /**
+     * @var string[]
+     *
+     * @psalm-var list{'role', 'avatar', 'name', 'email', 'email_verified_at', 'password', 'remember_token'}
+     */
+    protected array $fillable = [
         'role',
         'avatar',
         'name',
@@ -76,11 +91,17 @@ class User extends Authenticatable
         'remember_token'
     ];
 
+    /**
+     * @psalm-return HasMany<Comment>
+     */
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
+    /**
+     * @psalm-return BelongsToMany<Film>
+     */
     public function favoriteFilms(): BelongsToMany
     {
         return $this->belongsToMany(Film::class, 'favorite_films')

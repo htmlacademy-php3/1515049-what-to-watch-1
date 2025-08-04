@@ -2,13 +2,12 @@
 
 namespace App\Http\Responses;
 
-use AllowDynamicProperties;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Validation\Validator;
 use stdClass;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AllowDynamicProperties] class ErrorResponse extends BaseResponse
+class ErrorResponse extends BaseResponse
 {
     public int $statusCode = Response::HTTP_BAD_REQUEST;
 
@@ -22,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
         string $message,
         protected array|Arrayable|Validator $errors = [],
         int $statusCode = Response::HTTP_BAD_REQUEST,
-        protected bool $showErrors = true
+
     ) {
         parent::__construct([], $statusCode);
         $this->message = $message;
@@ -32,7 +31,9 @@ use Symfony\Component\HttpFoundation\Response;
     /**
      * Формирование содержимого ответа
      *
-     * @return array
+     * @return (Arrayable|Validator|array|mixed|stdClass)[]
+     *
+     * @psalm-return array{message: mixed, errors: Arrayable|Validator|array|stdClass}
      */
     protected function makeResponseData(): array
     {

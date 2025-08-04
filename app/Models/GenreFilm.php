@@ -27,22 +27,48 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class GenreFilm extends Model
 {
-	protected $table = 'genre_films';
-	public $incrementing = false;
-	public $timestamps = false;
+    /**
+     * @var string[]
+     *
+     * @psalm-var list{'film_id', 'genre_id'}
+     */
+    protected array $fillable = ['film_id', 'genre_id'];
 
-	protected $casts = [
-		'film_id' => 'int',
-		'genre_id' => 'int'
-	];
+    protected string $table = 'genre_film';
 
-	public function film() : BelongsTo
+    /**
+     * @var false
+     */
+    public bool $incrementing = false;
+
+    /**
+     * @var false
+     */
+    public bool $timestamps = false;
+
+    /**
+     * @var string[]
+     *
+     * @psalm-var array{film_id: 'int', genre_id: 'int'}
+     */
+    protected array $casts = [
+        'film_id' => 'int',
+        'genre_id' => 'int'
+    ];
+
+    /**
+     * @psalm-return BelongsTo<Film>
+     */
+    public function film(): BelongsTo
     {
-		return $this->belongsTo(Film::class);
-	}
+        return $this->belongsTo(Film::class);
+    }
 
-	public function genre() : BelongsTo
+    /**
+     * @psalm-return BelongsTo<Genre>
+     */
+    public function genre(): BelongsTo
     {
-		return $this->belongsTo(Genre::class);
-	}
+        return $this->belongsTo(Genre::class);
+    }
 }
