@@ -10,9 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class SimilarFilmService
 {
-    public function __construct(protected FilmRepository $filmRepository)
-    {
-    }
+
 
     /**
      * Получает похожие фильмы по жанру выбранного фильма

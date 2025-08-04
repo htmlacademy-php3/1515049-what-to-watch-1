@@ -11,14 +11,14 @@ use Illuminate\Support\Collection;
  */
 class CommentsFetchService
 {
-    public function __construct(protected CommentsFetchRepository $commentsFetchRepository)
-    {
-    }
+
 
     /**
      * Получение комментариев к фильму
+     *
+     * @psalm-return Collection<Comment, array{text: string, author: string, created_at: string, rate: int|null}>|\Illuminate\Database\Eloquent\Collection<Comment, array{text: string, author: string, created_at: string, rate: int|null}>
      */
-    public function getFilmComments(int $filmId): Collection
+    public function getFilmComments(int $filmId): Collection|\Illuminate\Database\Eloquent\Collection
     {
         return $this->commentsFetchRepository->getComments($filmId)
             ->map(function (Comment $comment) {

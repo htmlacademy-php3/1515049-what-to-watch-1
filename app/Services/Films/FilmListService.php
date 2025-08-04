@@ -7,11 +7,7 @@ use Illuminate\Contracts\Pagination\Paginator;
 
 class FilmListService
 {
-    public function __construct(
-        protected FilmsListRepository $filmsListRepository,
-        protected FavoriteFilmCheckService $favoriteFilmCheckService
-    ) {
-    }
+
 
     /**
      *  Возвращает список фильмов с поддержкой фильтрации и пагинации.

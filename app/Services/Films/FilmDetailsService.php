@@ -10,10 +10,7 @@ use App\Repositories\Films\FilmDetailsRepository;
  */
 class FilmDetailsService
 {
-    public function __construct(protected FilmDetailsRepository $filmDetailsRepository)
-    {
 
-    }
 
     /**
      *  Возвращает подробную информацию о фильме по его ID с отметкой об избранном.

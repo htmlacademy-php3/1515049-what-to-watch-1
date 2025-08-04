@@ -25,10 +25,6 @@ class FilmsOmdbRepository implements FilmsOmdbRepositoryInterface
         return $this->error;
     }
 
-    public function __construct(private readonly ClientInterface $httpClient)
-    {
-    }
-
     /**
      * Получает информацию о фильме по его IMDb ID.
      *

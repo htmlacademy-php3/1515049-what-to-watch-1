@@ -12,10 +12,7 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
  */
 class LoginService
 {
-    public function __construct(protected UserRepository $userRepository)
-    {
 
-    }
 
     /**
      * Аутентифицирует пользователя и возвращает токен.

@@ -13,7 +13,9 @@ class FilmFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * @return (false|float|int|string)[]
+     *
+     * @psalm-return array{name: string, released: string, description: string, run_time: int, rating: float, imdb_votes: int, imdb_id: string, poster_image: string, preview_image: string, background_color: string, background_image: string, video_link: string, preview_video_link: string, is_promo: false}
      */
     public function definition(): array
     {

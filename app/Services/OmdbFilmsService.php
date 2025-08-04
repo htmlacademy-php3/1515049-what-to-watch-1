@@ -14,11 +14,6 @@ class OmdbFilmsService
 {
     private FilmsOmdbRepositoryInterface $repository;
 
-    public function __construct(FilmsOmdbRepositoryInterface $repository)
-    {
-        $this->repository = $repository;
-    }
-
     /**
      * Получает данные о фильме по IMDB ID.
      *

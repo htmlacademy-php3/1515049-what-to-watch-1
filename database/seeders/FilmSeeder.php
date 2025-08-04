@@ -7,11 +7,5 @@ use Illuminate\Database\Seeder;
 
 class FilmSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
-        Film::factory(10)->create();
-    }
+
 }

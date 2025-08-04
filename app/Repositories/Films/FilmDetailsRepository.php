@@ -8,7 +8,7 @@ use App\Models\Film;
 
 final class FilmDetailsRepository
 {
-    public function details(int $id, ?int $userId = null)
+    public function details(int $id, ?int $userId = null): Film
     {
         return Film::with([
             'genres',

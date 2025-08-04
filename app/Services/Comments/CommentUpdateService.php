@@ -10,10 +10,7 @@ use App\Repositories\Comments\UpdateCommentRepository;
  */
 class CommentUpdateService
 {
-    public function __construct(protected UpdateCommentRepository $updateCommentRepository)
-    {
 
-    }
 
     /**
      * Обновление комментария

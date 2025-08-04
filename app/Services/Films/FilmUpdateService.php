@@ -12,10 +12,7 @@ use Throwable;
  */
 class FilmUpdateService
 {
-    public function __construct(protected FilmRepository $filmRepository)
-    {
 
-    }
 
     /**
      * Обновляет данные фильма

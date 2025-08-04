@@ -21,9 +21,10 @@ class LogoutController extends Controller
      * Выход из системы (удаление всех токенов пользователя)
      *
      * @param Request $request
-     * @return Response|ErrorResponse
+     *
+     * @return ErrorResponse|\Illuminate\Http\Response
      */
-    public function logout(Request $request): ErrorResponse|Response
+    public function logout(Request $request): \Illuminate\Http\Response|ErrorResponse|Response
     {
         $user = $request->user();
 

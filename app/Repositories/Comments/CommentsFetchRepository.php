@@ -14,7 +14,10 @@ final class CommentsFetchRepository
      * Получает список комментариев к фильму с загруженными пользователями.
      *
      * @param int $filmId ID фильма
-     * @return Collection<Comment> Коллекция комментариев с отношением user
+     *
+     * @return Collection Коллекция комментариев с отношением user
+     *
+     * @psalm-return Collection<int, Comment>
      */
     public function getComments(int $filmId): Collection
     {

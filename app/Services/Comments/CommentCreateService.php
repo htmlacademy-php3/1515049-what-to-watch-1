@@ -10,9 +10,7 @@ use App\Repositories\Comments\CreateCommentRepository;
  */
 class CommentCreateService
 {
-    public function __construct(protected CreateCommentRepository $createCommentRepository)
-    {
-    }
+
 
     /**
      * Создание нового комментария

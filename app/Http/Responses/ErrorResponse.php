@@ -21,7 +21,7 @@ class ErrorResponse extends BaseResponse
         string $message,
         protected array|Arrayable|Validator $errors = [],
         int $statusCode = Response::HTTP_BAD_REQUEST,
-        protected bool $showErrors = true
+
     ) {
         parent::__construct([], $statusCode);
         $this->message = $message;
@@ -31,7 +31,9 @@ class ErrorResponse extends BaseResponse
     /**
      * Формирование содержимого ответа
      *
-     * @return array
+     * @return (Arrayable|Validator|array|mixed|stdClass)[]
+     *
+     * @psalm-return array{message: mixed, errors: Arrayable|Validator|array|stdClass}
      */
     protected function makeResponseData(): array
     {

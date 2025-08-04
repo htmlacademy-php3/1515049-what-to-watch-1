@@ -8,11 +8,5 @@ use Illuminate\Database\Seeder;
 
 class DirectorSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
-        Director::factory(10)->create();
-    }
+
 }

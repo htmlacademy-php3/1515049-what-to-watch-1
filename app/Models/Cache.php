@@ -28,13 +28,31 @@ class Cache extends Model
 {
     protected $table = 'cache';
     protected $primaryKey = 'key';
+
+    /**
+     * @var false
+     */
     public $incrementing = false;
+
+    /**
+     * @var false
+     */
     public $timestamps = false;
 
+    /**
+     * @var string[]
+     *
+     * @psalm-var array{expiration: 'int'}
+     */
     protected $casts = [
         'expiration' => 'int'
     ];
 
+    /**
+     * @var string[]
+     *
+     * @psalm-var list{'value', 'expiration'}
+     */
     protected $fillable = [
         'value',
         'expiration'

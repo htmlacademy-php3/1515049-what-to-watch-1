@@ -12,9 +12,7 @@ use Throwable;
  */
 class PromoFilmService
 {
-    public function __construct(protected FilmRepository $filmRepository)
-    {
-    }
+
 
     /**
      * Получает текущий промо фильм
