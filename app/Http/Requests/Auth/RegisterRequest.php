@@ -32,7 +32,6 @@ final class RegisterRequest extends FormRequest
                     ->mixedCase()
                 ->numbers()
                 ->symbols(),
-                'confirmed'
             ],
             'avatar' => 'nullable|file|image|max:10240',
         ];
