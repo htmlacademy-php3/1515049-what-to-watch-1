@@ -17,12 +17,30 @@ final class FilmActorSeeder extends Seeder
      */
     public function run(): void
     {
+        /** @psalm-suppress UndefinedMagicMethod */
+        if (Actor::doesntExist()) {
+            Actor::factory()->count(10)->create();
+        }
+
+        /** @psalm-suppress UndefinedMagicMethod */
+        if (Film::doesntExist()) {
+            Film::factory()->count(5)->create();
+        }
+
         $films = Film::all();
         $actors = Actor::all();
 
+        if ($actors->isEmpty()) {
+            throw new \RuntimeException('No actors available to attach to films');
+        }
+
         foreach ($films as $film) {
-            $randomActors = collect((array) $actors->random(rand(1, 5)));
-            $film->actors()->attach($randomActors->pluck('id')->all());
+            $count = rand(1, min(5, $actors->count()));
+
+            /** @psalm-suppress UndefinedMagicMethod */
+            $randomActorIds = $actors->random($count)->pluck('id');
+
+            $film->actors()->syncWithoutDetaching($randomActorIds);
         }
     }
 }

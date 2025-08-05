@@ -98,7 +98,7 @@ class Film extends Model
     public const string STATUS_READY = 'ready';
 
     /**
-     * @psalm-suppress PossiblyUnusedProperty 
+     * @psalm-suppress PossiblyUnusedProperty
      */
     public bool $is_favorite = false;
 

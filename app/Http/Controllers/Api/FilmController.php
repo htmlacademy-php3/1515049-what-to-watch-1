@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Films\FilmsListRequest;
+use App\Http\Requests\Films\StoreFilmRequest;
+use App\Http\Requests\Films\UpdateFilmRequest;
 use App\Http\Resources\FilmListResource;
 use App\Http\Resources\FilmResource;
 use App\Http\Responses\SuccessResponse;
@@ -37,13 +40,18 @@ class FilmController extends Controller
     /**
      * Список фильмов
      *
-     * @param Request $request
+     * @param FilmsListRequest $request
      *
      * @return SuccessResponse
      */
-    public function index(Request $request): SuccessResponse
+    public function index(FilmsListRequest $request): SuccessResponse
     {
-        $films = $this->filmListService->getFilmList($request->all(), (int)auth()->id());
+        $filters = $request->validated();
+        $userId = (int) auth()->id();
+
+        $perPage = $filters['per_page'] ?? 8;
+
+        $films = $this->filmListService->getFilmList($filters, $userId, $perPage);
 
         return $this->success(FilmListResource::collection($films));
     }
@@ -81,14 +89,14 @@ class FilmController extends Controller
     /**
      * Добавление фильма в бд
      *
-     * @param Request $request
+     * @param StoreFilmRequest $request
      *
      * @return SuccessResponse
      * @throws Throwable
      */
-    public function store(Request $request): SuccessResponse
+    public function store(StoreFilmRequest $request): SuccessResponse
     {
-        $film = $this->filmCreateService->createFilm($request->all());
+        $film = $this->filmCreateService->createFilm($request->validated());
 
         return $this->success(new FilmResource($film), Response::HTTP_CREATED);
     }
@@ -96,15 +104,15 @@ class FilmController extends Controller
     /**
      * Обновление данных фильма
      *
-     * @param Request $request
-     * @param int     $id
+     * @param UpdateFilmRequest $request
+     * @param int               $id
      *
      * @return SuccessResponse
      * @throws Throwable
      */
-    public function update(Request $request, int $id): SuccessResponse
+    public function update(UpdateFilmRequest $request, int $id): SuccessResponse
     {
-        $film = $this->filmUpdateService->updateFilm($id, $request->all());
+        $film = $this->filmUpdateService->updateFilm($id, $request->validated());
         return $this->success(new FilmResource($film));
     }
 
