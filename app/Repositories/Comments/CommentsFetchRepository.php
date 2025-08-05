@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
  * Репозиторий для получения комментариев к фильмам.
  *
  * @template TModel of Model
- * @extends Collection<TModel>
  */
 final class CommentsFetchRepository
 {

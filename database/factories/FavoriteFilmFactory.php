@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends Factory<FavoriteFilm>
+ *
+ * @psalm-suppress UnusedClass
+ * Класс используется через вызов в DatabaseSeeder
  */
 final class FavoriteFilmFactory extends Factory
 {
@@ -17,6 +20,7 @@ final class FavoriteFilmFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[\Override]
     public function definition(): array
     {
         return [

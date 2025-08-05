@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends Factory<Genre>
+ *
+ * @psalm-suppress UnusedClass
+ * Класс используется через вызов в DatabaseSeeder
  */
 final class GenreFactory extends Factory
 {
@@ -15,6 +18,7 @@ final class GenreFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[\Override]
     public function definition(): array
     {
         return [

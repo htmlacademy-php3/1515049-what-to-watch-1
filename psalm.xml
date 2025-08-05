@@ -16,12 +16,4 @@
             <directory name="node_modules" />
         </ignoreFiles>
     </projectFiles>
-
-    <issueHandlers>
-        <UnusedClass>
-            <errorLevel type="suppress">
-                <directory name="app/Providers"/>
-            </errorLevel>
-        </UnusedClass>
-    </issueHandlers>
 </psalm>

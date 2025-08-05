@@ -22,6 +22,7 @@ final class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[\Override]
     public function definition(): array
     {
         return [
@@ -35,10 +36,13 @@ final class UserFactory extends Factory
 
     /**
      * Indicate that the model's email address should be unverified.
+     *
+     * @psalm-suppress PossiblyUnusedMethod
+     * Метод используется динамически через фабрику Laravel
      */
     public function unverified(): UserFactory
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn () => [
             'email_verified_at' => null,
         ]);
     }

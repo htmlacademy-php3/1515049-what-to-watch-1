@@ -2,10 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\Director;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Director>
+ * @extends Factory<Director>
+ *
+ * @psalm-suppress UnusedClass
+ *  Класс используется через вызов в DatabaseSeeder
  */
 final class DirectorFactory extends Factory
 {
@@ -14,6 +18,7 @@ final class DirectorFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[\Override]
     public function definition(): array
     {
         return [

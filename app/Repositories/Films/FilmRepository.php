@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
  * Репозиторий для фильмов
  *
  * @template TModel of Model
- * @extends Collection<TModel>
  */
 final class FilmRepository
 {

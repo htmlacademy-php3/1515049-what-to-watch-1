@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends Factory<Comment>
+ *
+ * @psalm-suppress UnusedClass
+ *  Класс используется через вызов в DatabaseSeeder
  */
 final class CommentFactory extends Factory
 {
@@ -17,6 +20,7 @@ final class CommentFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[\Override]
     public function definition(): array
     {
         return [

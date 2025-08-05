@@ -16,7 +16,6 @@ use Throwable;
  * Репозиторий для получения информации о фильмах из внешнего API OMDb.
  *
  * @template TModel of Model
- * @extends Collection<TModel>
  */
 class FilmsOmdbRepository implements FilmsOmdbRepositoryInterface
 {

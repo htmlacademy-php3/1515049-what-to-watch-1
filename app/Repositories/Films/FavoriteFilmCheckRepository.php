@@ -1,7 +1,4 @@
 <?php
-
-declare(strict_types=1);
-
 namespace App\Repositories\Films;
 
 use App\Models\FavoriteFilm;
@@ -15,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
  * и предоставляет метод для проверки наличия записи по ID пользователя и фильма.
  *
  * @template TModel of Model
- * @extends Collection<TModel>
  */
 final class FavoriteFilmCheckRepository
 {
@@ -28,9 +24,8 @@ final class FavoriteFilmCheckRepository
      */
     public function isFavorite(int $filmId, int $userId): bool
     {
-        return FavoriteFilm::where([
-            'film_id' => $filmId,
-            'user_id' => $userId
-        ])->exists();
+        return FavoriteFilm::query()->where('film_id', $filmId)
+            ->where('user_id', $userId)
+            ->exists();
     }
 }

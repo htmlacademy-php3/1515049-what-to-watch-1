@@ -24,14 +24,15 @@ class CommentsFetchService
      */
     public function getFilmComments(int $filmId): Collection
     {
-        return $this->commentsFetchRepository->getComments($filmId)
-            ->map(function (Comment $comment) {
+        return collect(
+            collect($this->commentsFetchRepository->getComments($filmId)->all())->map(function (Comment $comment) {
                 return [
                     'text' => $comment->text,
                     'author' => $comment->user?->name ?? 'Гость',
                     'created_at' => $comment->created_at->toDateTimeString(),
                     'rate' => $comment->rate,
                 ];
-            });
+            })
+        );
     }
 }

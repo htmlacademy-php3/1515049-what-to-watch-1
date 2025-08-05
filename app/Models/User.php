@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\NewAccessToken;
 
 /**
  * Class User
@@ -45,6 +46,10 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static Builder<static>|User whereRememberToken($value)
  * @method static Builder<static>|User whereRole($value)
  * @method static Builder<static>|User whereUpdatedAt($value)
+ * @method static Model|static         create(array $attributes = [])
+ * @method static Builder|User         where(string $column, $operator = null, $value = null, string $boolean = 'and')
+ * @method static User|null            first(array $columns = ['*'])
+ * @method NewAccessToken              createToken(string $name, array $abilities = [])
  *
  * @method static Collection|static[] pluck(string $column, string|null $key = null)
  * @method static Model|static findOrFail(int $id)

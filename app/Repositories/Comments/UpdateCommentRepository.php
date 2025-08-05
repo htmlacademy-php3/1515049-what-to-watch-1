@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
  * Репозиторий для обновления комментариев.
  *
  * @template TModel of Model
- * @extends Collection<TModel>
  */
 final class UpdateCommentRepository
 {
