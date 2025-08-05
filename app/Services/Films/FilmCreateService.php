@@ -28,19 +28,21 @@ class FilmCreateService
      */
     public function createFilm(array $data): Film
     {
-        return DB::transaction(function () use ($data) {
-            $film = $this->repository->create($data);
+        return DB::transaction(
+            function () use ($data) {
+                $film = $this->repository->create($data);
 
-            if (!empty($data['genre_id'])) {
-                $this->repository->syncGenres($film, (array) $data['genre_id']);
+                if (!empty($data['genre_id'])) {
+                    $this->repository->syncGenres($film, (array) $data['genre_id']);
+                }
+
+                if (!empty($data['actor_id'])) {
+                    $this->repository->syncActors($film, (array) $data['actor_id']);
+                }
+
+                return $this->repository->loadRelations($film);
             }
-
-            if (!empty($data['actor_id'])) {
-                $this->repository->syncActors($film, (array) $data['actor_id']);
-            }
-
-            return $this->repository->loadRelations($film);
-        });
+        );
     }
 
 }

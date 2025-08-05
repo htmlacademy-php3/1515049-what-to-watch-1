@@ -17,7 +17,7 @@ final class UserResource extends JsonResource
     /**
      * Преобразует ресурс в массив для JSON-ответа.
      *
-     * @param Request $request
+     * @param  Request $request
      * @return array<string, mixed>
      */
     #[Override]

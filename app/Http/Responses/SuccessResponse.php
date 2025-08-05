@@ -16,7 +16,9 @@ final class SuccessResponse extends BaseResponse
     #[Override]
     protected function makeResponseData(): ?array
     {
-        /** @var JsonResource|LengthAwarePaginator|array $items */
+        /**
+ * @var JsonResource|LengthAwarePaginator|array $items 
+*/
         if ($this->data instanceof LengthAwarePaginator) {
             $items =
                 $this->data->items();

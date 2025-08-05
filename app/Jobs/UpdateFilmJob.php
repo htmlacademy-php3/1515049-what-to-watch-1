@@ -20,7 +20,9 @@ class UpdateFilmJob implements ShouldQueue
     use SerializesModels;
 
     private string $imdbId;
-    /** @psalm-suppress UnusedProperty */
+    /**
+     * @psalm-suppress UnusedProperty 
+     */
     public readonly Film $film;
 
     /**
@@ -42,7 +44,9 @@ class UpdateFilmJob implements ShouldQueue
     {
         $data = $service->getFilm($this->imdbId);
 
-        /** @psalm-suppress UndefinedMagicMethod */
+        /**
+ * @psalm-suppress UndefinedMagicMethod 
+*/
         $film = Film::updateOrCreate(
             ['imdb_id' => $data['imdbID'] ?? null],
             [
@@ -83,25 +87,31 @@ class UpdateFilmJob implements ShouldQueue
             $directorNames = collect(explode(',', $data['Director']))
                 ->map(fn ($name) => trim($name))
                 ->filter();
-            $directorIds = collect($directorNames)->map(function ($name) {
-                return Director::firstOrCreate(['name' => trim($name)])->id;
-            });
+            $directorIds = collect($directorNames)->map(
+                function ($name) {
+                    return Director::firstOrCreate(['name' => trim($name)])->id;
+                }
+            );
             $film->directors()->sync($directorIds->all());
         }
 
         if (!empty($data['Actors'])) {
             $actorNames = explode(',', $data['Actors']);
-            $actorIds = collect($actorNames)->map(function ($name) {
-                return Actor::firstOrCreate(['name' => trim($name)])->id;
-            });
+            $actorIds = collect($actorNames)->map(
+                function ($name) {
+                    return Actor::firstOrCreate(['name' => trim($name)])->id;
+                }
+            );
             $film->actors()->sync($actorIds->all());
         }
 
         if (!empty($data['Genre'])) {
             $genreNames = explode(',', $data['Genre']);
-            $genreIds = collect($genreNames)->map(function ($name) {
-                return Genre::firstOrCreate(['name' => trim($name)])->id;
-            });
+            $genreIds = collect($genreNames)->map(
+                function ($name) {
+                    return Genre::firstOrCreate(['name' => trim($name)])->id;
+                }
+            );
             $film->genres()->sync($genreIds->all());
         }
     }

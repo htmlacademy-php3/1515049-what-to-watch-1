@@ -12,6 +12,7 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 /**
  * Контроллер входа пользователя в систему
+ *
  * @psalm-suppress UnusedClass
  */
 class LoginController extends Controller
@@ -23,7 +24,7 @@ class LoginController extends Controller
     /**
      * Обработка входа пользователя
      *
-     * @param LoginRequest $request
+     * @param  LoginRequest $request
      * @return SuccessResponse|ErrorResponse
      */
     public function login(LoginRequest $request): SuccessResponse|ErrorResponse

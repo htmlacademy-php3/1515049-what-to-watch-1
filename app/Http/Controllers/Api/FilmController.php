@@ -137,7 +137,7 @@ class FilmController extends Controller
     /**
      * Создание промо
      *
-     * @param         $filmId
+     * @param $filmId
      *
      * @return SuccessResponse
      * @throws Throwable

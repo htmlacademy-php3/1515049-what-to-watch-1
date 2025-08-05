@@ -47,18 +47,20 @@ class CommentController extends Controller
      * Добавление комментария
      *
      * @param StoreCommentRequest $request
-     * @param                     $filmId
+     * @param $filmId
      *
      * @return SuccessResponse
      */
     public function store(StoreCommentRequest $request, $filmId): SuccessResponse
     {
-        $comment = $this->commentCreateService->createComment([
+        $comment = $this->commentCreateService->createComment(
+            [
             'user_id' => auth()->id(),
             'film_id' => $filmId,
             'text' => $request->text,
             'rate' => $request->rate,
-        ]);
+            ]
+        );
 
         return $this->success($comment, 201);
     }
@@ -78,10 +80,12 @@ class CommentController extends Controller
 
         $updatedComment = $this->commentUpdateService->updateComment($comment, $request->validated());
 
-        return $this->success([
+        return $this->success(
+            [
             'text' => $updatedComment->text,
             'rate' => $updatedComment->rate,
-        ], 200);
+            ], 200
+        );
     }
 
     /**

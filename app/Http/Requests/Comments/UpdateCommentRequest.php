@@ -14,7 +14,7 @@ use Override;
 final class UpdateCommentRequest extends FormRequest
 {
     /**
-     * @return bool
+     * @return         bool
      * @psalm-suppress PossiblyUnusedMethod
      */
     public function authorize(): bool
@@ -23,7 +23,7 @@ final class UpdateCommentRequest extends FormRequest
     }
 
     /**
-     * @return array
+     * @return         array
      * @psalm-suppress PossiblyUnusedMethod
      */
     public function rules(): array
@@ -55,10 +55,12 @@ final class UpdateCommentRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(
-            response()->json([
+            response()->json(
+                [
                 'message' => 'Ошибки валидации',
                 'errors' => $validator->errors()
-            ], 422)
+                ], 422
+            )
         );
     }
 }

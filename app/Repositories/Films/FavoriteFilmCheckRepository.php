@@ -18,8 +18,8 @@ final class FavoriteFilmCheckRepository
     /**
      * Проверяет, добавлен ли фильм в избранное пользователем.
      *
-     * @param int $filmId ID фильма
-     * @param int $userId ID пользователя
+     * @param  int $filmId ID фильма
+     * @param  int $userId ID пользователя
      * @return bool true, если фильм в избранном; иначе false
      */
     public function isFavorite(int $filmId, int $userId): bool

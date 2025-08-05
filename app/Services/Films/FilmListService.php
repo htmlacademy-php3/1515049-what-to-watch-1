@@ -37,10 +37,12 @@ class FilmListService
         $films = $this->filmsListRepository->getFilms($filters, $perPage);
 
         if ($userId) {
-            $films->getCollection()->transform(function ($film) use ($userId) {
-                $film->is_favorite = $this->favoriteFilmCheckService->isFavorite($film->id, $userId);
-                return $film;
-            });
+            $films->getCollection()->transform(
+                function ($film) use ($userId) {
+                    $film->is_favorite = $this->favoriteFilmCheckService->isFavorite($film->id, $userId);
+                    return $film;
+                }
+            );
         }
 
         return $films;

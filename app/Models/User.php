@@ -21,16 +21,16 @@ use Laravel\Sanctum\PersonalAccessToken;
 /**
  * Class User
  *
- * @property int                                $id
- * @property int                                $role
- * @property string|null                        $avatar
- * @property string                             $name
- * @property string                             $email
- * @property Carbon|null                        $email_verified_at
- * @property string                             $password
- * @property string|null                        $remember_token
- * @property Carbon|null                        $created_at
- * @property Carbon|null                        $updated_at
+ * @property      int                                $id
+ * @property      int                                $role
+ * @property      string|null                        $avatar
+ * @property      string                             $name
+ * @property      string                             $email
+ * @property      Carbon|null                        $email_verified_at
+ * @property      string                             $password
+ * @property      string|null                        $remember_token
+ * @property      Carbon|null                        $created_at
+ * @property      Carbon|null                        $updated_at
  * @property-read Collection<int, Comment>      $comments
  * @property-read Collection<int, FavoriteFilm> $favorite_films
  * @property-read Collection<int, Film>         $favoriteFilms
@@ -88,7 +88,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * @return HasMany<Comment>
+     * @return         HasMany<Comment>
      * @psalm-suppress PossiblyUnusedMethod
      */
     public function comments(): HasMany

@@ -24,7 +24,7 @@ class LoginService
     /**
      * Аутентифицирует пользователя и возвращает токен.
      *
-     * @param array $credentials
+     * @param  array $credentials
      * @return string
      */
     public function loginUser(array $credentials): string
