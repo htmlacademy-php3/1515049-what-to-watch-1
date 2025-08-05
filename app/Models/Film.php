@@ -34,6 +34,7 @@ use Illuminate\Support\Carbon;
  * @property string|null                        $video_link
  * @property string|null                        $preview_video_link
  * @property Carbon|null                        $created_at
+ * @property string|null                        $added_at
  * @property Carbon|null                        $updated_at
  * @property-read Collection<int, Comment>      $comments
  * @property-read int|null                      $comments_count

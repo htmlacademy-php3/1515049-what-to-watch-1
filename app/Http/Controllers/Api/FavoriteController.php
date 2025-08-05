@@ -61,10 +61,12 @@ class FavoriteController extends Controller
     {
         $usrId = auth()->id();
 
+        /** @psalm-suppress UndefinedMagicMethod */
         if (!Film::where('id', $filmId)->exists()) {
             return $this->error('Фильм не найден', [], 404);
         }
 
+        /** @psalm-suppress UndefinedMagicMethod */
         if (FavoriteFilm::where('user_id', $usrId)->where('film_id', $filmId)->exists()) {
             return $this->success(['message' => "Фильм уже в избранном"], 200);
         }
@@ -88,6 +90,7 @@ class FavoriteController extends Controller
     {
         $userId = auth()->id();
 
+        /** @psalm-suppress UndefinedMagicMethod */
         $deleted = FavoriteFilm::where('user_id', $userId)
             ->where('film_id', $filmId)
             ->delete();

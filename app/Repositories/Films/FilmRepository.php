@@ -3,6 +3,7 @@
 namespace App\Repositories\Films;
 
 use App\Models\Film;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -99,17 +100,17 @@ final class FilmRepository
     {
         $film = $this->findOrFail($filmId);
 
-        /** @var Collection<int, Film> $films */
-        $films = Film::with(['genres'])
+        /** @var Builder<Film> $query */
+        /** @psalm-suppress UndefinedMagicMethod */
+        $query = Film::with(['genres'])
             ->whereHas('genres', function ($query) use ($film) {
                 $query->whereIn('genres.id', $film->genres->pluck('id'));
             })
-            ->where('id', '!=', $film->id)
+            ->where('id', '!==', $film->id)
             ->orderBy('released', 'desc')
-            ->limit($limit)
-            ->get();
+            ->limit($limit);
 
-        return $films;
+        return $query->get();
     }
 
     /**

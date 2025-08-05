@@ -22,6 +22,7 @@ use Illuminate\Support\Carbon;
  * @property int                             $id
  * @property int                             $user_id
  * @property int                             $film_id
+ * @property string|null $added_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Film                       $film

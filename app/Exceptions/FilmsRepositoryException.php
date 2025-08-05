@@ -18,6 +18,7 @@ final class FilmsRepositoryException extends Exception
      * Возвращает HTTP-код ошибки по умолчанию.
      *
      * @return int HTTP-статус 500 (внутренняя ошибка сервера)
+     * @psalm-suppress UnusedMethod
      */
     public function getStatusCode(): int
     {
