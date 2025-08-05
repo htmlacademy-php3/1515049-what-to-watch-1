@@ -12,7 +12,13 @@ use App\Interfaces\FilmsOmdbRepositoryInterface;
  */
 class OmdbFilmsService
 {
-    private FilmsOmdbRepositoryInterface $repository;
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     * Laravel DI автоматически вызывает этот конструктор
+     */
+    public function __construct(protected FilmsOmdbRepositoryInterface $repository)
+    {
+    }
 
     /**
      * Получает данные о фильме по IMDB ID.
@@ -28,7 +34,7 @@ class OmdbFilmsService
         $filmData = $this->repository->getFilmById($imdbId);
 
         if (!$filmData) {
-            throw new FilmsRepositoryException($this->repository ?? "Отсутствуют данные для обновления");
+            throw new FilmsRepositoryException("Отсутствуют данные для обновления");
         }
 
         return $filmData;

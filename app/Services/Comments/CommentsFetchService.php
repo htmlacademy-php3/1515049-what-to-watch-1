@@ -11,23 +11,28 @@ use Illuminate\Support\Collection;
  */
 class CommentsFetchService
 {
-
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     * Laravel DI автоматически вызывает этот конструктор
+     */
+    public function __construct(protected CommentsFetchRepository $commentsFetchRepository)
+    {
+    }
 
     /**
      * Получение комментариев к фильму
-     *
-     * @psalm-return Collection<Comment, array{text: string, author: string, created_at: string, rate: int|null}>|\Illuminate\Database\Eloquent\Collection<Comment, array{text: string, author: string, created_at: string, rate: int|null}>
      */
-    public function getFilmComments(int $filmId): Collection|\Illuminate\Database\Eloquent\Collection
+    public function getFilmComments(int $filmId): Collection
     {
-        return $this->commentsFetchRepository->getComments($filmId)
-            ->map(function (Comment $comment) {
+        return collect(
+            collect($this->commentsFetchRepository->getComments($filmId)->all())->map(function (Comment $comment) {
                 return [
                     'text' => $comment->text,
                     'author' => $comment->user?->name ?? 'Гость',
                     'created_at' => $comment->created_at->toDateTimeString(),
                     'rate' => $comment->rate,
                 ];
-            });
+            })
+        );
     }
 }

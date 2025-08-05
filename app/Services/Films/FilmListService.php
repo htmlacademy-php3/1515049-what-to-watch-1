@@ -3,11 +3,19 @@
 namespace App\Services\Films;
 
 use App\Repositories\Films\FilmsListRepository;
-use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class FilmListService
 {
-
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     * Laravel DI автоматически вызывает этот конструктор
+     */
+    public function __construct(
+        protected FilmsListRepository $filmsListRepository,
+        protected FavoriteFilmCheckService $favoriteFilmCheckService
+    ) {
+    }
 
     /**
      *  Возвращает список фильмов с поддержкой фильтрации и пагинации.
@@ -22,9 +30,9 @@ class FilmListService
      * @param array $filters Массив фильтров
      * @param int   $perPage Количество фильмов на страницу
      *
-     * @return Paginator Список фильмов с пагинацией
+     * @return LengthAwarePaginator Список фильмов с пагинацией
      */
-    public function getFilmList(array $filters = [], ?int $userId = null, int $perPage = 8): Paginator
+    public function getFilmList(array $filters = [], ?int $userId = null, int $perPage = 8): LengthAwarePaginator
     {
         $films = $this->filmsListRepository->getFilms($filters, $perPage);
 

@@ -3,7 +3,9 @@
 namespace App\Repositories\Films;
 
 use App\Models\Film;
-use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Репозиторий получения списка фильмов
@@ -12,8 +14,11 @@ final class FilmsListRepository
 {
     /**
      * Получение списка фильмов с фильтрацией и пагинацией.
+     *
+     * @template TModel of Model
+     * @extends Collection<TModel>
      */
-    public function getFilms(array $filters = [], int $perPage = 8): Paginator
+    public function getFilms(array $filters = [], int $perPage = 8): LengthAwarePaginator
     {
         return Film::query()
             ->with(['genres', 'actors', 'directors'])

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Контроллер выхода пользователя из системы
+ * @psalm-suppress UnusedClass
  */
 class LogoutController extends Controller
 {

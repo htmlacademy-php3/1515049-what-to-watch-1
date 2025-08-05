@@ -9,8 +9,11 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends Factory<FavoriteFilm>
+ *
+ * @psalm-suppress UnusedClass
+ * Класс используется через вызов в DatabaseSeeder
  */
-class FavoriteFilmFactory extends Factory
+final class FavoriteFilmFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,6 +22,7 @@ class FavoriteFilmFactory extends Factory
      *
      * @psalm-return array{user_id: Factory, film_id: Factory}
      */
+    #[\Override]
     public function definition(): array
     {
         return [

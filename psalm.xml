@@ -8,23 +8,16 @@
     findUnusedBaselineEntry="true"
     findUnusedCode="true"
 >
+    <plugins>
+        <pluginClass class="Psalm\LaravelPlugin\Plugin"/>
+    </plugins>
     <projectFiles>
         <directory name="app" />
         <directory name="database/factories" />
         <directory name="database/seeders" />
         <ignoreFiles>
             <directory name="vendor" />
-            <file name="app/Console/Commands/MakeServiceCommand.php"/>
+            <directory name="node_modules" />
         </ignoreFiles>
     </projectFiles>
-
-    <issueHandlers>
-        <PropertyNotSetInConstructor errorLevel="info"/>
-        <UndefinedMagicMethod errorLevel="info"/>
-        <ClassMustBeFinal errorLevel="info"/>
-    </issueHandlers>
-
-    <plugins>
-        <pluginClass class="Psalm\LaravelPlugin\Plugin"/>
-    </plugins>
 </psalm>

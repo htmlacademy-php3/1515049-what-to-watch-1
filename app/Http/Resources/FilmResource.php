@@ -6,6 +6,7 @@ use App\Models\Film;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
+use Override;
 
 /**
  * Ресурс для представления данных фильма.
@@ -41,6 +42,7 @@ class FilmResource extends JsonResource
      *
      * @psalm-return array{id: int, name: string, poster_image: null|string, preview_image: null|string, background_image: null|string, background_color: null|string, video_link: null|string, preview_video_link: null|string, description: null|string, rating: 0|mixed, scores_count: 0|mixed, director: TValue|null, starring: array<TKey, TValue>, run_time: int, genre: mixed|null, released: int, is_favorite: \Illuminate\Http\Resources\MissingValue|mixed, is_promo: bool}
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

@@ -10,7 +10,14 @@ use App\Repositories\Films\FilmDetailsRepository;
  */
 class FilmDetailsService
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     * Laravel DI автоматически вызывает этот конструктор
+     */
+    public function __construct(protected FilmDetailsRepository $filmDetailsRepository)
+    {
 
+    }
 
     /**
      *  Возвращает подробную информацию о фильме по его ID с отметкой об избранном.

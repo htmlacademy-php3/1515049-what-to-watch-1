@@ -6,6 +6,7 @@ use App\Models\Film;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
+use Override;
 
 /**
  * Ресурс для краткого представления фильма в списке.
@@ -31,6 +32,7 @@ final class FilmListResource extends JsonResource
      *
      * @psalm-return array{id: int, name: string, poster_image: null|string, preview_image: null|string, preview_video_link: null|string, genre: mixed|null, released: int}
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

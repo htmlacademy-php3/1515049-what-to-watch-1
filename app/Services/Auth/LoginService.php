@@ -12,7 +12,14 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
  */
 class LoginService
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     * Laravel DI автоматически вызывает этот конструктор
+     */
+    public function __construct(protected UserRepository $userRepository)
+    {
 
+    }
 
     /**
      * Аутентифицирует пользователя и возвращает токен.

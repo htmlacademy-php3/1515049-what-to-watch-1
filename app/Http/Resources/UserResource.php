@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 /**
  * @mixin User
@@ -22,6 +23,7 @@ final class UserResource extends JsonResource
      *
      * @psalm-return array{name: string, email: string, avatar: null|string, role: int}
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

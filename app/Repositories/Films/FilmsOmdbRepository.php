@@ -5,12 +5,17 @@ namespace App\Repositories\Films;
 use App\Interfaces\FilmsOmdbRepositoryInterface;
 use Exception;
 use GuzzleHttp\Psr7\HttpFactory;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Override;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Throwable;
 
 /**
  * Репозиторий для получения информации о фильмах из внешнего API OMDb.
+ *
+ * @template TModel of Model
  */
 class FilmsOmdbRepository implements FilmsOmdbRepositoryInterface
 {
@@ -20,9 +25,19 @@ class FilmsOmdbRepository implements FilmsOmdbRepositoryInterface
      * @return string|null
      */
     private ?string $error = null;
+
+    #[Override]
     public function getError(): ?string
     {
         return $this->error;
+    }
+
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     * Laravel DI автоматически вызывает этот конструктор
+     */
+    public function __construct(private readonly ClientInterface $httpClient)
+    {
     }
 
     /**
@@ -33,6 +48,7 @@ class FilmsOmdbRepository implements FilmsOmdbRepositoryInterface
      *
      * @throws Exception Если не задан API-ключ или запрос не может быть создан
      */
+    #[Override]
     public function getFilmById(string $imdbId): ?array
     {
         try {

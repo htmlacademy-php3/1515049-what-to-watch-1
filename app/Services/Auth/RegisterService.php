@@ -14,10 +14,11 @@ class RegisterService
      * Регистрирует нового пользователя и создаёт токен.
      *
      * @param array $params
-     * @return array{user: User, token: string}
+     * @return array{token: string}
      */
     public function registerUser(array $params): array
     {
+        /** @var User $user */
         $user = User::create([
             'name' => $params['name'],
             'email' => $params['email'],

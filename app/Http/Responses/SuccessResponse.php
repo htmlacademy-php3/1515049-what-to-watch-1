@@ -4,6 +4,7 @@ namespace App\Http\Responses;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Override;
 
 final class SuccessResponse extends BaseResponse
 {
@@ -14,16 +15,13 @@ final class SuccessResponse extends BaseResponse
      *
      * @psalm-return array{data: array<TValue|mixed>, current_page?: int, first_page_url?: string, next_page_url?: null|string, prev_page_url?: null|string, per_page?: int, total?: int}
      */
+    #[Override]
     protected function makeResponseData(): ?array
     {
+        /** @var JsonResource|LengthAwarePaginator|array $items */
         if ($this->data instanceof LengthAwarePaginator) {
             $items =
                 $this->data->items();
-
-            if ($items instanceof JsonResource) {
-                $items =
-                    $items->resolve();
-            }
 
             return [
                 'data' => $items,

@@ -7,8 +7,11 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends Factory<Actor>
+ *
+ * @psalm-suppress UnusedClass
+ *  Класс используется через вызов в DatabaseSeeder
  */
-class ActorFactory extends Factory
+final class ActorFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,6 +20,7 @@ class ActorFactory extends Factory
      *
      * @psalm-return array{name: string}
      */
+    #[\Override]
     public function definition(): array
     {
         return [

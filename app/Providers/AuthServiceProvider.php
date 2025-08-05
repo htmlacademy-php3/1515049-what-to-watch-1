@@ -6,7 +6,16 @@ use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Override;
 
+
+/**
+ * @psalm-suppress UnusedClass
+ * Класс используется Laravel для:
+ *  - Регистрации связей в контейнере
+ *  - Запуска начальной загрузки сервисов
+ *  - Регистрации middleware, роутов, команд
+ */
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -16,6 +25,7 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * Register services.
      */
+    #[Override]
     public function register(): void
     {
         //

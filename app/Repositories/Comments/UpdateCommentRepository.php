@@ -3,9 +3,13 @@
 namespace App\Repositories\Comments;
 
 use App\Models\Comment;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Репозиторий для обновления комментариев.
+ *
+ * @template TModel of Model
  */
 final class UpdateCommentRepository
 {
@@ -17,7 +21,7 @@ final class UpdateCommentRepository
      *
      * @return Comment|null Обновлённый и перезагруженный комментарий
      */
-    public function update(Comment $comment, array $data): Comment|null
+    public function update(Comment $comment, array $data): ?Comment
     {
         $comment->update($data);
         return $comment->fresh();

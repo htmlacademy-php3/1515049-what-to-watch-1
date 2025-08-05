@@ -11,13 +11,22 @@ use GuzzleHttp\Client;
 use Http\Adapter\Guzzle7\Client as GuzzleAdapter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Override;
 use Psr\Http\Client\ClientInterface;
 
+/**
+ * @psalm-suppress UnusedClass
+ * Класс используется Laravel для:
+ *  - Регистрации связей в контейнере
+ *  - Запуска начальной загрузки сервисов
+ *  - Регистрации middleware, роутов, команд
+ */
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
+    #[Override]
     public function register(): void
     {
         if ($this->app->runningInConsole() &&

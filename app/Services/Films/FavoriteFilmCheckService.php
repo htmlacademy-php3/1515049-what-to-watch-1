@@ -7,7 +7,14 @@ use App\Repositories\Films\FavoriteFilmCheckRepository;
 
 class FavoriteFilmCheckService
 {
-
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     * Laravel DI автоматически вызывает этот конструктор
+     */
+    public function __construct(
+        protected FavoriteFilmCheckRepository $repository
+    ) {
+    }
 
     /**
      * Проверяет, есть ли фильм в избранном у пользователя

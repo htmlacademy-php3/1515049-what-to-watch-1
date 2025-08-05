@@ -10,7 +10,13 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class SimilarFilmService
 {
-
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     * Laravel DI автоматически вызывает этот конструктор
+     */
+    public function __construct(protected FilmRepository $filmRepository)
+    {
+    }
 
     /**
      * Получает похожие фильмы по жанру выбранного фильма

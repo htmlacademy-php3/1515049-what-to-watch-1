@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Models\Genre;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 /**
  * @mixin Genre
@@ -20,6 +21,7 @@ class GenreResource extends JsonResource
      *
      * @psalm-return array{id: int, name: string}
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

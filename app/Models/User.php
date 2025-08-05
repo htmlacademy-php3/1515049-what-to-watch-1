@@ -2,21 +2,25 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Eloquent;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
+use Laravel\Sanctum\NewAccessToken;
+use Laravel\Sanctum\PersonalAccessToken;
 
 /**
  * Class User
  *
- * @package App\Models
  * @property int                                $id
  * @property int                                $role
  * @property string|null                        $avatar
@@ -28,60 +32,52 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Carbon|null                        $created_at
  * @property Carbon|null                        $updated_at
  * @property-read Collection<int, Comment>      $comments
- * @property-read int|null                      $comments_count
  * @property-read Collection<int, FavoriteFilm> $favorite_films
- * @property-read int|null                      $favorite_films_count
- * @method static Builder<static>|User newModelQuery()
- * @method static Builder<static>|User newQuery()
- * @method static Builder<static>|User query()
- * @method static Builder<static>|User whereAvatar($value)
- * @method static Builder<static>|User whereCreatedAt($value)
- * @method static Builder<static>|User whereEmail($value)
- * @method static Builder<static>|User whereEmailVerifiedAt($value)
- * @method static Builder<static>|User whereId($value)
- * @method static Builder<static>|User whereName($value)
- * @method static Builder<static>|User wherePassword($value)
- * @method static Builder<static>|User whereRememberToken($value)
- * @method static Builder<static>|User whereRole($value)
- * @method static Builder<static>|User whereUpdatedAt($value)
+ * @property-read Collection<int, Film>         $favoriteFilms
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
+ * @property-read Collection<int, PersonalAccessToken>     $tokens
+ *
+ * @method static Builder|User whereEmail($value)
+ * @method static Builder|User whereId($value)
+ * @method static Builder|User newModelQuery()
+ * @method static Builder|User newQuery()
+ * @method static Builder|User query()
+ * @method static Builder|User where(string $column, $operator = null, $value = null, string $boolean = 'and')
+ * @method static User|null first(array $columns = ['*'])
+ * @method static Model|static create(array $attributes = [])
+ * @method static Model|static findOrFail(int $id)
+ * @method static Model|static firstOrCreate(array $attributes, array $values = [])
+ * @method NewAccessToken createToken(string $name, array $abilities = [])
+ * @method static Collection|static[] pluck(string $column, string|null $key = null)
+ *
  * @mixin Eloquent
+ * @mixin HasApiTokens<User>
+ * @mixin HasFactory<User>
+ *
+ * @psalm-suppress MissingTemplateParam
  */
 class User extends Authenticatable
 {
-    use HasApiTokens;
-    use HasFactory;
+    use HasApiTokens; // <--- generic param: App\Models\User
+    use HasFactory;   // <--- generic param: App\Models\User
     use Notifiable;
+
     public const int ROLE_USER = 1;
     public const int ROLE_MODERATOR = 2;
 
-    protected string $table = 'users';
+    protected $table = 'users';
 
-    /**
-     * @var string[]
-     *
-     * @psalm-var array{email_verified_at: 'datetime', role: 'integer'}
-     */
-    protected array $casts = [
+    protected $casts = [
         'email_verified_at' => 'datetime',
         'role' => 'integer',
     ];
 
-    /**
-     * @var string[]
-     *
-     * @psalm-var list{'password', 'remember_token'}
-     */
-    protected array $hidden = [
+    protected $hidden = [
         'password',
         'remember_token'
     ];
 
-    /**
-     * @var string[]
-     *
-     * @psalm-var list{'role', 'avatar', 'name', 'email', 'email_verified_at', 'password', 'remember_token'}
-     */
-    protected array $fillable = [
+    protected $fillable = [
         'role',
         'avatar',
         'name',
@@ -92,16 +88,14 @@ class User extends Authenticatable
     ];
 
     /**
-     * @psalm-return HasMany<Comment>
+     * @return HasMany<Comment>
+     * @psalm-suppress PossiblyUnusedMethod
      */
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
-    /**
-     * @psalm-return BelongsToMany<Film>
-     */
     public function favoriteFilms(): BelongsToMany
     {
         return $this->belongsToMany(Film::class, 'favorite_films')
@@ -111,10 +105,5 @@ class User extends Authenticatable
     public function isModerator(): bool
     {
         return $this->role === self::ROLE_MODERATOR;
-    }
-
-    public function getAvatarUrlAttribute(): ?string
-    {
-        return $this->avatar ? asset("storage/{$this->avatar}") : null;
     }
 }

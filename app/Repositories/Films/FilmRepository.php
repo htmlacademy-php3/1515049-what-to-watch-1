@@ -3,10 +3,14 @@
 namespace App\Repositories\Films;
 
 use App\Models\Film;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Репозиторий для фильмов
+ *
+ * @template TModel of Model
  */
 final class FilmRepository
 {
@@ -18,7 +22,9 @@ final class FilmRepository
      */
     public function create(array $data): Film
     {
-        return Film::create($data);
+        /** @var Film $film */
+        $film = Film::create($data);
+        return $film;
     }
 
     /**
@@ -66,7 +72,9 @@ final class FilmRepository
      */
     public function loadRelations(Film $film): Film
     {
-        return $film->load('genres', 'actors', 'directors');
+        /** @var Film $film */
+        $film = $film->load('genres', 'actors', 'directors');
+        return $film;
     }
 
     /**
@@ -86,7 +94,6 @@ final class FilmRepository
      *
      * @param int $filmId
      * @param int $limit
-     *
      * @return Collection
      *
      * @psalm-return Collection<int, Film>
@@ -95,14 +102,17 @@ final class FilmRepository
     {
         $film = $this->findOrFail($filmId);
 
-        return Film::with(['genres'])
+        /** @var Builder<Film> $query */
+        /** @psalm-suppress UndefinedMagicMethod */
+        $query = Film::with(['genres'])
             ->whereHas('genres', function ($query) use ($film) {
                 $query->whereIn('genres.id', $film->genres->pluck('id'));
             })
-            ->where('id', '!=', $film->id)
+            ->where('id', '!==', $film->id)
             ->orderBy('released', 'desc')
-            ->limit($limit)
-            ->get();
+            ->limit($limit);
+
+        return $query->get();
     }
 
     /**
@@ -112,29 +122,31 @@ final class FilmRepository
      */
     public function getPromoFilm(): Film
     {
-        return Film::where('is_promo', true)
+        /** @var Film $film */
+        $film = Film::where('is_promo', true)
             ->with(['genres', 'actors', 'directors'])
             ->firstOrFail();
+
+        return $film;
     }
 
     /**
      * Сбросить флаг is_promo у всех фильмов
      *
-     * @return int Число обновленных записей
      */
-    public function resetPromoFlags(): int
+    public function resetPromoFlags(): void
     {
-        return Film::where('is_promo', true)->update(['is_promo' => false]);
+        Film::where('is_promo', true)->update(['is_promo' => false]);
     }
 
     /**
      * Установить флаг is_promo для фильма по ID
      *
      * @param int $filmId
-     * @return int Количество обновленных записей (должно быть 1)
+     * Количество обновленных записей (должно быть 1)
      */
-    public function setPromoFlag(int $filmId): int
+    public function setPromoFlag(int $filmId): void
     {
-        return Film::where('id', $filmId)->update(['is_promo' => true]);
+        Film::where('id', $filmId)->update(['is_promo' => true]);
     }
 }

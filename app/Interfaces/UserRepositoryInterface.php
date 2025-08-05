@@ -14,7 +14,7 @@ interface UserRepositoryInterface
      *
      * @param  int   $userId   Идентификатор пользователя.
      * @param  array $details  Ассоциативный массив обновляемых данных.
-     * @return User Обновлённая модель пользователя.
+     * @return User|null Обновлённая модель пользователя.
      */
-    public function updateUser(int $userId, array $details): User;
+    public function updateUser(int $userId, array $details): ?User;
 }

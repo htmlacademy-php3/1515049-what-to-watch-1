@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Closure;
+use Database\Factories\FilmFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -17,6 +19,7 @@ use Illuminate\Support\Carbon;
  * @package App\Models
  * @property int                                $id
  * @property string                             $name
+ * @property string                             $title
  * @property string|null                        $released
  * @property string|null                        $description
  * @property string|null                        $director
@@ -31,6 +34,7 @@ use Illuminate\Support\Carbon;
  * @property string|null                        $video_link
  * @property string|null                        $preview_video_link
  * @property Carbon|null                        $created_at
+ * @property string|null                        $added_at
  * @property Carbon|null                        $updated_at
  * @property-read Collection<int, Comment>      $comments
  * @property-read int|null                      $comments_count
@@ -47,7 +51,43 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Film whereBackgroundImage($value)
  * @method static Builder|Film whereVideoLink($value)
  * @method static Builder|Film wherePreviewVideoLink($value)
+ * @method static Model|static         create(array $attributes = [])
+ * @method static Builder|Film         where(string $column, $operator = null, $value = null, string $boolean = 'and')
+ * @method static User|null            first(array $columns = ['*'])
+ * @method static Collection|static[] pluck(string $column, string|null $key = null)
+ * @method static Model|static firstOrCreate(array $attributes, array $values = [])
+ * @property string                             $status
+ * @property bool                               $is_promo Флаг промо-фильма
+ * @property-read Collection<int, Actor>        $actors
+ * @property-read int|null                      $actors_count
+ * @property-read Collection<int, Director>     $directors
+ * @property-read int|null                      $directors_count
+ * @property-read Collection<int, FavoriteFilm> $favoriteFilms
+ * @property-read Collection<int, User>         $favorites
+ * @property-read int|null                      $favorites_count
+ * @property-read Collection<int, User>         $usersWhoFavorited
+ * @property-read int|null                      $users_who_favorited_count
+ * @method static FilmFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Film newModelQuery()
+ * @method static Builder<static>|Film whereBackgroundColor($value)
+ * @method static Builder<static>|Film whereCreatedAt($value)
+ * @method static Builder<static>|Film whereDescription($value)
+ * @method static Builder<static>|Film whereId($value)
+ * @method static Builder<static>|Film whereImdbId($value)
+ * @method static Builder<static>|Film whereImdbVotes($value)
+ * @method static Builder<static>|Film whereIsPromo($value)
+ * @method static Builder<static>|Film whereRating($value)
+ * @method static Builder<static>|Film whereStatus($value)
+ * @method static Builder<static>|Film whereUpdatedAt($value)
+ * @method static Builder<static>|Film with($relations)
+ * @method static Builder<self> newQuery()
+ * @method static Builder<self> query()
+ * @method static Builder<self> whereHas(string $relation, Closure $callback = null, string $operator = '>=', int $count = 1)
+ * @method static self findOrFail(mixed $id, array $columns = ['*'])
+ *
  * @mixin Eloquent
+ *
+ * @psalm-suppress MissingTemplateParam
  */
 class Film extends Model
 {
@@ -56,19 +96,13 @@ class Film extends Model
     public const string STATUS_PENDING = 'pending';
     public const string STATUS_MODERATE = 'moderate';
     public const string STATUS_READY = 'ready';
-    /**
-     * @var bool|mixed
-     */
+
+    /** @psalm-suppress PossiblyUnusedProperty */
     public bool $is_favorite = false;
 
-    protected string $table = 'films';
+    protected $table = 'films';
 
-    /**
-     * @var string[]
-     *
-     * @psalm-var list{'name', 'status', 'released', 'description', 'director', 'run_time', 'rating', 'imdb_votes', 'imdb_id', 'poster_image', 'preview_image', 'background_image', 'background_color', 'video_link', 'preview_video_link', 'is_promo'}
-     */
-    protected array $fillable = [
+    protected $fillable = [
         'name',
         'status',
         'released',
@@ -87,12 +121,7 @@ class Film extends Model
         'is_promo',
     ];
 
-    /**
-     * @var string[]
-     *
-     * @psalm-var array{rating: 'float', imdb_votes: 'integer', is_promo: 'boolean'}
-     */
-    protected array $casts = [
+    protected $casts = [
         'rating' => 'float',
         'imdb_votes' => 'integer',
         'is_promo' => 'boolean',
@@ -102,8 +131,6 @@ class Film extends Model
      * Получить все комментарии, связанные с фильмом.
      *
      * @return HasMany
-     *
-     * @psalm-return HasMany<Comment>
      */
     public function comments(): HasMany
     {
@@ -111,11 +138,32 @@ class Film extends Model
     }
 
     /**
+     * Получить все записи об избранных фильмах, в которых указан этот фильм.
+     *
+     * @return HasMany
+     *
+     * @psalm-suppress PossiblyUnusedMethod
+     */
+    public function favoriteFilms(): HasMany
+    {
+        return $this->hasMany(FavoriteFilm::class);
+    }
+
+    /**
+     * Получить всех пользователей, добавивших фильм в избранное.
+     *
+     * @return BelongsToMany
+     * @psalm-suppress PossiblyUnusedMethod
+     */
+    public function usersWhoFavorited(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'favorite_films', 'film_id', 'user_id')->withTimestamps();
+    }
+
+    /**
      * Получить жанры, к которым относится фильм.
      *
      * @return BelongsToMany
-     *
-     * @psalm-return BelongsToMany<Genre>
      */
     public function genres(): BelongsToMany
     {
@@ -126,8 +174,6 @@ class Film extends Model
      * Получить актёров, участвующих в фильме.
      *
      * @return BelongsToMany
-     *
-     * @psalm-return BelongsToMany<Actor>
      */
     public function actors(): BelongsToMany
     {
@@ -138,11 +184,38 @@ class Film extends Model
      * Получить режиссёров, снявших фильм.
      *
      * @return BelongsToMany
-     *
-     * @psalm-return BelongsToMany<Director>
      */
     public function directors(): BelongsToMany
     {
         return $this->belongsToMany(Director::class, 'director_film');
+    }
+
+    /**
+     * Получить среднюю оценку фильма на основе пользовательских комментариев.
+     *
+     * @return float|null
+     * @psalm-suppress PossiblyUnusedMethod
+     */
+    public function getRatingAttribute(): ?float
+    {
+        $avg =
+            $this->comments()->avg('rate');
+
+        return $avg !== null ? round($avg, 1) : null;
+    }
+
+    /**
+     * Отношение с пользователями, добавившими фильм в избранное
+     *
+     * @psalm-suppress PossiblyUnusedMethod
+     */
+    public function favorites(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'favorite_films',
+            'film_id',
+            'user_id'
+        )->withTimestamps();
     }
 }

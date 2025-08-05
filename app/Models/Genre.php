@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\GenreFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -27,20 +28,30 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Genre whereId($value)
  * @method static Builder<static>|Genre whereName($value)
  * @method static Builder<static>|Genre whereUpdatedAt($value)
+ * @method static Collection|static[] pluck(string $column, string|null $key = null)
+ * @method static Model|static findOrFail(int $id)
+ * @method static Model|static firstOrCreate(array $attributes, array $values = [])
+ * @method static GenreFactory factory($count = null, $state = [])
  * @mixin Eloquent
+ *
+ * @psalm-suppress MissingTemplateParam
  */
 class Genre extends Model
 {
     use HasFactory;
 
-    protected string $table = 'genres';
+    protected $table = 'genres';
 
-    /**
-     * @var string[]
-     *
-     * @psalm-var list{'name'}
-     */
-    protected array $fillable = [
+    protected $fillable = [
         'name'
     ];
+
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     * Laravel использует динамически
+     */
+    public function films(): BelongsToMany
+    {
+        return $this->belongsToMany(Film::class, 'genre_film');
+    }
 }

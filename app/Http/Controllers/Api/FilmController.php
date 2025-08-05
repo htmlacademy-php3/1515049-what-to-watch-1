@@ -18,6 +18,9 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
+/**
+ * @psalm-suppress UnusedClass
+ */
 class FilmController extends Controller
 {
     public function __construct(
@@ -40,8 +43,7 @@ class FilmController extends Controller
      */
     public function index(Request $request): SuccessResponse
     {
-        $films =
-            $this->filmListService->getFilmList($request->all(), auth()->id());
+        $films = $this->filmListService->getFilmList($request->all(), (int)auth()->id());
 
         return $this->success(FilmListResource::collection($films));
     }
@@ -73,7 +75,7 @@ class FilmController extends Controller
     protected function setFavoriteFlag(Film $film): void
     {
         $film->is_favorite = auth()->check()
-            && $this->favoriteFilmCheckService->isFavorite($film->id, auth()->id());
+            && $this->favoriteFilmCheckService->isFavorite($film->id, (int)auth()->id());
     }
 
     /**
@@ -135,13 +137,12 @@ class FilmController extends Controller
     /**
      * Создание промо
      *
-     * @param Request $request
      * @param         $filmId
      *
      * @return SuccessResponse
      * @throws Throwable
      */
-    public function createPromo(Request $request, $filmId): SuccessResponse
+    public function createPromo($filmId): SuccessResponse
     {
         $film = $this->promoFilmService->setPromoFilm($filmId);
 

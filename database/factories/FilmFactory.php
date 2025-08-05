@@ -7,16 +7,19 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends Factory<Film>
+ *
+ * @psalm-suppress UnusedClass
+ * Класс используется через вызов в DatabaseSeeder
  */
-class FilmFactory extends Factory
+final class FilmFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
-     * @return (false|float|int|string)[]
+     * @return array<string, mixed>
      *
-     * @psalm-return array{name: string, released: string, description: string, run_time: int, rating: float, imdb_votes: int, imdb_id: string, poster_image: string, preview_image: string, background_color: string, background_image: string, video_link: string, preview_video_link: string, is_promo: false}
      */
+    #[\Override]
     public function definition(): array
     {
         return [

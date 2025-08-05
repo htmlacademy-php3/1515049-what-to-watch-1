@@ -2,12 +2,16 @@
 
 namespace Database\Factories;
 
+use App\Models\Director;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Director>
+ * @extends Factory<Director>
+ *
+ * @psalm-suppress UnusedClass
+ *  Класс используется через вызов в DatabaseSeeder
  */
-class DirectorFactory extends Factory
+final class DirectorFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,6 +20,7 @@ class DirectorFactory extends Factory
      *
      * @psalm-return array{name: string}
      */
+    #[\Override]
     public function definition(): array
     {
         return [
