@@ -7,7 +7,11 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     findUnusedBaselineEntry="true"
     findUnusedCode="true"
->    <projectFiles>
+>
+    <plugins>
+        <pluginClass class="Psalm\LaravelPlugin\Plugin"/>
+    </plugins>
+    <projectFiles>
         <directory name="app" />
         <directory name="database/factories" />
         <directory name="database/seeders" />

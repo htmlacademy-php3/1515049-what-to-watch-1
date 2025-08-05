@@ -41,6 +41,8 @@ use Illuminate\Support\Carbon;
  * @method static Model|static firstOrCreate(array $attributes, array $values = [])
  * @method static \Database\Factories\FavoriteFilmFactory factory($count = null, $state = [])
  * @mixin Eloquent
+ *
+ * @psalm-suppress MissingTemplateParam
  */
 class FavoriteFilm extends Model
 {
@@ -58,11 +60,19 @@ class FavoriteFilm extends Model
         'film_id'
     ];
 
+    /**
+     * @return BelongsTo
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function film(): BelongsTo
     {
         return $this->belongsTo(Film::class);
     }
 
+    /**
+     * @return BelongsTo
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

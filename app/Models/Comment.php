@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Database\Factories\CommentFactory;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -41,6 +42,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Comment whereRate($value)
  * @method static Builder<static>|Comment whereUpdatedAt($value)
  * @method static Builder<static>|Comment whereUserId($value)
+ * @method static Model|static         create(array $attributes = [])
  * @method static Collection|static[] pluck(string $column, string|null $key = null)
  * @method static Model|static findOrFail(int $id)
  * @method static Model|static firstOrCreate(array $attributes, array $values = [])
@@ -49,7 +51,9 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $replies_count
  * @method static CommentFactory factory($count = null, $state = [])
  * @method static Builder<static>|Comment whereText($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
+ *
+ * @psalm-suppress MissingTemplateParam
  */
 class Comment extends Model
 {
@@ -79,6 +83,7 @@ class Comment extends Model
      * Родительский комментарий
      *
      * @return BelongsTo
+     * @psalm-suppress PossiblyUnusedMethod
      */
     public function parentComment(): BelongsTo
     {
@@ -89,6 +94,7 @@ class Comment extends Model
      * Связь с фильмом, к которому относится комментарий.
      *
      * @return BelongsTo
+     * @psalm-suppress PossiblyUnusedMethod
      */
     public function film(): BelongsTo
     {
@@ -99,6 +105,7 @@ class Comment extends Model
      * Связь с пользователем, который оставил комментарий.
      *
      * @return BelongsTo
+     * @psalm-suppress PossiblyUnusedMethod
      */
     public function user(): BelongsTo
     {
@@ -117,6 +124,7 @@ class Comment extends Model
      * Получить имя автора комментария
      *
      * @return string
+     * @psalm-suppress PossiblyUnusedMethod
      */
     public function getAuthorName(): string
     {
@@ -126,12 +134,11 @@ class Comment extends Model
     /**
      * Удаление комментария с ответами
      *
-     * @return bool|null
      */
-    public function deleteWithReplies(): ?bool
+    public function deleteWithReplies(): void
     {
         $this->replies->each->deleteWithReplies();
 
-        return $this->delete();
+        $this->delete();
     }
 }

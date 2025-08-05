@@ -33,6 +33,8 @@ use Illuminate\Support\Carbon;
  * @method static Model|static firstOrCreate(array $attributes, array $values = [])
  * @method static DirectorFactory factory($count = null, $state = [])
  * @mixin Eloquent
+ *
+ * @psalm-suppress MissingTemplateParam
  */
 class Director extends Model
 {
@@ -40,6 +42,10 @@ class Director extends Model
 
     protected $fillable = ['name'];
 
+    /**
+     * @return BelongsToMany
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function films(): BelongsToMany
     {
         return $this->belongsToMany(Film::class, 'director_film');

@@ -2,27 +2,25 @@
 
 namespace App\Models;
 
-use Database\Factories\UserFactory;
+use Carbon\Carbon;
 use Eloquent;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Carbon;
-use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
 use Laravel\Sanctum\PersonalAccessToken;
 
 /**
  * Class User
  *
- * @package App\Models
  * @property int                                $id
  * @property int                                $role
  * @property string|null                        $avatar
@@ -34,42 +32,36 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @property Carbon|null                        $created_at
  * @property Carbon|null                        $updated_at
  * @property-read Collection<int, Comment>      $comments
- * @property-read int|null                      $comments_count
  * @property-read Collection<int, FavoriteFilm> $favorite_films
- * @property-read int|null                      $favorite_films_count
- * @method static Builder<static>|User newModelQuery()
- * @method static Builder<static>|User newQuery()
- * @method static Builder<static>|User query()
- * @method static Builder<static>|User whereAvatar($value)
- * @method static Builder<static>|User whereCreatedAt($value)
- * @method static Builder<static>|User whereEmail($value)
- * @method static Builder<static>|User whereEmailVerifiedAt($value)
- * @method static Builder<static>|User whereId($value)
- * @method static Builder<static>|User whereName($value)
- * @method static Builder<static>|User wherePassword($value)
- * @method static Builder<static>|User whereRememberToken($value)
- * @method static Builder<static>|User whereRole($value)
- * @method static Builder<static>|User whereUpdatedAt($value)
- * @method static Model|static         create(array $attributes = [])
- * @method static Builder|User         where(string $column, $operator = null, $value = null, string $boolean = 'and')
- * @method static User|null            first(array $columns = ['*'])
- * @method NewAccessToken              createToken(string $name, array $abilities = [])
- * @method static Collection|static[] pluck(string $column, string|null $key = null)
+ * @property-read Collection<int, Film>         $favoriteFilms
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
+ * @property-read Collection<int, PersonalAccessToken>     $tokens
+ *
+ * @method static Builder|User whereEmail($value)
+ * @method static Builder|User whereId($value)
+ * @method static Builder|User newModelQuery()
+ * @method static Builder|User newQuery()
+ * @method static Builder|User query()
+ * @method static Builder|User where(string $column, $operator = null, $value = null, string $boolean = 'and')
+ * @method static User|null first(array $columns = ['*'])
+ * @method static Model|static create(array $attributes = [])
  * @method static Model|static findOrFail(int $id)
  * @method static Model|static firstOrCreate(array $attributes, array $values = [])
- * @property-read Collection<int, Film>                                                               $favoriteFilms
- * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
- * @property-read int|null                                                                            $notifications_count
- * @property-read Collection<int, PersonalAccessToken>                               $tokens
- * @property-read int|null                                                                            $tokens_count
- * @method static UserFactory factory($count = null, $state = [])
+ * @method NewAccessToken createToken(string $name, array $abilities = [])
+ * @method static Collection|static[] pluck(string $column, string|null $key = null)
+ *
  * @mixin Eloquent
+ * @mixin HasApiTokens<User>
+ * @mixin HasFactory<User>
+ *
+ * @psalm-suppress MissingTemplateParam
  */
 class User extends Authenticatable
 {
-    use HasApiTokens;
-    use HasFactory;
+    use HasApiTokens; // <--- generic param: App\Models\User
+    use HasFactory;   // <--- generic param: App\Models\User
     use Notifiable;
+
     public const int ROLE_USER = 1;
     public const int ROLE_MODERATOR = 2;
 
@@ -95,6 +87,10 @@ class User extends Authenticatable
         'remember_token'
     ];
 
+    /**
+     * @return HasMany<Comment>
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);

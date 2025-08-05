@@ -28,6 +28,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Model|static findOrFail(int $id)
  * @method static Model|static firstOrCreate(array $attributes, array $values = [])
  * @mixin Eloquent
+ *
+ * @psalm-suppress MissingTemplateParam
  */
 class CacheLock extends Model
 {

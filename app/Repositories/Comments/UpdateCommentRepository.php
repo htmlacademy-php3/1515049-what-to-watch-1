@@ -19,9 +19,9 @@ final class UpdateCommentRepository
      * @param Comment $comment Объект комментария для обновления
      * @param array   $data    Данные для обновления (например: text, rate)
      *
-     * @return Comment Обновлённый и перезагруженный комментарий
+     * @return Comment|null Обновлённый и перезагруженный комментарий
      */
-    public function update(Comment $comment, array $data): Comment
+    public function update(Comment $comment, array $data): ?Comment
     {
         $comment->update($data);
         return $comment->fresh();

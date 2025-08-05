@@ -4,6 +4,7 @@ namespace App\Services\Comments;
 
 use App\Models\Comment;
 use App\Repositories\Comments\CreateCommentRepository;
+use RuntimeException;
 
 /**
  * Сервис создания комментария к фильму
@@ -23,6 +24,12 @@ class CommentCreateService
      */
     public function createComment(array $data): Comment
     {
-        return $this->createCommentRepository->create($data);
+        $comment = $this->createCommentRepository->create($data);
+
+        if (!$comment) {
+            throw new RuntimeException('Не удалось создать комментарий');
+        }
+
+        return $comment;
     }
 }
