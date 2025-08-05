@@ -12,11 +12,12 @@ use App\Interfaces\FilmsOmdbRepositoryInterface;
  */
 class OmdbFilmsService
 {
-    private FilmsOmdbRepositoryInterface $repository;
-
-    public function __construct(FilmsOmdbRepositoryInterface $repository)
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     * Laravel DI автоматически вызывает этот конструктор
+     */
+    public function __construct(protected FilmsOmdbRepositoryInterface $repository)
     {
-        $this->repository = $repository;
     }
 
     /**
@@ -33,7 +34,7 @@ class OmdbFilmsService
         $filmData = $this->repository->getFilmById($imdbId);
 
         if (!$filmData) {
-            throw new FilmsRepositoryException($this->repository ?? "Отсутствуют данные для обновления");
+            throw new FilmsRepositoryException("Отсутствуют данные для обновления");
         }
 
         return $filmData;

@@ -6,7 +6,9 @@
 
 namespace App\Models;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -23,7 +25,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder<static>|GenreFilm query()
  * @method static Builder<static>|GenreFilm whereFilmId($value)
  * @method static Builder<static>|GenreFilm whereGenreId($value)
- * @mixin \Eloquent
+ *
+ * @method static Collection|static[] pluck(string $column, string|null $key = null)
+ * @method static Model|static findOrFail(int $id)
+ * @method static Model|static firstOrCreate(array $attributes, array $values = [])
+ *
+ * @mixin Eloquent
  */
 class GenreFilm extends Model
 {

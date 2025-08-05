@@ -11,6 +11,7 @@ use GuzzleHttp\Client;
 use Http\Adapter\Guzzle7\Client as GuzzleAdapter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Override;
 use Psr\Http\Client\ClientInterface;
 
 class AppServiceProvider extends ServiceProvider
@@ -18,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
+    #[Override]
     public function register(): void
     {
         if ($this->app->runningInConsole() &&

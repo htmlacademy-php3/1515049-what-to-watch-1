@@ -10,6 +10,10 @@ use App\Repositories\Comments\UpdateCommentRepository;
  */
 class CommentUpdateService
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     * Laravel DI автоматически вызывает этот конструктор
+     */
     public function __construct(protected UpdateCommentRepository $updateCommentRepository)
     {
 

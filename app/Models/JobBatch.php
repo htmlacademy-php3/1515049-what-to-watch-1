@@ -6,7 +6,9 @@
 
 namespace App\Models;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -36,30 +38,35 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder<static>|JobBatch whereOptions($value)
  * @method static Builder<static>|JobBatch wherePendingJobs($value)
  * @method static Builder<static>|JobBatch whereTotalJobs($value)
- * @mixin \Eloquent
+ *
+ * @method static Collection|static[] pluck(string $column, string|null $key = null)
+ * @method static Model|static findOrFail(int $id)
+ * @method static Model|static firstOrCreate(array $attributes, array $values = [])
+ *
+ * @mixin Eloquent
  */
 class JobBatch extends Model
 {
-	protected $table = 'job_batches';
-	public $incrementing = false;
-	public $timestamps = false;
+    protected $table = 'job_batches';
+    public $incrementing = false;
+    public $timestamps = false;
 
-	protected $casts = [
-		'total_jobs' => 'int',
-		'pending_jobs' => 'int',
-		'failed_jobs' => 'int',
-		'cancelled_at' => 'int',
-		'finished_at' => 'int'
-	];
+    protected $casts = [
+        'total_jobs' => 'int',
+        'pending_jobs' => 'int',
+        'failed_jobs' => 'int',
+        'cancelled_at' => 'int',
+        'finished_at' => 'int'
+    ];
 
-	protected $fillable = [
-		'name',
-		'total_jobs',
-		'pending_jobs',
-		'failed_jobs',
-		'failed_job_ids',
-		'options',
-		'cancelled_at',
-		'finished_at'
-	];
+    protected $fillable = [
+        'name',
+        'total_jobs',
+        'pending_jobs',
+        'failed_jobs',
+        'failed_job_ids',
+        'options',
+        'cancelled_at',
+        'finished_at'
+    ];
 }

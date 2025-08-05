@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends Factory<FavoriteFilm>
  */
-class FavoriteFilmFactory extends Factory
+final class FavoriteFilmFactory extends Factory
 {
     /**
      * Define the model's default state.

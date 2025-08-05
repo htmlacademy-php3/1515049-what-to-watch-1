@@ -4,10 +4,16 @@ namespace App\Repositories\Users;
 
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Override;
 
 /**
  * Репозиторий для работы с пользователями.
+ *
+ * @template TModel of Model
+ * @extends Collection<TModel>
  */
 final class UserRepository implements UserRepositoryInterface
 {
@@ -31,6 +37,7 @@ final class UserRepository implements UserRepositoryInterface
      *
      * @throws ModelNotFoundException Если пользователь не найден.
      */
+    #[Override]
     public function updateUser(int $userId, array $details): User
     {
         $user = User::findOrFail($userId);

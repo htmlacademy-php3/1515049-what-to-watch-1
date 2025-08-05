@@ -27,6 +27,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Genre whereId($value)
  * @method static Builder<static>|Genre whereName($value)
  * @method static Builder<static>|Genre whereUpdatedAt($value)
+ *
+ * @method static Collection|static[] pluck(string $column, string|null $key = null)
+ * @method static Model|static findOrFail(int $id)
+ * @method static Model|static firstOrCreate(array $attributes, array $values = [])
+ *
  * @mixin Eloquent
  */
 class Genre extends Model

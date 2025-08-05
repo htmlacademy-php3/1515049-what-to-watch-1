@@ -4,13 +4,16 @@ namespace Database\Seeders;
 
 use App\Models\Actor;
 use App\Models\Film;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class FilmActorSeeder extends Seeder
+/** @used-by DatabaseSeeder::run() */
+final class FilmActorSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @psalm-suppress PossiblyUnusedMethod
+     *  Вызывается системой Laravel при выполнении artisan db:seed
      */
     public function run(): void
     {
@@ -18,7 +21,8 @@ class FilmActorSeeder extends Seeder
         $actors = Actor::all();
 
         foreach ($films as $film) {
-            $film->actors()->attach($actors->random(rand(1,5))->pluck('id')->toArray());
+            $randomActors = collect((array) $actors->random(rand(1, 5)));
+            $film->actors()->attach($randomActors->pluck('id')->all());
         }
     }
 }

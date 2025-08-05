@@ -6,7 +6,9 @@
 
 namespace App\Models;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -28,24 +30,29 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder<static>|Session wherePayload($value)
  * @method static Builder<static>|Session whereUserAgent($value)
  * @method static Builder<static>|Session whereUserId($value)
- * @mixin \Eloquent
+ *
+ * @method static Collection|static[] pluck(string $column, string|null $key = null)
+ * @method static Model|static findOrFail(int $id)
+ * @method static Model|static firstOrCreate(array $attributes, array $values = [])
+ *
+ * @mixin Eloquent
  */
 class Session extends Model
 {
-	protected $table = 'sessions';
-	public $incrementing = false;
-	public $timestamps = false;
+    protected $table = 'sessions';
+    public $incrementing = false;
+    public $timestamps = false;
 
-	protected $casts = [
-		'user_id' => 'int',
-		'last_activity' => 'int'
-	];
+    protected $casts = [
+        'user_id' => 'int',
+        'last_activity' => 'int'
+    ];
 
-	protected $fillable = [
-		'user_id',
-		'ip_address',
-		'user_agent',
-		'payload',
-		'last_activity'
-	];
+    protected $fillable = [
+        'user_id',
+        'ip_address',
+        'user_agent',
+        'payload',
+        'last_activity'
+    ];
 }

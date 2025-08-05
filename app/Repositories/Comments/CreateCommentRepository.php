@@ -3,9 +3,14 @@
 namespace App\Repositories\Comments;
 
 use App\Models\Comment;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Репозиторий для создания комментариев.
+ *
+ * @template TModel of Model
+ * @extends Collection<TModel>
  */
 final class CreateCommentRepository
 {

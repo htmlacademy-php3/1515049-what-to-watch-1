@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -44,6 +45,11 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static Builder<static>|User whereRememberToken($value)
  * @method static Builder<static>|User whereRole($value)
  * @method static Builder<static>|User whereUpdatedAt($value)
+ *
+ * @method static Collection|static[] pluck(string $column, string|null $key = null)
+ * @method static Model|static findOrFail(int $id)
+ * @method static Model|static firstOrCreate(array $attributes, array $values = [])
+ *
  * @mixin Eloquent
  */
 class User extends Authenticatable
@@ -90,10 +96,5 @@ class User extends Authenticatable
     public function isModerator(): bool
     {
         return $this->role === self::ROLE_MODERATOR;
-    }
-
-    public function getAvatarUrlAttribute(): ?string
-    {
-        return $this->avatar ? asset("storage/{$this->avatar}") : null;
     }
 }

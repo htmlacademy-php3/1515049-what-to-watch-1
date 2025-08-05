@@ -5,12 +5,17 @@ declare(strict_types=1);
 namespace App\Repositories\Films;
 
 use App\Models\FavoriteFilm;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Репозиторий для проверки, добавлен ли фильм в избранное пользователем.
  *
  * Отвечает за обращение к таблице избранных фильмов (favorite_films)
  * и предоставляет метод для проверки наличия записи по ID пользователя и фильма.
+ *
+ * @template TModel of Model
+ * @extends Collection<TModel>
  */
 final class FavoriteFilmCheckRepository
 {

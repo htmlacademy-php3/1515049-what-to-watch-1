@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,6 +33,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|FavoriteFilm whereId($value)
  * @method static Builder<static>|FavoriteFilm whereUpdatedAt($value)
  * @method static Builder<static>|FavoriteFilm whereUserId($value)
+ *
+ * @method static Collection|static[] pluck(string $column, string|null $key = null)
+ * @method static Model|static findOrFail(int $id)
+ * @method static Model|static firstOrCreate(array $attributes, array $values = [])
+ *
  * @mixin Eloquent
  */
 class FavoriteFilm extends Model

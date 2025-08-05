@@ -4,9 +4,13 @@ namespace App\Repositories\Films;
 
 use App\Models\Film;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Репозиторий для фильмов
+ *
+ * @template TModel of Model
+ * @extends Collection<TModel>
  */
 final class FilmRepository
 {
@@ -118,21 +122,20 @@ final class FilmRepository
     /**
      * Сбросить флаг is_promo у всех фильмов
      *
-     * @return int Число обновленных записей
      */
-    public function resetPromoFlags(): int
+    public function resetPromoFlags(): void
     {
-        return Film::where('is_promo', true)->update(['is_promo' => false]);
+        Film::where('is_promo', true)->update(['is_promo' => false]);
     }
 
     /**
      * Установить флаг is_promo для фильма по ID
      *
      * @param int $filmId
-     * @return int Количество обновленных записей (должно быть 1)
+     * Количество обновленных записей (должно быть 1)
      */
-    public function setPromoFlag(int $filmId): int
+    public function setPromoFlag(int $filmId): void
     {
-        return Film::where('id', $filmId)->update(['is_promo' => true]);
+        Film::where('id', $filmId)->update(['is_promo' => true]);
     }
 }

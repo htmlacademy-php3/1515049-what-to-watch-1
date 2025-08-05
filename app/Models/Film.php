@@ -47,6 +47,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Film whereBackgroundImage($value)
  * @method static Builder|Film whereVideoLink($value)
  * @method static Builder|Film wherePreviewVideoLink($value)
+ *
+ * @method static Collection|static[] pluck(string $column, string|null $key = null)
+ * @method static Model|static findOrFail(int $id)
+ * @method static Model|static firstOrCreate(array $attributes, array $values = [])
+ *
  * @mixin Eloquent
  */
 class Film extends Model

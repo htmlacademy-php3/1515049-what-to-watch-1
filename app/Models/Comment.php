@@ -40,6 +40,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Comment whereRate($value)
  * @method static Builder<static>|Comment whereUpdatedAt($value)
  * @method static Builder<static>|Comment whereUserId($value)
+ *
+ * @method static Collection|static[] pluck(string $column, string|null $key = null)
+ * @method static Model|static findOrFail(int $id)
+ * @method static Model|static firstOrCreate(array $attributes, array $values = [])
+ *
  * @mixin \Eloquent
  */
 class Comment extends Model

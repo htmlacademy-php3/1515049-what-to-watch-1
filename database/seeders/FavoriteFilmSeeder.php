@@ -8,10 +8,14 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class FavoriteFilmSeeder extends Seeder
+/** @used-by DatabaseSeeder::run() */
+final class FavoriteFilmSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @psalm-suppress PossiblyUnusedMethod
+     *  Вызывается системой Laravel при выполнении artisan db:seed
      */
     public function run(): void
     {
@@ -19,9 +23,8 @@ class FavoriteFilmSeeder extends Seeder
         $films = Film::all();
 
         foreach ($users as $user) {
-            $user->favoriteFilms()->attach(
-                $films->random(rand(1, 5))->pluck('id')->toArray()
-            );
+            $randomFavoriteFilms = collect((array) $films->random(rand(1, 5)));
+            $user->favoriteFilms()->attach($randomFavoriteFilms->pluck('id')->all());
         }
     }
 }

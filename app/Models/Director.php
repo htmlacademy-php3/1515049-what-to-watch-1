@@ -30,6 +30,10 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Director whereCreatedAt($value)
  * @method static Builder|Director whereUpdatedAt($value)
  *
+ * @method static Collection|static[] pluck(string $column, string|null $key = null)
+ * @method static Model|static findOrFail(int $id)
+ * @method static Model|static firstOrCreate(array $attributes, array $values = [])
+ *
  * @mixin Eloquent
  */
 class Director extends Model

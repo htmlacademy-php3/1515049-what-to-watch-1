@@ -10,6 +10,10 @@ use App\Repositories\Comments\CreateCommentRepository;
  */
 class CommentCreateService
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     * Laravel DI автоматически вызывает этот конструктор
+     */
     public function __construct(protected CreateCommentRepository $createCommentRepository)
     {
     }

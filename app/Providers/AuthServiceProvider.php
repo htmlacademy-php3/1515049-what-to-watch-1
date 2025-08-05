@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Override;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,6 +14,7 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * Register services.
      */
+    #[Override]
     public function register(): void
     {
         //
