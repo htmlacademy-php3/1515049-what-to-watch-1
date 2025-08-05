@@ -24,5 +24,4 @@ final class FilmsRepositoryException extends Exception
     {
         return 500;
     }
-
 }

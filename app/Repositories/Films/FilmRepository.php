@@ -95,6 +95,8 @@ final class FilmRepository
      * @param int $filmId
      * @param int $limit
      * @return Collection
+     *
+     * @psalm-return Collection<int, Film>
      */
     public function getSimilarFilmsByGenres(int $filmId, int $limit = 4): Collection
     {

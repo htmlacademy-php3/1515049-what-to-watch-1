@@ -18,6 +18,9 @@ use Override;
  */
 class AuthServiceProvider extends ServiceProvider
 {
+    /**
+     * @var array
+     */
     protected $policies = [];
     /**
      * Register services.
@@ -36,7 +39,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('update-comment', function (User $user, Comment $comment) {
-            return $user->id === $comment->user_id || (int)$user->role === User::ROLE_MODERATOR;
+            return $user->id === $comment->user_id || $user->role === User::ROLE_MODERATOR;
         });
 
         Gate::define('delete-comment', function (User $user, Comment $comment) {
