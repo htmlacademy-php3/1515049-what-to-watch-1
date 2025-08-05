@@ -24,11 +24,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder<static>|Cache whereExpiration($value)
  * @method static Builder<static>|Cache whereKey($value)
  * @method static Builder<static>|Cache whereValue($value)
- *
  * @method static Collection|static[] pluck(string $column, string|null $key = null)
  * @method static Model|static findOrFail(int $id)
  * @method static Model|static firstOrCreate(array $attributes, array $values = [])
- *
  * @mixin Eloquent
  */
 class Cache extends Model

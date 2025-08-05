@@ -25,11 +25,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder<static>|GenreFilm query()
  * @method static Builder<static>|GenreFilm whereFilmId($value)
  * @method static Builder<static>|GenreFilm whereGenreId($value)
- *
  * @method static Collection|static[] pluck(string $column, string|null $key = null)
  * @method static Model|static findOrFail(int $id)
  * @method static Model|static firstOrCreate(array $attributes, array $values = [])
- *
  * @mixin Eloquent
  */
 class GenreFilm extends Model

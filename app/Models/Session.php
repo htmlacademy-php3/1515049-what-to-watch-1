@@ -30,11 +30,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder<static>|Session wherePayload($value)
  * @method static Builder<static>|Session whereUserAgent($value)
  * @method static Builder<static>|Session whereUserId($value)
- *
  * @method static Collection|static[] pluck(string $column, string|null $key = null)
  * @method static Model|static findOrFail(int $id)
  * @method static Model|static firstOrCreate(array $attributes, array $values = [])
- *
  * @mixin Eloquent
  */
 class Session extends Model

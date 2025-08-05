@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\CommentFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -40,11 +41,14 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Comment whereRate($value)
  * @method static Builder<static>|Comment whereUpdatedAt($value)
  * @method static Builder<static>|Comment whereUserId($value)
- *
  * @method static Collection|static[] pluck(string $column, string|null $key = null)
  * @method static Model|static findOrFail(int $id)
  * @method static Model|static firstOrCreate(array $attributes, array $values = [])
- *
+ * @property-read Comment|null $parentComment
+ * @property-read Collection<int, Comment> $replies
+ * @property-read int|null $replies_count
+ * @method static CommentFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Comment whereText($value)
  * @mixin \Eloquent
  */
 class Comment extends Model

@@ -50,11 +50,34 @@ use Illuminate\Support\Carbon;
  * @method static Model|static         create(array $attributes = [])
  * @method static Builder|Film         where(string $column, $operator = null, $value = null, string $boolean = 'and')
  * @method static User|null            first(array $columns = ['*'])
- *
  * @method static Collection|static[] pluck(string $column, string|null $key = null)
  * @method static Model|static findOrFail(int $id)
  * @method static Model|static firstOrCreate(array $attributes, array $values = [])
- *
+ * @property string $status
+ * @property bool $is_promo Флаг промо-фильма
+ * @property-read Collection<int, \App\Models\Actor> $actors
+ * @property-read int|null $actors_count
+ * @property-read Collection<int, \App\Models\Director> $directors
+ * @property-read int|null $directors_count
+ * @property-read Collection<int, \App\Models\FavoriteFilm> $favoriteFilms
+ * @property-read Collection<int, \App\Models\User> $favorites
+ * @property-read int|null $favorites_count
+ * @property-read Collection<int, \App\Models\User> $usersWhoFavorited
+ * @property-read int|null $users_who_favorited_count
+ * @method static \Database\Factories\FilmFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Film newModelQuery()
+ * @method static Builder<static>|Film newQuery()
+ * @method static Builder<static>|Film query()
+ * @method static Builder<static>|Film whereBackgroundColor($value)
+ * @method static Builder<static>|Film whereCreatedAt($value)
+ * @method static Builder<static>|Film whereDescription($value)
+ * @method static Builder<static>|Film whereId($value)
+ * @method static Builder<static>|Film whereImdbId($value)
+ * @method static Builder<static>|Film whereImdbVotes($value)
+ * @method static Builder<static>|Film whereIsPromo($value)
+ * @method static Builder<static>|Film whereRating($value)
+ * @method static Builder<static>|Film whereStatus($value)
+ * @method static Builder<static>|Film whereUpdatedAt($value)
  * @mixin Eloquent
  */
 class Film extends Model

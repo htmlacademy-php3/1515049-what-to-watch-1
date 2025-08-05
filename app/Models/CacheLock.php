@@ -24,11 +24,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder<static>|CacheLock whereExpiration($value)
  * @method static Builder<static>|CacheLock whereKey($value)
  * @method static Builder<static>|CacheLock whereOwner($value)
- *
  * @method static Collection|static[] pluck(string $column, string|null $key = null)
  * @method static Model|static findOrFail(int $id)
  * @method static Model|static firstOrCreate(array $attributes, array $values = [])
- *
  * @mixin Eloquent
  */
 class CacheLock extends Model

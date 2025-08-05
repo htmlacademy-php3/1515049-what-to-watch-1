@@ -38,11 +38,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder<static>|JobBatch whereOptions($value)
  * @method static Builder<static>|JobBatch wherePendingJobs($value)
  * @method static Builder<static>|JobBatch whereTotalJobs($value)
- *
  * @method static Collection|static[] pluck(string $column, string|null $key = null)
  * @method static Model|static findOrFail(int $id)
  * @method static Model|static firstOrCreate(array $attributes, array $values = [])
- *
  * @mixin Eloquent
  */
 class JobBatch extends Model

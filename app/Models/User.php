@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\UserFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -10,10 +11,13 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
+use Laravel\Sanctum\PersonalAccessToken;
 
 /**
  * Class User
@@ -50,11 +54,15 @@ use Laravel\Sanctum\NewAccessToken;
  * @method static Builder|User         where(string $column, $operator = null, $value = null, string $boolean = 'and')
  * @method static User|null            first(array $columns = ['*'])
  * @method NewAccessToken              createToken(string $name, array $abilities = [])
- *
  * @method static Collection|static[] pluck(string $column, string|null $key = null)
  * @method static Model|static findOrFail(int $id)
  * @method static Model|static firstOrCreate(array $attributes, array $values = [])
- *
+ * @property-read Collection<int, Film>                                                               $favoriteFilms
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
+ * @property-read int|null                                                                            $notifications_count
+ * @property-read Collection<int, PersonalAccessToken>                               $tokens
+ * @property-read int|null                                                                            $tokens_count
+ * @method static UserFactory factory($count = null, $state = [])
  * @mixin Eloquent
  */
 class User extends Authenticatable
