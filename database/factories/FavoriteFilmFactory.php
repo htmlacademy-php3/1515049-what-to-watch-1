@@ -18,7 +18,9 @@ final class FavoriteFilmFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * @return Factory[]
+     *
+     * @psalm-return array{user_id: Factory, film_id: Factory}
      */
     #[\Override]
     public function definition(): array

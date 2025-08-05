@@ -12,8 +12,8 @@ class GenreService
 {
     /**
      * Получить список всех жанров.
-     * *
-     * * @return Collection<Genre> Коллекция жанров.
+     *
+     * @return Collection<Genre> Коллекция жанров.
      */
     public function getAllGenres(): Collection
     {

@@ -16,7 +16,9 @@ final class ActorFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * @return string[]
+     *
+     * @psalm-return array{name: string}
      */
     #[\Override]
     public function definition(): array

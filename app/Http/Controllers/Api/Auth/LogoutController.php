@@ -25,7 +25,7 @@ class LogoutController extends Controller
      * @param  Request $request
      * @return Response|ErrorResponse
      */
-    public function logout(Request $request): ErrorResponse|Response
+    public function logout(Request $request): \Illuminate\Http\Response|ErrorResponse|Response
     {
         $user = $request->user();
 

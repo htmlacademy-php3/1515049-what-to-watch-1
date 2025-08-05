@@ -18,7 +18,9 @@ final class CommentFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * @return (Factory|int|null|string)[]
+     *
+     * @psalm-return array{text: string, user_id: Factory, film_id: Factory, rate: int, comment_id: null}
      */
     #[\Override]
     public function definition(): array

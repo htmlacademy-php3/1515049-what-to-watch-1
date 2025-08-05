@@ -21,7 +21,7 @@ abstract class BaseResponse implements Responsable
      *
      * @param Request $request
      *
-     * @return JsonResponse|Response
+     * @return JsonResponse
      */
     #[Override]
     public function toResponse($request): JsonResponse|Response

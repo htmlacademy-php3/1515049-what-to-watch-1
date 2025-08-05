@@ -11,7 +11,9 @@ final class SuccessResponse extends BaseResponse
     /**
      * Формирование содержимого ответа
      *
-     * @return array|null
+     * @return ((mixed)[]|int|null|string)[]
+     *
+     * @psalm-return array{data: array<TValue|mixed>, current_page?: int, first_page_url?: string, next_page_url?: null|string, prev_page_url?: null|string, per_page?: int, total?: int}
      */
     #[Override]
     protected function makeResponseData(): ?array
