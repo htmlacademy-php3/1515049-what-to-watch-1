@@ -42,11 +42,13 @@ class AuthServiceProvider extends ServiceProvider
             return $user->id === $comment->user_id || $user->role === User::ROLE_MODERATOR;
         });
 
-        Gate::define('delete-comment', function (User $user, Comment $comment) {
-            if ($user->isModerator()) {
-                return true;
+        Gate::define(
+            'delete-comment', function (User $user, Comment $comment) {
+                if ($user->isModerator()) {
+                    return true;
+                }
+                return $user->id === $comment->user_id && !$comment->replies()->exists();
             }
-            return $user->id === $comment->user_id && !$comment->replies()->exists();
-        });
+        );
     }
 }

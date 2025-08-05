@@ -4,11 +4,10 @@ namespace App\Repositories\Films;
 
 use App\Interfaces\FilmsOmdbRepositoryInterface;
 use Exception;
-use GuzzleHttp\Psr7\HttpFactory;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Override;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Throwable;
 
@@ -19,6 +18,21 @@ use Throwable;
  */
 class FilmsOmdbRepository implements FilmsOmdbRepositoryInterface
 {
+    private RequestFactoryInterface $httpFactory;
+    private ClientInterface $httpClient;
+
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     * Laravel DI автоматически вызывает этот конструктор
+     */
+    public function __construct(
+        RequestFactoryInterface $httpFactory,
+        ClientInterface $httpClient
+    ) {
+        $this->httpFactory = $httpFactory;
+        $this->httpClient = $httpClient;
+    }
+
     /**
      * Сообщение об ошибке при запросе данных с удалённого сервера.
      *
@@ -33,17 +47,9 @@ class FilmsOmdbRepository implements FilmsOmdbRepositoryInterface
     }
 
     /**
-     * @psalm-suppress PossiblyUnusedMethod
-     * Laravel DI автоматически вызывает этот конструктор
-     */
-    public function __construct(private readonly ClientInterface $httpClient)
-    {
-    }
-
-    /**
      * Получает информацию о фильме по его IMDb ID.
      *
-     * @param string $imdbId IMDb ID фильма (например, tt0111161)
+     * @param  string $imdbId IMDb ID фильма (например, tt0111161)
      * @return array|null Ассоциативный массив с данными о фильме или null при ошибке
      *
      * @throws Exception Если не задан API-ключ или запрос не может быть создан
@@ -65,7 +71,7 @@ class FilmsOmdbRepository implements FilmsOmdbRepositoryInterface
     /**
      * Создаёт HTTP-запрос для получения информации о фильме по IMDb ID.
      *
-     * @param string $imdbId IMDb ID фильма
+     * @param  string $imdbId IMDb ID фильма
      * @return RequestInterface Запрос для клиента
      *
      * @throws Exception Если не указан OMDB_API_KEY в окружении
@@ -79,6 +85,6 @@ class FilmsOmdbRepository implements FilmsOmdbRepositoryInterface
         }
 
         $url = "https://www.omdbapi.com/";
-        return new HttpFactory()->createRequest('get', "$url?i=$imdbId&apikey=$apiKey");
+        return $this->httpFactory->createRequest('get', "$url?i=$imdbId&apikey=$apiKey");
     }
 }

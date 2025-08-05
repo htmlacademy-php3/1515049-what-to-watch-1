@@ -33,7 +33,7 @@ class GenreController extends Controller
      * Обновление жанров
      *
      * @param Request $request
-     * @param         $id
+     * @param $id
      *
      * @return SuccessResponse
      */

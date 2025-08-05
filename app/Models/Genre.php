@@ -14,25 +14,25 @@ use Illuminate\Support\Carbon;
 /**
  * Class Genre
  *
- * @package App\Models
- * @property int                        $id
- * @property string                     $name
- * @property Carbon|null                $created_at
- * @property Carbon|null                $updated_at
+ * @package       App\Models
+ * @property      int                        $id
+ * @property      string                     $name
+ * @property      Carbon|null                $created_at
+ * @property      Carbon|null                $updated_at
  * @property-read Collection<int, Film> $films
  * @property-read int|null              $films_count
- * @method static Builder<static>|Genre newModelQuery()
- * @method static Builder<static>|Genre newQuery()
- * @method static Builder<static>|Genre query()
- * @method static Builder<static>|Genre whereCreatedAt($value)
- * @method static Builder<static>|Genre whereId($value)
- * @method static Builder<static>|Genre whereName($value)
- * @method static Builder<static>|Genre whereUpdatedAt($value)
- * @method static Collection|static[] pluck(string $column, string|null $key = null)
- * @method static Model|static findOrFail(int $id)
- * @method static Model|static firstOrCreate(array $attributes, array $values = [])
- * @method static GenreFactory factory($count = null, $state = [])
- * @mixin Eloquent
+ * @method        static Builder<static>|Genre newModelQuery()
+ * @method        static Builder<static>|Genre newQuery()
+ * @method        static Builder<static>|Genre query()
+ * @method        static Builder<static>|Genre whereCreatedAt($value)
+ * @method        static Builder<static>|Genre whereId($value)
+ * @method        static Builder<static>|Genre whereName($value)
+ * @method        static Builder<static>|Genre whereUpdatedAt($value)
+ * @method        static Collection|static[] pluck(string $column, string|null $key = null)
+ * @method        static Model|static findOrFail(int $id)
+ * @method        static Model|static firstOrCreate(array $attributes, array $values = [])
+ * @method        static GenreFactory factory($count = null, $state = [])
+ * @mixin         Eloquent
  *
  * @psalm-suppress MissingTemplateParam
  */

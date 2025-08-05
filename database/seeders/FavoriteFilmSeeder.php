@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\FavoriteFilm;
 use App\Models\Film;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 /** @used-by DatabaseSeeder::run() */
@@ -19,12 +17,34 @@ final class FavoriteFilmSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::all();
-        $films = Film::all();
+        /** @psalm-suppress UndefinedMagicMethod */
+        if (User::count() === 0) {
+            User::factory()->count(5)->create();
+        }
 
+        /** @psalm-suppress UndefinedMagicMethod */
+        if (Film::count() === 0) {
+            Film::factory()->count(10)->create();
+        }
+
+        $users =
+            User::all();
+        $films =
+            Film::all();
+
+        if ($films->isEmpty()) {
+            $films =
+                Film::factory()->count(10)->create();
+        }
+
+        /** @psalm-suppress UndefinedMagicMethod */
         foreach ($users as $user) {
-            $randomFavoriteFilms = collect((array) $films->random(rand(1, 5)));
-            $user->favoriteFilms()->attach($randomFavoriteFilms->pluck('id')->all());
+            $count = rand(1, min(5, $films->count()));
+
+            /** @psalm-suppress UndefinedMagicMethod */
+            $randomFilmIds = $films->random($count)->pluck('id');
+
+            $user->favoriteFilms()->syncWithoutDetaching($randomFilmIds);
         }
     }
 }

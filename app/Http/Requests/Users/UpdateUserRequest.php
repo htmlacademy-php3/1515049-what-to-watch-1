@@ -20,7 +20,7 @@ class UpdateUserRequest extends FormRequest
     /**
      * Определяет, авторизован ли пользователь выполнять этот запрос.
      *
-     * @return bool
+     * @return         bool
      * @psalm-suppress PossiblyUnusedMethod
      */
     public function authorize(): bool
@@ -31,7 +31,7 @@ class UpdateUserRequest extends FormRequest
     /**
      * Правила валидации запроса.
      *
-     * @return array<string, mixed>
+     * @return         array<string, mixed>
      * @psalm-suppress PossiblyUnusedMethod
      */
     public function rules(): array

@@ -37,10 +37,12 @@ class PromoFilmService
      */
     public function setPromoFilm(int $filmId): Film
     {
-        DB::transaction(function () use ($filmId) {
-            $this->filmRepository->resetPromoFlags();
-            $this->filmRepository->setPromoFlag($filmId);
-        });
+        DB::transaction(
+            function () use ($filmId) {
+                $this->filmRepository->resetPromoFlags();
+                $this->filmRepository->setPromoFlag($filmId);
+            }
+        );
 
         return $this->filmRepository->findOrFail($filmId);
     }

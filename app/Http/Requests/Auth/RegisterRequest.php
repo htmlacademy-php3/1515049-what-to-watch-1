@@ -10,7 +10,7 @@ use Illuminate\Validation\Rules\Password;
 final class RegisterRequest extends FormRequest
 {
     /**
-     * @return bool
+     * @return         bool
      * @psalm-suppress PossiblyUnusedMethod
      */
     public function authorize(): bool
@@ -19,7 +19,7 @@ final class RegisterRequest extends FormRequest
     }
 
     /**
-     * @return array
+     * @return         array
      * @psalm-suppress PossiblyUnusedMethod
      */
     public function rules(): array
@@ -38,8 +38,8 @@ final class RegisterRequest extends FormRequest
                 'string',
                 Password::min(8)
                     ->mixedCase()
-                ->numbers()
-                ->symbols(),
+                    ->numbers()
+                    ->symbols(),
             ],
             'avatar' => 'nullable|file|image|max:10240',
         ];

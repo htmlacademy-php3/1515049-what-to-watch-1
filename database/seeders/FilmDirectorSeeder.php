@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Director;
 use App\Models\Film;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 /** @used-by DatabaseSeeder::run() */
@@ -18,12 +17,23 @@ final class FilmDirectorSeeder extends Seeder
      */
     public function run(): void
     {
+        /** @psalm-suppress UndefinedMagicMethod */
+        if (Director::doesntExist()) {
+            Director::factory()->count(5)->create();
+        }
+
+        /** @psalm-suppress UndefinedMagicMethod */
+        if (Film::doesntExist()) {
+            Film::factory()->count(10)->create();
+        }
+
         $films = Film::all();
         $directors = Director::all();
 
         foreach ($films as $film) {
-            $randomDirectors = collect((array) $directors->random(1));
-            $film->directors()->attach($randomDirectors->pluck('id')->all());
+            $directorId = $directors->random()->id;
+
+            $film->directors()->sync([$directorId]);
         }
     }
 }

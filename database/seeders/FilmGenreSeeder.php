@@ -17,12 +17,29 @@ final class FilmGenreSeeder extends Seeder
      */
     public function run(): void
     {
-        $films = Film::all();
-        $genres = Genre::all();
+        $genres = Genre::factory()->count(5)->create();
 
+        $films = Film::factory()->count(10)->create();
+
+        /** @psalm-suppress UndefinedMagicMethod */
+        $genreIds = $genres->pluck('id')->toArray();
+        $genreCount = count($genreIds);
+
+        /** @psalm-suppress UndefinedMagicMethod */
         foreach ($films as $film) {
-            $randomGenres = collect((array) $genres->random(rand(1, 2)));
-            $film->genres()->attach($randomGenres->pluck('id')->all());
+            $count = min(2, $genreCount);
+
+            $selectedGenreIds = [];
+            $availableGenreIds = $genreIds;
+
+            for ($i = 0; $i < $count; $i++) {
+                $randomIndex = array_rand($availableGenreIds);
+                $selectedGenreIds[] = $availableGenreIds[$randomIndex];
+                unset($availableGenreIds[$randomIndex]);
+            }
+
+            /** @psalm-suppress UndefinedMagicMethod */
+            $film->genres()->syncWithoutDetaching($selectedGenreIds);
         }
     }
 }

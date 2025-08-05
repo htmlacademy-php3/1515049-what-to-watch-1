@@ -17,12 +17,14 @@ final class FilmRepository
     /**
      * Создает фильм
      *
-     * @param array $data
+     * @param  array $data
      * @return Film
      */
     public function create(array $data): Film
     {
-        /** @var Film $film */
+        /**
+ * @var Film $film 
+*/
         $film = Film::create($data);
         return $film;
     }
@@ -43,8 +45,8 @@ final class FilmRepository
     /**
      * Привязывает жанры к фильму
      *
-     * @param Film   $film
-     * @param array  $genreIds
+     * @param  Film  $film
+     * @param  array $genreIds
      * @return void
      */
     public function syncGenres(Film $film, array $genreIds): void
@@ -55,8 +57,8 @@ final class FilmRepository
     /**
      * Привязывает актёров к фильму
      *
-     * @param Film   $film
-     * @param array  $actorIds
+     * @param  Film  $film
+     * @param  array $actorIds
      * @return void
      */
     public function syncActors(Film $film, array $actorIds): void
@@ -67,12 +69,14 @@ final class FilmRepository
     /**
      * Загружает связи
      *
-     * @param Film $film
+     * @param  Film $film
      * @return Film
      */
     public function loadRelations(Film $film): Film
     {
-        /** @var Film $film */
+        /**
+ * @var Film $film 
+*/
         $film = $film->load('genres', 'actors', 'directors');
         return $film;
     }
@@ -92,8 +96,8 @@ final class FilmRepository
     /**
      * Получить похожие фильмы по жанрам фильма с заданным id
      *
-     * @param int $filmId
-     * @param int $limit
+     * @param  int $filmId
+     * @param  int $limit
      * @return Collection
      *
      * @psalm-return Collection<int, Film>
@@ -102,12 +106,18 @@ final class FilmRepository
     {
         $film = $this->findOrFail($filmId);
 
-        /** @var Builder<Film> $query */
-        /** @psalm-suppress UndefinedMagicMethod */
+        /**
+ * @var Builder<Film> $query 
+*/
+        /**
+ * @psalm-suppress UndefinedMagicMethod 
+*/
         $query = Film::with(['genres'])
-            ->whereHas('genres', function ($query) use ($film) {
-                $query->whereIn('genres.id', $film->genres->pluck('id'));
-            })
+            ->whereHas(
+                'genres', function ($query) use ($film) {
+                    $query->whereIn('genres.id', $film->genres->pluck('id'));
+                }
+            )
             ->where('id', '!==', $film->id)
             ->orderBy('released', 'desc')
             ->limit($limit);
@@ -122,7 +132,9 @@ final class FilmRepository
      */
     public function getPromoFilm(): Film
     {
-        /** @var Film $film */
+        /**
+ * @var Film $film 
+*/
         $film = Film::where('is_promo', true)
             ->with(['genres', 'actors', 'directors'])
             ->firstOrFail();
@@ -132,7 +144,6 @@ final class FilmRepository
 
     /**
      * Сбросить флаг is_promo у всех фильмов
-     *
      */
     public function resetPromoFlags(): void
     {

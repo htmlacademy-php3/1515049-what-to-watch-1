@@ -18,31 +18,31 @@ use Illuminate\Support\Carbon;
 /**
  * Class FavoriteFilm
  *
- * @package App\Models
- * @property int                             $id
- * @property int                             $user_id
- * @property int                             $film_id
- * @property string|null $added_at
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
+ * @package       App\Models
+ * @property      int                             $id
+ * @property      int                             $user_id
+ * @property      int                             $film_id
+ * @property      string|null $added_at
+ * @property      Carbon|null $created_at
+ * @property      Carbon|null $updated_at
  * @property-read Film                       $film
  * @property-read User                       $user
- * @method static Builder<static>|FavoriteFilm newModelQuery()
- * @method static Builder<static>|FavoriteFilm newQuery()
- * @method static Builder<static>|FavoriteFilm query()
- * @method static Builder<static>|FavoriteFilm whereCreatedAt($value)
- * @method static Builder<static>|FavoriteFilm whereFilmId($value)
- * @method static Builder<static>|FavoriteFilm whereId($value)
- * @method static Builder<static>|FavoriteFilm whereUpdatedAt($value)
- * @method static Builder<static>|FavoriteFilm whereUserId($value)
- * @method static Model|static         create(array $attributes = [])
- * @method static Builder|FavoriteFilm where(string $column, $operator = null, $value = null, string $boolean = 'and')
- * @method static User|null            first(array $columns = ['*'])
- * @method static Collection|static[] pluck(string $column, string|null $key = null)
- * @method static Model|static findOrFail(int $id)
- * @method static Model|static firstOrCreate(array $attributes, array $values = [])
- * @method static FavoriteFilmFactory factory($count = null, $state = [])
- * @method static Builder<static>|Film with($relations)
+ * @method        static Builder<static>|FavoriteFilm newModelQuery()
+ * @method        static Builder<static>|FavoriteFilm newQuery()
+ * @method        static Builder<static>|FavoriteFilm query()
+ * @method        static Builder<static>|FavoriteFilm whereCreatedAt($value)
+ * @method        static Builder<static>|FavoriteFilm whereFilmId($value)
+ * @method        static Builder<static>|FavoriteFilm whereId($value)
+ * @method        static Builder<static>|FavoriteFilm whereUpdatedAt($value)
+ * @method        static Builder<static>|FavoriteFilm whereUserId($value)
+ * @method        static Model|static         create(array $attributes = [])
+ * @method        static Builder|FavoriteFilm where(string $column, $operator = null, $value = null, string $boolean = 'and')
+ * @method        static User|null            first(array $columns = ['*'])
+ * @method        static Collection|static[] pluck(string $column, string|null $key = null)
+ * @method        static Model|static findOrFail(int $id)
+ * @method        static Model|static firstOrCreate(array $attributes, array $values = [])
+ * @method        static FavoriteFilmFactory factory($count = null, $state = [])
+ * @method        static Builder<static>|Film with($relations)
  *
  * @mixin Eloquent
  *
@@ -65,7 +65,7 @@ class FavoriteFilm extends Model
     ];
 
     /**
-     * @return BelongsTo
+     * @return         BelongsTo
      * @psalm-suppress PossiblyUnusedMethod
      */
     public function film(): BelongsTo
@@ -74,7 +74,7 @@ class FavoriteFilm extends Model
     }
 
     /**
-     * @return BelongsTo
+     * @return         BelongsTo
      * @psalm-suppress PossiblyUnusedMethod
      */
     public function user(): BelongsTo

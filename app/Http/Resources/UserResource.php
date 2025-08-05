@@ -17,11 +17,8 @@ final class UserResource extends JsonResource
     /**
      * Преобразует ресурс в массив для JSON-ответа.
      *
-     * @param Request $request
-     *
-     * @return (int|null|string)[]
-     *
-     * @psalm-return array{name: string, email: string, avatar: null|string, role: int}
+     * @param  Request $request
+     * @return array<string, mixed>
      */
     #[Override]
     public function toArray(Request $request): array

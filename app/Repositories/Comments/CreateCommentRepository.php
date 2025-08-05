@@ -16,7 +16,7 @@ final class CreateCommentRepository
     /**
      * Создаёт новый комментарий.
      *
-     * @param array $data Ассоциативный массив данных комментария (text, rate, user_id, film_id и т.д.)
+     * @param  array $data Ассоциативный массив данных комментария (text, rate, user_id, film_id и т.д.)
      * @return Comment|null Созданная модель комментария
      */
     public function create(array $data): ?Comment

@@ -19,12 +19,14 @@ final class UserRepository implements UserRepositoryInterface
     /**
      * Найти пользователя по email
      *
-     * @param string $email
+     * @param  string $email
      * @return User|null
      */
     public function findByEmail(string $email): ?User
     {
-        /** @var Builder<User> $query */
+        /**
+ * @var Builder<User> $query 
+*/
         $query = User::where('email', $email);
         return $query->first();
     }
@@ -32,8 +34,10 @@ final class UserRepository implements UserRepositoryInterface
     /**
      * Обновляет данные пользователя по ID.
      *
-     * @param  int   $userId   Идентификатор пользователя.
-     * @param  array $details  Ассоциативный массив с обновляемыми данными.
+     * @param  int   $userId  Идентификатор
+     *                        пользователя.
+     * @param  array $details Ассоциативный массив с
+     *                        обновляемыми данными.
      * @return User|null            Обновлённая модель пользователя.
      *
      * @throws ModelNotFoundException Если пользователь не найден.

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Контроллер выхода пользователя из системы
+ *
  * @psalm-suppress UnusedClass
  */
 class LogoutController extends Controller
@@ -21,9 +22,8 @@ class LogoutController extends Controller
     /**
      * Выход из системы (удаление всех токенов пользователя)
      *
-     * @param Request $request
-     *
-     * @return ErrorResponse|\Illuminate\Http\Response
+     * @param  Request $request
+     * @return Response|ErrorResponse
      */
     public function logout(Request $request): \Illuminate\Http\Response|ErrorResponse|Response
     {

@@ -14,8 +14,8 @@ class CheckModerator
     /**
      * Проверяет, является ли пользователь модератором
      *
-     * @param  Request  $request
-     * @param  Closure  $next
+     * @param Request $request
+     * @param Closure $next
      *
      * @return Response
      */

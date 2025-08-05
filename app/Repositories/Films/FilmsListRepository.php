@@ -16,7 +16,7 @@ final class FilmsListRepository
      * Получение списка фильмов с фильтрацией и пагинацией.
      *
      * @template TModel of Model
-     * @extends Collection<TModel>
+     * @extends  Collection<TModel>
      */
     public function getFilms(array $filters = [], int $perPage = 8): LengthAwarePaginator
     {

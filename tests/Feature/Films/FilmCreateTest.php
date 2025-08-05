@@ -17,17 +17,38 @@ class FilmCreateTest extends TestCase
      */
     public function testStoreFilm(): void
     {
-        $moderator = User::factory()->create([
-            'role' => User::ROLE_MODERATOR,
-        ]);
+        $moderator =
+            User::factory()->create([
+                'role' => User::ROLE_MODERATOR,
+            ]);
 
-        $response = $this->actingAs($moderator)->postJson(route('films.store'), [
-            'name' => 'Test Film',
-            'description' => 'Test description',
-        ]);
+        $response =
+            $this->actingAs($moderator)->postJson(route('films.store'), [
+                'imdb_id' => 'tt1234567',
+            ]);
 
-        $response->assertCreated()
-            ->assertJsonStructure(['data']);
+        $response->assertCreated()->assertJsonStructure([
+                'data' => [
+                    "id",
+                    "name",
+                    "poster_image",
+                    "preview_image",
+                    "background_image",
+                    "background_color",
+                    "video_link",
+                    "preview_video_link",
+                    "description",
+                    "rating",
+                    "scores_count",
+                    "director",
+                    "starring",
+                    "run_time",
+                    "genre",
+                    "released",
+                    "is_favorite",
+                    "is_promo",
+                ]
+            ]);
     }
 
     /**
@@ -35,12 +56,12 @@ class FilmCreateTest extends TestCase
      */
     public function testStoreFilmUnauthenticated(): void
     {
-        $response = $this->postJson(route('films.store'), [
-            'name' => 'Unauthorized Film',
-        ]);
+        $response =
+            $this->postJson(route('films.store'), [
+                'imdb_id' => 'tt1234567',
+            ]);
 
-        $response->assertUnauthorized()
-            ->assertJson([
+        $response->assertUnauthorized()->assertJson([
                 'message' => 'Запрос требует аутентификации.',
             ]);
     }
@@ -50,11 +71,13 @@ class FilmCreateTest extends TestCase
      */
     public function testStoreFilmAsUser(): void
     {
-        $user = User::factory()->create();
+        $user =
+            User::factory()->create();
 
-        $response = $this->actingAs($user)->postJson(route('films.store'), [
-            'name' => 'Not Allowed',
-        ]);
+        $response =
+            $this->actingAs($user)->postJson(route('films.store'), [
+                'imdb_id' => 'tt1234567',
+            ]);
 
         $response->assertForbidden();
     }
