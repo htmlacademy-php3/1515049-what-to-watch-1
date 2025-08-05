@@ -6,14 +6,26 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
+use Override;
 
+/**
+ * @psalm-suppress PossiblyUnusedMethod
+ */
 final class UpdateCommentRequest extends FormRequest
 {
+    /**
+     * @return bool
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * @return array
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function rules(): array
     {
         return [
@@ -27,6 +39,7 @@ final class UpdateCommentRequest extends FormRequest
         ];
     }
 
+    #[Override]
     public function messages(): array
     {
         return [
@@ -38,6 +51,7 @@ final class UpdateCommentRequest extends FormRequest
         ];
     }
 
+    #[Override]
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(

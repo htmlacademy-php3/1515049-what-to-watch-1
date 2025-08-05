@@ -9,6 +9,8 @@ use App\Services\Auth\RegisterService;
 
 /**
  * Контроллер регистрации пользователя
+ *
+ * @psalm-suppress UnusedClass
  */
 class RegisterController extends Controller
 {

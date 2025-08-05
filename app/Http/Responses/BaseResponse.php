@@ -7,6 +7,7 @@ use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use JsonSerializable;
+use Override;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseResponse implements Responsable
@@ -22,6 +23,7 @@ abstract class BaseResponse implements Responsable
      *
      * @return JsonResponse|Response
      */
+    #[Override]
     public function toResponse($request): JsonResponse|Response
     {
         return response()->json($this->makeResponseData(), $this->statusCode);

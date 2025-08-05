@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Gate;
 
 /**
  * API для управления комментариями к фильмам: просмотр, добавление, редактирование и удаление
+ *
+ * @psalm-suppress UnusedClass
  */
 class CommentController extends Controller
 {

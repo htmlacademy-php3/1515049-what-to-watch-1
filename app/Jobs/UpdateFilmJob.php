@@ -20,13 +20,17 @@ class UpdateFilmJob implements ShouldQueue
     use SerializesModels;
 
     private string $imdbId;
+    /** @psalm-suppress UnusedProperty */
+    public readonly Film $film;
 
     /**
-     * Create a new job instance.
+     * @psalm-suppress PossiblyUnusedMethod
+     * Laravel DI автоматически вызывает этот конструктор
      */
-    public function __construct(string $imdbId, public Film $film)
+    public function __construct(string $imdbId, Film $film)
     {
         $this->imdbId = $imdbId;
+        $this->film = $film;
     }
 
     /**
@@ -38,6 +42,7 @@ class UpdateFilmJob implements ShouldQueue
     {
         $data = $service->getFilm($this->imdbId);
 
+        /** @psalm-suppress UndefinedMagicMethod */
         $film = Film::updateOrCreate(
             ['imdb_id' => $data['imdbID'] ?? null],
             [
@@ -47,7 +52,9 @@ class UpdateFilmJob implements ShouldQueue
                 'released' => $data['Year'] ?? null,
                 'rating' => ($data['imdbRating'] === 'N/A') ? null : $data['imdbRating'],
                 'poster_image' => $data['Poster'] ?? '',
-                'imdb_votes' => (int) str_replace(',', '', $data['imdbVotes']) ?? null,
+                'imdb_votes' => isset($data['imdbVotes']) && $data['imdbVotes'] !== 'N/A'
+                    ? (int) str_replace(',', '', $data['imdbVotes'])
+                    : null,
             ]
         );
 
@@ -73,11 +80,13 @@ class UpdateFilmJob implements ShouldQueue
     private function syncRelations(Film $film, array $data): void
     {
         if (!empty($data['Director'])) {
-            $directorNames = explode(',', $data['Director']);
+            $directorNames = collect(explode(',', $data['Director']))
+                ->map(fn ($name) => trim($name))
+                ->filter();
             $directorIds = collect($directorNames)->map(function ($name) {
                 return Director::firstOrCreate(['name' => trim($name)])->id;
             });
-            $film->directors()->sync($directorIds);
+            $film->directors()->sync($directorIds->all());
         }
 
         if (!empty($data['Actors'])) {
@@ -85,7 +94,7 @@ class UpdateFilmJob implements ShouldQueue
             $actorIds = collect($actorNames)->map(function ($name) {
                 return Actor::firstOrCreate(['name' => trim($name)])->id;
             });
-            $film->actors()->sync($actorIds);
+            $film->actors()->sync($actorIds->all());
         }
 
         if (!empty($data['Genre'])) {
@@ -93,7 +102,7 @@ class UpdateFilmJob implements ShouldQueue
             $genreIds = collect($genreNames)->map(function ($name) {
                 return Genre::firstOrCreate(['name' => trim($name)])->id;
             });
-            $film->genres()->sync($genreIds);
+            $film->genres()->sync($genreIds->all());
         }
     }
 }

@@ -43,8 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (NotFoundHttpException $e) {
             return new ErrorResponse(
                 message: 'Запрашиваемая страница не существует.',
-                statusCode: Response::HTTP_NOT_FOUND,
-                showErrors: false
+                statusCode: Response::HTTP_NOT_FOUND
             );
         });
         $exceptions->render(function (AuthenticationException $e) {

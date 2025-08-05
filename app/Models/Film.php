@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Closure;
+use Database\Factories\FilmFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -17,6 +19,7 @@ use Illuminate\Support\Carbon;
  * @package App\Models
  * @property int                                $id
  * @property string                             $name
+ * @property string                             $title
  * @property string|null                        $released
  * @property string|null                        $description
  * @property string|null                        $director
@@ -51,23 +54,20 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Film         where(string $column, $operator = null, $value = null, string $boolean = 'and')
  * @method static User|null            first(array $columns = ['*'])
  * @method static Collection|static[] pluck(string $column, string|null $key = null)
- * @method static Model|static findOrFail(int $id)
  * @method static Model|static firstOrCreate(array $attributes, array $values = [])
- * @property string $status
- * @property bool $is_promo Флаг промо-фильма
- * @property-read Collection<int, \App\Models\Actor> $actors
- * @property-read int|null $actors_count
- * @property-read Collection<int, \App\Models\Director> $directors
- * @property-read int|null $directors_count
- * @property-read Collection<int, \App\Models\FavoriteFilm> $favoriteFilms
- * @property-read Collection<int, \App\Models\User> $favorites
- * @property-read int|null $favorites_count
- * @property-read Collection<int, \App\Models\User> $usersWhoFavorited
- * @property-read int|null $users_who_favorited_count
- * @method static \Database\Factories\FilmFactory factory($count = null, $state = [])
+ * @property string                             $status
+ * @property bool                               $is_promo Флаг промо-фильма
+ * @property-read Collection<int, Actor>        $actors
+ * @property-read int|null                      $actors_count
+ * @property-read Collection<int, Director>     $directors
+ * @property-read int|null                      $directors_count
+ * @property-read Collection<int, FavoriteFilm> $favoriteFilms
+ * @property-read Collection<int, User>         $favorites
+ * @property-read int|null                      $favorites_count
+ * @property-read Collection<int, User>         $usersWhoFavorited
+ * @property-read int|null                      $users_who_favorited_count
+ * @method static FilmFactory factory($count = null, $state = [])
  * @method static Builder<static>|Film newModelQuery()
- * @method static Builder<static>|Film newQuery()
- * @method static Builder<static>|Film query()
  * @method static Builder<static>|Film whereBackgroundColor($value)
  * @method static Builder<static>|Film whereCreatedAt($value)
  * @method static Builder<static>|Film whereDescription($value)
@@ -78,6 +78,12 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Film whereRating($value)
  * @method static Builder<static>|Film whereStatus($value)
  * @method static Builder<static>|Film whereUpdatedAt($value)
+ * @method static Builder<static>|Film with($relations)
+ * @method static Builder<self> newQuery()
+ * @method static Builder<self> query()
+ * @method static Builder<self> whereHas(string $relation, Closure $callback = null, string $operator = '>=', int $count = 1)
+ * @method static self findOrFail(mixed $id, array $columns = ['*'])
+ *
  * @mixin Eloquent
  *
  * @psalm-suppress MissingTemplateParam

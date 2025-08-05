@@ -137,7 +137,9 @@ class Comment extends Model
      */
     public function deleteWithReplies(): void
     {
-        $this->replies->each->deleteWithReplies();
+        $this->replies->each(function ($reply) {
+            $reply->deleteWithReplies();
+        });
 
         $this->delete();
     }

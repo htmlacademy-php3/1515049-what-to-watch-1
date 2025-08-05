@@ -6,12 +6,18 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @psalm-suppress UnusedClass
+ */
 class CheckModerator
 {
     /**
-     * Handle an incoming request.
+     * Проверяет, является ли пользователь модератором
      *
-     * @param Closure(Request): (Response) $next
+     * @param  Request  $request
+     * @param  Closure  $next
+     *
+     * @return Response
      */
     public function handle(Request $request, Closure $next): Response
     {

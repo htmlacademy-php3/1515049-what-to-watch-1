@@ -9,18 +9,25 @@ use App\Http\Responses\ErrorResponse;
 use App\Http\Responses\SuccessResponse;
 use App\Models\FavoriteFilm;
 use App\Models\Film;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 
+/**
+ * @psalm-suppress UnusedClass
+ */
 class FavoriteController extends Controller
 {
     /**
      * Список фильмов в избранном
      */
-    public function index(Request $request): SuccessResponse
+    public function index(): SuccessResponse
     {
         $userId = auth()->id();
         $perPage = 8;
 
+        /**
+         * @var LengthAwarePaginator<FavoriteFilm> $favorites
+         */
         $favorites = FavoriteFilm::where('user_id', $userId)
             ->with(['film' => function ($query) {
                 $query->with([
@@ -32,7 +39,8 @@ class FavoriteController extends Controller
         ->orderBy('created_at', 'desc')
         ->paginate($perPage);
 
-        $formatted = $favorites->map(function ($favorite) {
+        $items = collect($favorites->items());
+        $formatted = $items->map(function ($favorite) {
             $film = $favorite->film;
             $film->is_favorite = true;
             $film->added_at = $favorite->created_at->format('Y-m-d H:i:s');

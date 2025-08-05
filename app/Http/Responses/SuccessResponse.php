@@ -4,6 +4,7 @@ namespace App\Http\Responses;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Override;
 
 final class SuccessResponse extends BaseResponse
 {
@@ -12,16 +13,13 @@ final class SuccessResponse extends BaseResponse
      *
      * @return array|null
      */
+    #[Override]
     protected function makeResponseData(): ?array
     {
+        /** @var JsonResource|LengthAwarePaginator|array $items */
         if ($this->data instanceof LengthAwarePaginator) {
             $items =
                 $this->data->items();
-
-            if ($items instanceof JsonResource) {
-                $items =
-                    $items->resolve();
-            }
 
             return [
                 'data' => $items,

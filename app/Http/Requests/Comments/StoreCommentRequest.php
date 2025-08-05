@@ -4,13 +4,27 @@ namespace App\Http\Requests\Comments;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Override;
 
+/**
+ * @property string $text
+ * @property int $rate
+ */
 final class StoreCommentRequest extends FormRequest
 {
+    /**
+     * @return bool
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function authorize(): bool
     {
         return true;
     }
+
+    /**
+     * @return array
+     * @psalm-suppress PossiblyUnusedMethod
+     */
 
     public function rules(): array
     {
@@ -25,6 +39,7 @@ final class StoreCommentRequest extends FormRequest
         ];
     }
 
+    #[Override]
     public function messages(): array
     {
         return [

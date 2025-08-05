@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Database\Factories\FavoriteFilmFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -34,12 +35,14 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|FavoriteFilm whereUpdatedAt($value)
  * @method static Builder<static>|FavoriteFilm whereUserId($value)
  * @method static Model|static         create(array $attributes = [])
- * @method static Builder|FavoriteFilm         where(string $column, $operator = null, $value = null, string $boolean = 'and')
+ * @method static Builder|FavoriteFilm where(string $column, $operator = null, $value = null, string $boolean = 'and')
  * @method static User|null            first(array $columns = ['*'])
  * @method static Collection|static[] pluck(string $column, string|null $key = null)
  * @method static Model|static findOrFail(int $id)
  * @method static Model|static firstOrCreate(array $attributes, array $values = [])
- * @method static \Database\Factories\FavoriteFilmFactory factory($count = null, $state = [])
+ * @method static FavoriteFilmFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Film with($relations)
+ *
  * @mixin Eloquent
  *
  * @psalm-suppress MissingTemplateParam

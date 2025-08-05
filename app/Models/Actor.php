@@ -42,6 +42,10 @@ class Actor extends Model
 
     protected $fillable = ['name'];
 
+    /**
+     * @return BelongsToMany
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function films(): BelongsToMany
     {
         return $this->belongsToMany(Film::class, 'actor_film');

@@ -21,7 +21,9 @@ final class FilmRepository
      */
     public function create(array $data): Film
     {
-        return Film::create($data);
+        /** @var Film $film */
+        $film = Film::create($data);
+        return $film;
     }
 
     /**
@@ -69,7 +71,9 @@ final class FilmRepository
      */
     public function loadRelations(Film $film): Film
     {
-        return $film->load('genres', 'actors', 'directors');
+        /** @var Film $film */
+        $film = $film->load('genres', 'actors', 'directors');
+        return $film;
     }
 
     /**
@@ -89,14 +93,14 @@ final class FilmRepository
      *
      * @param int $filmId
      * @param int $limit
-     *
      * @return Collection
      */
     public function getSimilarFilmsByGenres(int $filmId, int $limit = 4): Collection
     {
         $film = $this->findOrFail($filmId);
 
-        return Film::with(['genres'])
+        /** @var Collection<int, Film> $films */
+        $films = Film::with(['genres'])
             ->whereHas('genres', function ($query) use ($film) {
                 $query->whereIn('genres.id', $film->genres->pluck('id'));
             })
@@ -104,6 +108,8 @@ final class FilmRepository
             ->orderBy('released', 'desc')
             ->limit($limit)
             ->get();
+
+        return $films;
     }
 
     /**
@@ -113,9 +119,12 @@ final class FilmRepository
      */
     public function getPromoFilm(): Film
     {
-        return Film::where('is_promo', true)
+        /** @var Film $film */
+        $film = Film::where('is_promo', true)
             ->with(['genres', 'actors', 'directors'])
             ->firstOrFail();
+
+        return $film;
     }
 
     /**

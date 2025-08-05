@@ -19,6 +19,7 @@ interface FilmsOmdbRepositoryInterface
      * Возвращает сообщение об ошибке, если оно имеется.
      *
      * @return string|null Текст ошибки или null, если ошибки нет
+     * @psalm-suppress PossiblyUnusedMethod
      */
     public function getError(): ?string;
 }
